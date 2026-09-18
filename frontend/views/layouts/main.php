@@ -1490,30 +1490,37 @@ function closeProgramModal() {
   const headerCtaBtn = document.getElementById("header-cta-btn");
   
   const isTrialPage = window.location.href.includes('site%2Fjoin') || window.location.href.includes('site/join');
+  const hasNoHero = !heroSection;
 
-  if (isTrialPage) {
-    headerBg.classList.remove("opacity-0");
-    headerBg.classList.add("opacity-100");
-    if (headerCtaBtn) {
+  if (isTrialPage || hasNoHero) {
+    if (headerBg) {
+      headerBg.classList.remove("opacity-0");
+      headerBg.classList.add("opacity-100");
+    }
+    if (isTrialPage && headerCtaBtn) {
       headerCtaBtn.style.display = 'none';
     }
   }
 
   window.addEventListener("scroll", () => {
-    if (isTrialPage) return; // Keep it solid on trial page
+    if (isTrialPage || hasNoHero) return; // Keep it solid on trial page or pages without hero
 
     const threshold = programSection ? programSection.offsetTop - 80 : 100;
     
     if (window.scrollY >= threshold) {
-      headerBg.classList.remove("opacity-0");
-      headerBg.classList.add("opacity-100");
+      if (headerBg) {
+        headerBg.classList.remove("opacity-0");
+        headerBg.classList.add("opacity-100");
+      }
       if (headerCtaBtn) {
         headerCtaBtn.classList.remove("opacity-0", "pointer-events-none", "-translate-y-2");
         headerCtaBtn.classList.add("opacity-100", "pointer-events-auto", "translate-y-0");
       }
     } else {
-      headerBg.classList.add("opacity-0");
-      headerBg.classList.remove("opacity-100");
+      if (headerBg) {
+        headerBg.classList.add("opacity-0");
+        headerBg.classList.remove("opacity-100");
+      }
       if (headerCtaBtn) {
         headerCtaBtn.classList.add("opacity-0", "pointer-events-none", "-translate-y-2");
         headerCtaBtn.classList.remove("opacity-100", "pointer-events-auto", "translate-y-0");
@@ -1528,7 +1535,6 @@ function closeProgramModal() {
       } else {
         waButton.classList.add("scale-0", "opacity-0");
         waButton.classList.remove("scale-100", "opacity-100");
-      }
       }
     }
   }, { passive: true });

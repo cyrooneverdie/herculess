@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Devaicy | Inovasi Digital & Kreatif</title>
+    <!-- Google Fonts + Font Awesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #ffffff;
+            color: #333333;
+            scroll-behavior: smooth;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* ========== NAVBAR ========== */
+        nav {
+            position: sticky;
+            top: 0;
+            background: #ffffff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            z-index: 1000;
+            border-bottom: 1px solid #eaeaea;
+        }
+
+        .nav-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            padding: 16px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: baseline;
+            gap: 2px;
+            font-weight: 700;
+            font-size: 1.6rem;
+        }
+
+        .logo-devaicy {
+            color: #1e3a8a;
+        }
+
+        .logo-dot {
+            color: #3b82f6;
+            font-size: 1.8rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            font-weight: 500;
+            color: #4b5563;
+            transition: 0.2s;
+            font-size: 0.95rem;
+        }
+
+        .nav-links a:hover {
+            color: #1e3a8a;
+        }
+
+        .menu-toggle {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #1e3a8a;
+        }
+
+        /* ========== BUTTONS ========== */
+        .btn-primary {
+            background-color: #1e3a8a;
+            color: white;
+            padding: 10px 28px;
+            border-radius: 6px;
+            font-weight: 500;
+            border: none;
+            cursor: pointer;
+            transition: 0.2s;
+            display: inline-block;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .btn-primary:hover {
+            background-color: #2563eb;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1.5px solid #1e3a8a;
+            color: #1e3a8a;
+            padding: 8px 24px;
+            border-radius: 6px;
+            font-weight: 500;
+            transition: 0.2s;
+            display: inline-block;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .btn-outline:hover {
+            background: #1e3a8a;
+            color: white;
+        }
+
+        section {
+            padding: 60px 0;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: #1e3a8a;
+            text-align: center;
+        }
+
+        .section-sub {
+            font-size: 1rem;
+            color: #6b7280;
+            max-width: 700px;
+            margin: 0 auto 40px;
+            text-align: center;
+        }
+
+        /* HERO SECTION - CENTERED */
+        .hero {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 40px;
+        }
+
+        .hero-text {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero-badge {
+            background: #eef2ff;
+            color: #1e3a8a;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-weight: 500;
+            font-size: 0.75rem;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        .hero-text h1 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 16px;
+            color: #111827;
+        }
+
+        .hero-text p {
+            font-size: 1rem;
+            color: #6b7280;
+            margin-bottom: 28px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 48px;
+            margin-top: 28px;
+        }
+
+        .stat-number {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1e3a8a;
+        }
+
+        .hero-visual {
+            max-width: 400px;
+            margin: 0 auto;
+            background: #f3f4f6;
+            border-radius: 12px;
+            padding: 40px 20px;
+            text-align: center;
+            border: 1px solid #e5e7eb;
+        }
+
+        .hero-visual i {
+            font-size: 6rem;
+            color: #1e3a8a;
+            opacity: 0.8;
+        }
+
+        /* SERVICES - CENTERED CARDS */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .service-card {
+            background: white;
+            padding: 28px 20px;
+            border-radius: 12px;
+            border: 1px solid #e5e7eb;
+            transition: 0.2s;
+            text-align: center;
+        }
+
+        .service-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border-color: #1e3a8a;
+        }
+
+        .service-icon {
+            font-size: 2rem;
+            color: #1e3a8a;
+            margin-bottom: 20px;
+        }
+
+        .service-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: #111827;
+        }
+
+        .service-card p {
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+
+        /* PRODUCTS - CENTERED CARDS */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #e5e7eb;
+            transition: 0.2s;
+            text-align: center;
+        }
+
+        .product-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .product-img {
+            background: #f3f4f6;
+            height: 160px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: #1e3a8a;
+        }
+
+        .product-info {
+            padding: 20px;
+        }
+
+        .product-info h3 {
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+            color: #111827;
+        }
+
+        .product-info p {
+            color: #6b7280;
+            font-size: 0.85rem;
+        }
+
+        /* TEAM - CENTERED CARDS */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .team-member {
+            background: white;
+            border-radius: 12px;
+            text-align: center;
+            padding: 24px 16px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .member-avatar {
+            background: #f3f4f6;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin: 0 auto 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: #1e3a8a;
+        }
+
+        .team-member h4 {
+            font-size: 1.1rem;
+            margin-bottom: 4px;
+            color: #111827;
+        }
+
+        .member-role {
+            color: #1e3a8a;
+            font-weight: 500;
+            font-size: 0.85rem;
+            margin-bottom: 10px;
+        }
+
+        .team-member p {
+            color: #6b7280;
+            font-size: 0.85rem;
+        }
+
+        /* CONTACT - CENTERED */
+        .contact-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            background: #f9fafb;
+            border-radius: 12px;
+            padding: 40px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .contact-left {
+            flex: 1;
+            text-align: center;
+        }
+
+        .contact-left h3 {
+            font-size: 1.3rem;
+            margin-bottom: 16px;
+            color: #111827;
+        }
+
+        .contact-detail {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin: 20px 0;
+        }
+
+        .contact-detail i {
+            font-size: 1.2rem;
+            width: 36px;
+            height: 36px;
+            background: white;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #1e3a8a;
+            border: 1px solid #e5e7eb;
+        }
+
+        .contact-right {
+            flex: 1;
+        }
+
+        .contact-form input,
+        .contact-form textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            font-family: inherit;
+            background: white;
+            font-size: 0.9rem;
+        }
+
+        .contact-form input:focus,
+        .contact-form textarea:focus {
+            outline: none;
+            border-color: #1e3a8a;
+        }
+
+        .contact-form button {
+            width: 100%;
+        }
+
+        /* FOOTER - CENTERED */
+        footer {
+            background: #111827;
+            color: #9ca3af;
+            padding: 40px 0 20px;
+            margin-top: 40px;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            text-align: center;
+            gap: 60px;
+            margin-bottom: 32px;
+        }
+
+        .footer-col {
+            min-width: 200px;
+        }
+
+        .footer-col h4 {
+            color: white;
+            margin-bottom: 16px;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .footer-col p,
+        .footer-col a {
+            color: #9ca3af;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.85rem;
+        }
+
+        .footer-col a:hover {
+            color: white;
+        }
+
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        .social-icons a {
+            display: inline-block;
+            background: #1f2937;
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            text-align: center;
+            line-height: 32px;
+            color: #9ca3af;
+            transition: 0.2s;
+        }
+
+        .social-icons a:hover {
+            background: #1e3a8a;
+            color: white;
+        }
+
+        .copyright {
+            text-align: center;
+            border-top: 1px solid #1f2937;
+            padding-top: 20px;
+            font-size: 0.75rem;
+        }
+
+        .hook-section {
+            background: #f9fafb;
+            border-radius: 12px;
+            padding: 40px 32px;
+            margin-top: 60px;
+            text-align: center;
+            border: 1px solid #e5e7eb;
+        }
+
+        hr {
+            margin: 40px 0 20px;
+            border: none;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                width: 100%;
+                flex-direction: column;
+                background: white;
+                padding: 16px 0;
+                gap: 12px;
+                text-align: center;
+            }
+            .nav-links.active {
+                display: flex;
+            }
+            .menu-toggle {
+                display: block;
+            }
+            .hero-text h1 {
+                font-size: 2rem;
+            }
+            .contact-wrapper {
+                padding: 24px;
+            }
+            .section-title {
+                font-size: 1.6rem;
+            }
+            .hero-stats {
+                gap: 24px;
+            }
+            .footer-content {
+                gap: 30px;
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="nav-container">
+        <div class="logo-area">
+            <span class="logo-devaicy">devaicy</span>
+            <span class="logo-dot">.</span>
+        </div>
+        <div class="menu-toggle" id="mobileMenuBtn">
+            <i class="fas fa-bars"></i>
+        </div>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About Us</a></li>
+            <li><a href="#contact">Contact Us</a></li>
+        </ul>
+    </div>
+</nav>
+
+<main>
+    <!-- HOME SECTION - CENTERED -->
+    <section id="home">
+        <div class="container">
+            <div class="hero">
+                <div class="hero-text">
+                    <span class="hero-badge"><i class="fas fa-bolt"></i> Digital Solutions</span>
+                    <h1>Solusi Digital Terpercaya <br> untuk Bisnis Anda</h1>
+                    <p>Devaicy hadir sebagai mitra teknologi yang membantu mengembangkan bisnis Anda melalui inovasi digital dan kreativitas tanpa batas.</p>
+                    <div style="display: flex; gap: 12px; flex-wrap: wrap; justify-content: center;">
+                        <a href="#contact" class="btn-primary">Hubungi Kami</a>
+                        <a href="#about" class="btn-outline">Pelajari Lebih</a>
+                    </div>
+                    <div class="hero-stats">
+                        <div><span class="stat-number">120+</span><br>Proyek</div>
+                        <div><span class="stat-number">35+</span><br>Klien</div>
+                        <div><span class="stat-number">98%</span><br>Kepuasan</div>
+                    </div>
+                </div>
+                <div class="hero-visual">
+                    <i class="fas fa-laptop-code"></i>
+                    <p style="margin-top: 16px; font-weight: 500; color: #4b5563;">#InnovationForGrowth</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ABOUT US SECTION - CENTERED -->
+    <section id="about">
+        <div class="container">
+            <!-- Layanan -->
+            <h2 class="section-title">Layanan Kami</h2>
+            <p class="section-sub">Kami menyediakan berbagai solusi digital untuk membantu bisnis Anda berkembang</p>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon"><i class="fas fa-globe"></i></div>
+                    <h3>Web Development</h3>
+                    <p>Website profesional, responsif, dan optimal untuk semua perangkat.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon"><i class="fas fa-mobile-alt"></i></div>
+                    <h3>Mobile Apps</h3>
+                    <p>Aplikasi mobile modern untuk Android dan iOS.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon"><i class="fas fa-chart-line"></i></div>
+                    <h3>Digital Marketing</h3>
+                    <p>Strategi pemasaran digital untuk meningkatkan brand awareness.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon"><i class="fas fa-palette"></i></div>
+                    <h3>UI/UX Design</h3>
+                    <p>Desain antarmuka yang menarik dan user-friendly.</p>
+                </div>
+            </div>
+
+            <!-- Produk Perusahaan -->
+            <hr>
+            <h2 class="section-title">Produk Unggulan</h2>
+            <p class="section-sub">Produk inovatif yang telah dikembangkan oleh tim Devaicy</p>
+            <div class="products-grid">
+                <div class="product-card">
+                    <div class="product-img"><i class="fas fa-cloud-upload-alt"></i></div>
+                    <div class="product-info">
+                        <h3>DevaCloud ERP</h3>
+                        <p>Sistem manajemen bisnis terintegrasi.</p>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-img"><i class="fas fa-store"></i></div>
+                    <div class="product-info">
+                        <h3>DevaCommerce</h3>
+                        <p>Platform e-commerce modern dan mudah digunakan.</p>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-img"><i class="fas fa-chalkboard-user"></i></div>
+                    <div class="product-info">
+                        <h3>DevaLearn</h3>
+                        <p>Sistem manajemen pembelajaran online.</p>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-img"><i class="fas fa-chart-simple"></i></div>
+                    <div class="product-info">
+                        <h3>DevaAnalytics</h3>
+                        <p>Analitik data untuk pengambilan keputusan.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tim -->
+            <hr>
+            <h2 class="section-title">Tim Profesional</h2>
+            <p class="section-sub">Orang-orang hebat di balik kesuksesan Devaicy</p>
+            <div class="team-grid">
+                <div class="team-member">
+                    <div class="member-avatar"><i class="fas fa-user-tie"></i></div>
+                    <h4>Ardi Nugraha</h4>
+                    <div class="member-role">CEO & Founder</div>
+                    <p>12 tahun pengalaman di industri teknologi.</p>
+                </div>
+                <div class="team-member">
+                    <div class="member-avatar"><i class="fas fa-laptop-code"></i></div>
+                    <h4>Citra Lestari</h4>
+                    <div class="member-role">Head of Product</div>
+                    <p>Ahli dalam pengembangan produk digital.</p>
+                </div>
+                <div class="team-member">
+                    <div class="member-avatar"><i class="fas fa-paintbrush"></i></div>
+                    <h4>Bayu Saputra</h4>
+                    <div class="member-role">Creative Director</div>
+                    <p>Spesialis desain dan branding.</p>
+                </div>
+                <div class="team-member">
+                    <div class="member-avatar"><i class="fas fa-chart-line"></i></div>
+                    <h4>Dewi Sartika</h4>
+                    <div class="member-role">Digital Strategist</div>
+                    <p>Pakar strategi pemasaran digital.</p>
+                </div>
+            </div>
+
+            <!-- Hook / Motivasi -->
+            <div class="hook-section">
+                <i class="fas fa-quote-right" style="font-size: 2rem; color: #1e3a8a; opacity: 0.5;"></i>
+                <h3 style="font-size: 1.5rem; margin: 16px 0; color: #111827;">Siap Membawa Bisnis Anda ke Level Berikutnya?</h3>
+                <p style="max-width: 600px; margin: 0 auto 20px; color: #6b7280;">Mari berkolaborasi dan wujudkan ide-ide brilian bersama Devaicy.</p>
+                <a href="#contact" class="btn-primary">Mulai Sekarang</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACT US SECTION - CENTERED -->
+    <section id="contact">
+        <div class="container">
+            <h2 class="section-title">Hubungi Kami</h2>
+            <p class="section-sub">Kami siap membantu Anda. Silakan hubungi tim kami.</p>
+            <div class="contact-wrapper">
+                <div class="contact-left">
+                    <h3><i class="fas fa-envelope"></i> Informasi Kontak</h3>
+                    <p style="margin-bottom: 24px;">Tim kami akan merespon dalam waktu 1x24 jam.</p>
+                    <div class="contact-detail">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Jl. Teknologi No. 88, Bandung, Indonesia</span>
+                    </div>
+                    <div class="contact-detail">
+                        <i class="fas fa-phone-alt"></i>
+                        <span>+62 812 3456 7890</span>
+                    </div>
+                    <div class="contact-detail">
+                        <i class="fas fa-envelope"></i>
+                        <span>hello@devaicy.com</span>
+                    </div>
+                </div>
+                <div class="contact-right">
+                    <form class="contact-form" id="demoContactForm">
+                        <input type="text" placeholder="Nama lengkap" id="contactName" required>
+                        <input type="email" placeholder="Alamat email" id="contactEmail" required>
+                        <textarea rows="4" placeholder="Pesan atau pertanyaan Anda..." id="contactMsg"></textarea>
+                        <button type="submit" class="btn-primary">Kirim Pesan</button>
+                        <p style="font-size: 0.7rem; margin-top: 12px; color: #9ca3af; text-align: center;">*Demo simulasi, data tidak disimpan ke database.</p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<!-- FOOTER - CENTERED -->
+<footer>
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-col">
+                <h4>devaicy</h4>
+                <p>Solusi digital untuk pertumbuhan bisnis Anda.</p>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#"><i class="fab fa-github"></i></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Kontak</h4>
+                <p><i class="fas fa-map-pin"></i> Bandung, Indonesia</p>
+                <p><i class="fas fa-phone"></i> +62 812 3456 7890</p>
+                <p><i class="fas fa-envelope"></i> hello@devaicy.com</p>
+            </div>
+            <div class="footer-col">
+                <h4>Jam Kerja</h4>
+                <p>Senin - Jumat : 09.00 - 18.00</p>
+                <p>Sabtu & Minggu : Libur</p>
+            </div>
+        </div>
+        <div class="copyright">
+            &copy; 2025 Devaicy. All rights reserved.
+        </div>
+    </div>
+</footer>
+
+<script>
+    // Mobile menu toggle
+    const menuBtn = document.getElementById('mobileMenuBtn');
+    const navLinksEl = document.getElementById('navLinks');
+    if (menuBtn) {
+        menuBtn.addEventListener('click', () => {
+            navLinksEl.classList.toggle('active');
+        });
+    }
+
+    // Smooth scroll untuk semua link navbar
+    const navLinkItems = document.querySelectorAll('.nav-links a');
+    navLinkItems.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href').substring(1);
+            const targetSection = document.getElementById(targetId);
+            if (targetSection) {
+                targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                if (navLinksEl.classList.contains('active')) {
+                    navLinksEl.classList.remove('active');
+                }
+            }
+        });
+    });
+
+    // Form contact simulasi
+    const contactForm = document.getElementById('demoContactForm');
+    if (contactForm) {
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('contactName').value.trim();
+            const email = document.getElementById('contactEmail').value.trim();
+            const message = document.getElementById('contactMsg').value.trim();
+            if (name === "" || email === "") {
+                alert("Harap isi nama dan email untuk menghubungi tim Devaicy.");
+                return;
+            }
+            alert(`Terima kasih ${name}! Tim Devaicy akan segera menghubungi Anda via ${email}.`);
+            contactForm.reset();
+        });
+    }
+</script>
+</body>
+</html>
