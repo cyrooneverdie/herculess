@@ -110,7 +110,7 @@ use yii\helpers\Html;
 .choices.is-disabled .choices__inner .choices__item,
 .choices.is-disabled .choices__inner .choices__placeholder {
     background-color: #f1f5f9 !important;
-    color: #000000 !important;
+    color: #94a3b8 !important; /* slate-400 placeholder color */
     cursor: not-allowed !important;
     opacity: 1 !important;
 }
@@ -210,7 +210,7 @@ use yii\helpers\Html;
     <div class="flex flex-col gap-1.5">
       <label class="text-xs font-bold text-slate-700 uppercase tracking-wider" for="m-name">Nama Lengkap <span class="text-red-500">*</span></label>
       <input id="m-name" type="text" required placeholder="Sesuai KTP"
-        class="w-full px-4 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-sm text-slate-900 placeholder-slate-400
+        class="w-full !bg-none px-4 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-sm text-slate-900 placeholder-slate-400
                focus:outline-none focus:ring-2 focus:ring-brand-gold/40 focus:border-brand-gold transition"/>
     </div>
 
@@ -229,7 +229,7 @@ use yii\helpers\Html;
     <div class="flex flex-col gap-1.5">
       <label class="text-xs font-bold text-slate-700 uppercase tracking-wider" for="m-email">Email <span class="text-red-500">*</span></label>
       <input id="m-email" type="email" required placeholder="nama@email.com"
-        class="w-full px-4 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-sm text-slate-900 placeholder-slate-400
+        class="w-full !bg-none px-4 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-sm text-slate-900 placeholder-slate-400
                focus:outline-none focus:ring-2 focus:ring-brand-gold/40 focus:border-brand-gold transition"/>
     </div>
 
@@ -237,7 +237,7 @@ use yii\helpers\Html;
     <div class="flex flex-col gap-1.5">
       <label class="text-xs font-bold text-slate-700 uppercase tracking-wider" for="m-city">Kota <span class="text-red-500">*</span></label>
       <select id="m-city" required onchange="updateSidebarBranches()"
-        class="w-full px-4 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-sm text-slate-900 placeholder-slate-400
+        class="w-full !bg-none px-4 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-sm text-slate-900 placeholder-slate-400
                focus:outline-none focus:ring-2 focus:ring-brand-gold/40 focus:border-brand-gold transition appearance-none cursor-pointer">
         <option value="" disabled selected hidden>Pilih Kota</option>
         <option value="Batam">Batam</option>
@@ -249,9 +249,9 @@ use yii\helpers\Html;
     <div class="flex flex-col gap-1.5">
       <label class="text-xs font-bold text-slate-700 uppercase tracking-wider" for="m-branch">Pilih Cabang <span class="text-red-500">*</span></label>
       <select id="m-branch" required disabled
-        class="w-full px-4 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-sm text-slate-900 placeholder-slate-400
+        class="w-full !bg-none px-4 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-sm text-slate-900 placeholder-slate-400
                focus:outline-none focus:ring-2 focus:ring-brand-gold/40 focus:border-brand-gold transition appearance-none cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">
-        <option value="" disabled selected hidden>Pilih kota terlebih dahulu</option>
+        <option value=""></option>
       </select>
       <p class="text-[10px] text-slate-500">Kamu tetap bisa akses semua lokasi klub</p>
     </div>
@@ -260,7 +260,7 @@ use yii\helpers\Html;
     <div class="flex flex-col gap-1.5">
       <label class="text-xs font-bold text-slate-700 uppercase tracking-wider" for="m-goal">Target Fitness <span class="text-red-500">*</span></label>
       <select id="m-goal" required
-        class="w-full px-4 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-sm text-slate-900 placeholder-slate-400
+        class="w-full !bg-none px-4 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-sm text-slate-900 placeholder-slate-400
                focus:outline-none focus:ring-2 focus:ring-brand-gold/40 focus:border-brand-gold transition appearance-none cursor-pointer">
         <option value="">Pilih Target Anda</option>
         <option value="Menurunkan Berat Badan / Fat Loss">Menurunkan Berat Badan / Fat Loss</option>
@@ -1577,7 +1577,9 @@ document.addEventListener('DOMContentLoaded', function() {
         window.sidebarBranchChoice = new Choices('#m-branch', {
             searchEnabled: false,
             itemSelectText: '',
-            shouldSort: false
+            shouldSort: false,
+            placeholder: true,
+            placeholderValue: 'Pilih kota terlebih dahulu'
         });
     }
 });
@@ -1593,20 +1595,19 @@ function updateSidebarBranches() {
     if (city === 'Batam') {
         window.sidebarBranchChoice.enable();
         window.sidebarBranchChoice.setChoices([
-            { value: 'Batam Centre', label: 'Batam Centre', selected: false },
-            { value: 'Batu Aji', label: 'Batu Aji', selected: false },
-            { value: 'Nagoya', label: 'Nagoya', selected: false }
+            { value: 'Batu Ampar', label: 'Batu Ampar', selected: false },
+            { value: 'Batu Besar', label: 'Batu Besar', selected: false },
+            { value: 'MTC', label: 'MTC', selected: false }
         ], 'value', 'label', true);
     } else if (city === 'Bali') {
         window.sidebarBranchChoice.enable();
         window.sidebarBranchChoice.setChoices([
             { value: 'Kuta', label: 'Kuta', selected: false },
-            { value: 'Denpasar', label: 'Denpasar', selected: false },
             { value: 'Canggu', label: 'Canggu', selected: false }
         ], 'value', 'label', true);
     } else {
         window.sidebarBranchChoice.setChoices([
-            { value: '', label: 'Pilih kota terlebih dahulu', disabled: true, selected: true }
+            { value: '', label: '', disabled: true, selected: true }
         ], 'value', 'label', true);
         window.sidebarBranchChoice.disable();
     }

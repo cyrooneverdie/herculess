@@ -220,125 +220,218 @@ $this->title = 'Membership - Hercules Fitness Centre';
                 </div>
 
                 <!-- Tabs -->
-                <div class="relative z-10 flex items-center gap-2 px-8 py-5 border-b border-white/10">
-                    <button onclick="switchTab('membership')" id="tab-membership"
-                        class="gym-tab px-6 py-2.5 rounded-xl text-sm font-bold transition-all text-slate-400 hover:text-white hover:bg-white/10">
-                        Membership
-                    </button>
-                    <button onclick="switchTab('fasilitas')" id="tab-fasilitas"
-                        class="gym-tab px-6 py-2.5 rounded-xl text-sm font-bold transition-all text-slate-400 hover:text-white hover:bg-white/10">
-                        Fasilitas
-                    </button>
-                    <button onclick="switchTab('alat')" id="tab-alat"
-                        class="gym-tab px-6 py-2.5 rounded-xl text-sm font-bold transition-all bg-brand-gold text-slate-900 shadow-lg">
-                        Alat Gym
-                    </button>
+                <div class="relative z-10 flex flex-wrap items-center justify-center gap-2 px-8 py-8 border-b border-white/5">
+                    <div class="relative flex p-1.5 bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 shadow-inner w-[450px] max-w-full">
+                        <div id="tab-slider" class="absolute top-1.5 bottom-1.5 w-[calc(33.333%-4px)] bg-brand-gold rounded-xl transition-transform duration-300 ease-out z-0 shadow-lg" style="left: 6px; transform: translateX(200%);"></div>
+                        <button onclick="switchTab('membership', 0)" id="tab-membership"
+                            class="gym-tab flex-1 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 text-slate-400 hover:text-white hover:bg-white/5 relative z-10">
+                            Membership
+                        </button>
+                        <button onclick="switchTab('fasilitas', 1)" id="tab-fasilitas"
+                            class="gym-tab flex-1 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 text-slate-400 hover:text-white hover:bg-white/5 relative z-10">
+                            Fasilitas
+                        </button>
+                        <button onclick="switchTab('alat', 2)" id="tab-alat"
+                            class="gym-tab flex-1 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 text-slate-900 relative z-10">
+                            Alat Gym
+                        </button>
+                    </div>
                 </div>
 
                 <!-- Tab: Membership -->
-                <div id="panel-membership" class="gym-panel hidden relative z-10 p-8">
-                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                        <div class="bg-white/5 rounded-2xl p-7 hover:bg-white/10 transition border border-white/5 hover:border-brand-gold/30">
-                            <i class="fas fa-building text-brand-gold text-2xl mb-4"></i>
-                            <h4 class="font-bold text-white text-base mb-2">Akses Cabang</h4>
-                            <p class="text-sm text-slate-400 leading-relaxed">Standard: 1 cabang tetap. VIP All-Access: bebas 2 cabang pilihan.</p>
+                <div id="panel-membership" class="gym-panel hidden relative z-10 p-8 md:p-12">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
+                        <div class="group relative bg-white/[0.02] rounded-3xl p-7 hover:bg-white/[0.04] transition-all duration-300 border border-white/5 hover:border-brand-gold/40 hover:-translate-y-1 hover:shadow-[0_15px_40px_-15px_rgba(212,175,55,0.2)] overflow-hidden">
+                            <div class="absolute top-0 right-0 w-32 h-32 bg-brand-gold/5 rounded-full blur-3xl group-hover:bg-brand-gold/20 transition-colors duration-500"></div>
+                            <div class="relative z-10">
+                                <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-brand-gold/20 to-brand-gold/5 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:from-brand-gold group-hover:to-yellow-300 transition-all duration-300 border border-brand-gold/20 group-hover:border-transparent group-hover:shadow-[0_0_20px_rgba(212,175,55,0.4)]">
+                                    <i class="fas fa-building text-brand-gold text-xl group-hover:text-slate-900 transition-colors"></i>
+                                </div>
+                                <h4 class="font-bold text-white text-lg tracking-wide mb-3">Akses Cabang</h4>
+                                <p class="text-sm text-slate-400 leading-relaxed group-hover:text-slate-300 transition-colors">Standard: 1 cabang tetap. VIP All-Access: bebas 2 cabang pilihan.</p>
+                            </div>
                         </div>
-                        <div class="bg-white/5 rounded-2xl p-7 hover:bg-white/10 transition border border-white/5 hover:border-brand-gold/30">
-                            <i class="fas fa-snowflake text-brand-gold text-2xl mb-4"></i>
-                            <h4 class="font-bold text-white text-base mb-2">Membership Freeze</h4>
-                            <p class="text-sm text-slate-400 leading-relaxed">Jeda / cuti membership sementara jika Anda sedang bepergian atau sakit.</p>
+                        <div class="group relative bg-white/[0.02] rounded-3xl p-7 hover:bg-white/[0.04] transition-all duration-300 border border-white/5 hover:border-brand-gold/40 hover:-translate-y-1 hover:shadow-[0_15px_40px_-15px_rgba(212,175,55,0.2)] overflow-hidden">
+                            <div class="absolute top-0 right-0 w-32 h-32 bg-brand-gold/5 rounded-full blur-3xl group-hover:bg-brand-gold/20 transition-colors duration-500"></div>
+                            <div class="relative z-10">
+                                <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-brand-gold/20 to-brand-gold/5 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:from-brand-gold group-hover:to-yellow-300 transition-all duration-300 border border-brand-gold/20 group-hover:border-transparent group-hover:shadow-[0_0_20px_rgba(212,175,55,0.4)]">
+                                    <i class="fas fa-snowflake text-brand-gold text-xl group-hover:text-slate-900 transition-colors"></i>
+                                </div>
+                                <h4 class="font-bold text-white text-lg tracking-wide mb-3">Membership Freeze</h4>
+                                <p class="text-sm text-slate-400 leading-relaxed group-hover:text-slate-300 transition-colors">Jeda / cuti membership sementara jika Anda sedang bepergian atau sakit.</p>
+                            </div>
                         </div>
-                        <div class="bg-white/5 rounded-2xl p-7 hover:bg-white/10 transition border border-white/5 hover:border-brand-gold/30">
-                            <i class="fas fa-user-friends text-brand-gold text-2xl mb-4"></i>
-                            <h4 class="font-bold text-white text-base mb-2">Free Pass Teman</h4>
-                            <p class="text-sm text-slate-400 leading-relaxed">Khusus VIP: ajak 1 teman gratis setiap bulannya ke gym bersama Anda.</p>
+                        <div class="group relative bg-white/[0.02] rounded-3xl p-7 hover:bg-white/[0.04] transition-all duration-300 border border-white/5 hover:border-brand-gold/40 hover:-translate-y-1 hover:shadow-[0_15px_40px_-15px_rgba(212,175,55,0.2)] overflow-hidden">
+                            <div class="absolute top-0 right-0 w-32 h-32 bg-brand-gold/5 rounded-full blur-3xl group-hover:bg-brand-gold/20 transition-colors duration-500"></div>
+                            <div class="relative z-10">
+                                <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-brand-gold/20 to-brand-gold/5 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:from-brand-gold group-hover:to-yellow-300 transition-all duration-300 border border-brand-gold/20 group-hover:border-transparent group-hover:shadow-[0_0_20px_rgba(212,175,55,0.4)]">
+                                    <i class="fas fa-user-friends text-brand-gold text-xl group-hover:text-slate-900 transition-colors"></i>
+                                </div>
+                                <h4 class="font-bold text-white text-lg tracking-wide mb-3">Free Pass Teman</h4>
+                                <p class="text-sm text-slate-400 leading-relaxed group-hover:text-slate-300 transition-colors">Khusus VIP: ajak 1 teman gratis setiap bulannya ke gym bersama Anda.</p>
+                            </div>
                         </div>
-                        <div class="bg-white/5 rounded-2xl p-7 hover:bg-white/10 transition border border-white/5 hover:border-brand-gold/30">
-                            <i class="fas fa-calendar-check text-brand-gold text-2xl mb-4"></i>
-                            <h4 class="font-bold text-white text-base mb-2">Prioritas Reservasi Kelas</h4>
-                            <p class="text-sm text-slate-400 leading-relaxed">Khusus VIP: slot kelas grup diprioritaskan sebelum member Standard.</p>
+                        <div class="group relative bg-white/[0.02] rounded-3xl p-7 hover:bg-white/[0.04] transition-all duration-300 border border-white/5 hover:border-brand-gold/40 hover:-translate-y-1 hover:shadow-[0_15px_40px_-15px_rgba(212,175,55,0.2)] overflow-hidden">
+                            <div class="absolute top-0 right-0 w-32 h-32 bg-brand-gold/5 rounded-full blur-3xl group-hover:bg-brand-gold/20 transition-colors duration-500"></div>
+                            <div class="relative z-10">
+                                <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-brand-gold/20 to-brand-gold/5 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:from-brand-gold group-hover:to-yellow-300 transition-all duration-300 border border-brand-gold/20 group-hover:border-transparent group-hover:shadow-[0_0_20px_rgba(212,175,55,0.4)]">
+                                    <i class="fas fa-calendar-check text-brand-gold text-xl group-hover:text-slate-900 transition-colors"></i>
+                                </div>
+                                <h4 class="font-bold text-white text-lg tracking-wide mb-3">Prioritas Reservasi Kelas</h4>
+                                <p class="text-sm text-slate-400 leading-relaxed group-hover:text-slate-300 transition-colors">Khusus VIP: slot kelas grup diprioritaskan sebelum member Standard.</p>
+                            </div>
                         </div>
-                        <div class="bg-white/5 rounded-2xl p-7 hover:bg-white/10 transition border border-white/5 hover:border-brand-gold/30">
-                            <i class="fas fa-hand-paper text-brand-gold text-2xl mb-4"></i>
-                            <h4 class="font-bold text-white text-base mb-2">Handuk Setiap Latihan</h4>
-                            <p class="text-sm text-slate-400 leading-relaxed">Khusus VIP: handuk bersih disediakan setiap kali Anda datang berlatih.</p>
+                        <div class="group relative bg-white/[0.02] rounded-3xl p-7 hover:bg-white/[0.04] transition-all duration-300 border border-white/5 hover:border-brand-gold/40 hover:-translate-y-1 hover:shadow-[0_15px_40px_-15px_rgba(212,175,55,0.2)] overflow-hidden">
+                            <div class="absolute top-0 right-0 w-32 h-32 bg-brand-gold/5 rounded-full blur-3xl group-hover:bg-brand-gold/20 transition-colors duration-500"></div>
+                            <div class="relative z-10">
+                                <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-brand-gold/20 to-brand-gold/5 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:from-brand-gold group-hover:to-yellow-300 transition-all duration-300 border border-brand-gold/20 group-hover:border-transparent group-hover:shadow-[0_0_20px_rgba(212,175,55,0.4)]">
+                                    <i class="fas fa-hand-paper text-brand-gold text-xl group-hover:text-slate-900 transition-colors"></i>
+                                </div>
+                                <h4 class="font-bold text-white text-lg tracking-wide mb-3">Handuk Setiap Latihan</h4>
+                                <p class="text-sm text-slate-400 leading-relaxed group-hover:text-slate-300 transition-colors">Khusus VIP: handuk bersih disediakan setiap kali Anda datang berlatih.</p>
+                            </div>
                         </div>
-                        <div class="bg-white/5 rounded-2xl p-7 hover:bg-white/10 transition border border-white/5 hover:border-brand-gold/30">
-                            <i class="fas fa-dumbbell text-brand-gold text-2xl mb-4"></i>
-                            <h4 class="font-bold text-white text-base mb-2">Sesi Personal Trainer</h4>
-                            <p class="text-sm text-slate-400 leading-relaxed">Khusus VIP: 4x sesi PT tersertifikasi + tes komposisi tubuh InBody.</p>
+                        <div class="group relative bg-white/[0.02] rounded-3xl p-7 hover:bg-white/[0.04] transition-all duration-300 border border-white/5 hover:border-brand-gold/40 hover:-translate-y-1 hover:shadow-[0_15px_40px_-15px_rgba(212,175,55,0.2)] overflow-hidden">
+                            <div class="absolute top-0 right-0 w-32 h-32 bg-brand-gold/5 rounded-full blur-3xl group-hover:bg-brand-gold/20 transition-colors duration-500"></div>
+                            <div class="relative z-10">
+                                <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-brand-gold/20 to-brand-gold/5 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:from-brand-gold group-hover:to-yellow-300 transition-all duration-300 border border-brand-gold/20 group-hover:border-transparent group-hover:shadow-[0_0_20px_rgba(212,175,55,0.4)]">
+                                    <i class="fas fa-dumbbell text-brand-gold text-xl group-hover:text-slate-900 transition-colors"></i>
+                                </div>
+                                <h4 class="font-bold text-white text-lg tracking-wide mb-3">Sesi Personal Trainer</h4>
+                                <p class="text-sm text-slate-400 leading-relaxed group-hover:text-slate-300 transition-colors">Khusus VIP: 4x sesi PT tersertifikasi + tes komposisi tubuh InBody.</p>
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Tab: Fasilitas -->
-                <div id="panel-fasilitas" class="gym-panel hidden relative z-10 p-8">
-                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                        <div class="bg-white/5 rounded-2xl p-7 hover:bg-white/10 transition border border-white/5 hover:border-brand-gold/30">
-                            <i class="fas fa-lock text-brand-gold text-2xl mb-4"></i>
-                            <h4 class="font-bold text-white text-base mb-2">Loker</h4>
-                            <p class="text-sm text-slate-400 leading-relaxed">Simpan barang bawaan Anda dengan lebih aman selama sesi latihan.</p>
+                <div id="panel-fasilitas" class="gym-panel hidden relative z-10 p-8 md:p-12">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
+                        <div class="group relative bg-white/[0.02] rounded-3xl p-7 hover:bg-white/[0.04] transition-all duration-300 border border-white/5 hover:border-brand-gold/40 hover:-translate-y-1 hover:shadow-[0_15px_40px_-15px_rgba(212,175,55,0.2)] overflow-hidden">
+                            <div class="absolute top-0 right-0 w-32 h-32 bg-brand-gold/5 rounded-full blur-3xl group-hover:bg-brand-gold/20 transition-colors duration-500"></div>
+                            <div class="relative z-10">
+                                <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-brand-gold/20 to-brand-gold/5 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:from-brand-gold group-hover:to-yellow-300 transition-all duration-300 border border-brand-gold/20 group-hover:border-transparent group-hover:shadow-[0_0_20px_rgba(212,175,55,0.4)]">
+                                    <i class="fas fa-lock text-brand-gold text-xl group-hover:text-slate-900 transition-colors"></i>
+                                </div>
+                                <h4 class="font-bold text-white text-lg tracking-wide mb-3">Loker</h4>
+                                <p class="text-sm text-slate-400 leading-relaxed group-hover:text-slate-300 transition-colors">Simpan barang bawaan Anda dengan lebih aman selama sesi latihan.</p>
+                            </div>
                         </div>
-                        <div class="bg-white/5 rounded-2xl p-7 hover:bg-white/10 transition border border-white/5 hover:border-brand-gold/30">
-                            <i class="fas fa-shower text-brand-gold text-2xl mb-4"></i>
-                            <h4 class="font-bold text-white text-base mb-2">Toilet & Shower Air Hangat</h4>
-                            <p class="text-sm text-slate-400 leading-relaxed">Nikmati shower air panas dan fasilitas hair dryer setelah nge-gym.</p>
+                        <div class="group relative bg-white/[0.02] rounded-3xl p-7 hover:bg-white/[0.04] transition-all duration-300 border border-white/5 hover:border-brand-gold/40 hover:-translate-y-1 hover:shadow-[0_15px_40px_-15px_rgba(212,175,55,0.2)] overflow-hidden">
+                            <div class="absolute top-0 right-0 w-32 h-32 bg-brand-gold/5 rounded-full blur-3xl group-hover:bg-brand-gold/20 transition-colors duration-500"></div>
+                            <div class="relative z-10">
+                                <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-brand-gold/20 to-brand-gold/5 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:from-brand-gold group-hover:to-yellow-300 transition-all duration-300 border border-brand-gold/20 group-hover:border-transparent group-hover:shadow-[0_0_20px_rgba(212,175,55,0.4)]">
+                                    <i class="fas fa-shower text-brand-gold text-xl group-hover:text-slate-900 transition-colors"></i>
+                                </div>
+                                <h4 class="font-bold text-white text-lg tracking-wide mb-3">Toilet & Shower Air Hangat</h4>
+                                <p class="text-sm text-slate-400 leading-relaxed group-hover:text-slate-300 transition-colors">Nikmati shower air panas dan fasilitas hair dryer setelah nge-gym.</p>
+                            </div>
                         </div>
-                        <div class="bg-white/5 rounded-2xl p-7 hover:bg-white/10 transition border border-white/5 hover:border-brand-gold/30">
-                            <i class="fas fa-wifi text-brand-gold text-2xl mb-4"></i>
-                            <h4 class="font-bold text-white text-base mb-2">Free Wi-Fi & Charging</h4>
-                            <p class="text-sm text-slate-400 leading-relaxed">Koneksi internet cepat dan area pengisian daya tersebar di seluruh area gym.</p>
+                        <div class="group relative bg-white/[0.02] rounded-3xl p-7 hover:bg-white/[0.04] transition-all duration-300 border border-white/5 hover:border-brand-gold/40 hover:-translate-y-1 hover:shadow-[0_15px_40px_-15px_rgba(212,175,55,0.2)] overflow-hidden">
+                            <div class="absolute top-0 right-0 w-32 h-32 bg-brand-gold/5 rounded-full blur-3xl group-hover:bg-brand-gold/20 transition-colors duration-500"></div>
+                            <div class="relative z-10">
+                                <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-brand-gold/20 to-brand-gold/5 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:from-brand-gold group-hover:to-yellow-300 transition-all duration-300 border border-brand-gold/20 group-hover:border-transparent group-hover:shadow-[0_0_20px_rgba(212,175,55,0.4)]">
+                                    <i class="fas fa-wifi text-brand-gold text-xl group-hover:text-slate-900 transition-colors"></i>
+                                </div>
+                                <h4 class="font-bold text-white text-lg tracking-wide mb-3">Free Wi-Fi & Charging</h4>
+                                <p class="text-sm text-slate-400 leading-relaxed group-hover:text-slate-300 transition-colors">Koneksi internet cepat dan area pengisian daya tersebar di seluruh area gym.</p>
+                            </div>
                         </div>
-                        <div class="bg-white/5 rounded-2xl p-7 hover:bg-white/10 transition border border-white/5 hover:border-brand-gold/30">
-                            <i class="fas fa-tint text-brand-gold text-2xl mb-4"></i>
-                            <h4 class="font-bold text-white text-base mb-2">Dispenser Air Minum</h4>
-                            <p class="text-sm text-slate-400 leading-relaxed">Isi ulang botol minuman gratis kapan saja selama jam operasional.</p>
+                        <div class="group relative bg-white/[0.02] rounded-3xl p-7 hover:bg-white/[0.04] transition-all duration-300 border border-white/5 hover:border-brand-gold/40 hover:-translate-y-1 hover:shadow-[0_15px_40px_-15px_rgba(212,175,55,0.2)] overflow-hidden">
+                            <div class="absolute top-0 right-0 w-32 h-32 bg-brand-gold/5 rounded-full blur-3xl group-hover:bg-brand-gold/20 transition-colors duration-500"></div>
+                            <div class="relative z-10">
+                                <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-brand-gold/20 to-brand-gold/5 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:from-brand-gold group-hover:to-yellow-300 transition-all duration-300 border border-brand-gold/20 group-hover:border-transparent group-hover:shadow-[0_0_20px_rgba(212,175,55,0.4)]">
+                                    <i class="fas fa-tint text-brand-gold text-xl group-hover:text-slate-900 transition-colors"></i>
+                                </div>
+                                <h4 class="font-bold text-white text-lg tracking-wide mb-3">Dispenser Air Minum</h4>
+                                <p class="text-sm text-slate-400 leading-relaxed group-hover:text-slate-300 transition-colors">Isi ulang botol minuman gratis kapan saja selama jam operasional.</p>
+                            </div>
                         </div>
-                        <div class="bg-white/5 rounded-2xl p-7 hover:bg-white/10 transition border border-white/5 hover:border-brand-gold/30">
-                            <i class="fas fa-couch text-brand-gold text-2xl mb-4"></i>
-                            <h4 class="font-bold text-white text-base mb-2">Lounge & Area Santai</h4>
-                            <p class="text-sm text-slate-400 leading-relaxed">Tempat nyaman untuk beristirahat sebelum atau setelah berlatih.</p>
+                        <div class="group relative bg-white/[0.02] rounded-3xl p-7 hover:bg-white/[0.04] transition-all duration-300 border border-white/5 hover:border-brand-gold/40 hover:-translate-y-1 hover:shadow-[0_15px_40px_-15px_rgba(212,175,55,0.2)] overflow-hidden">
+                            <div class="absolute top-0 right-0 w-32 h-32 bg-brand-gold/5 rounded-full blur-3xl group-hover:bg-brand-gold/20 transition-colors duration-500"></div>
+                            <div class="relative z-10">
+                                <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-brand-gold/20 to-brand-gold/5 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:from-brand-gold group-hover:to-yellow-300 transition-all duration-300 border border-brand-gold/20 group-hover:border-transparent group-hover:shadow-[0_0_20px_rgba(212,175,55,0.4)]">
+                                    <i class="fas fa-couch text-brand-gold text-xl group-hover:text-slate-900 transition-colors"></i>
+                                </div>
+                                <h4 class="font-bold text-white text-lg tracking-wide mb-3">Lounge & Area Santai</h4>
+                                <p class="text-sm text-slate-400 leading-relaxed group-hover:text-slate-300 transition-colors">Tempat nyaman untuk beristirahat sebelum atau setelah berlatih.</p>
+                            </div>
                         </div>
-                        <div class="bg-white/5 rounded-2xl p-7 hover:bg-white/10 transition border border-white/5 hover:border-brand-gold/30">
-                            <i class="fas fa-parking text-brand-gold text-2xl mb-4"></i>
-                            <h4 class="font-bold text-white text-base mb-2">Area Parkir Luas</h4>
-                            <p class="text-sm text-slate-400 leading-relaxed">Parkir motor dan mobil yang luas dan aman di area gym.</p>
+                        <div class="group relative bg-white/[0.02] rounded-3xl p-7 hover:bg-white/[0.04] transition-all duration-300 border border-white/5 hover:border-brand-gold/40 hover:-translate-y-1 hover:shadow-[0_15px_40px_-15px_rgba(212,175,55,0.2)] overflow-hidden">
+                            <div class="absolute top-0 right-0 w-32 h-32 bg-brand-gold/5 rounded-full blur-3xl group-hover:bg-brand-gold/20 transition-colors duration-500"></div>
+                            <div class="relative z-10">
+                                <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-brand-gold/20 to-brand-gold/5 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:from-brand-gold group-hover:to-yellow-300 transition-all duration-300 border border-brand-gold/20 group-hover:border-transparent group-hover:shadow-[0_0_20px_rgba(212,175,55,0.4)]">
+                                    <i class="fas fa-parking text-brand-gold text-xl group-hover:text-slate-900 transition-colors"></i>
+                                </div>
+                                <h4 class="font-bold text-white text-lg tracking-wide mb-3">Area Parkir Luas</h4>
+                                <p class="text-sm text-slate-400 leading-relaxed group-hover:text-slate-300 transition-colors">Parkir motor dan mobil yang luas dan aman di area gym.</p>
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Tab: Alat Gym (default shown) -->
-                <div id="panel-alat" class="gym-panel relative z-10 p-8">
-                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                        <div class="bg-white/5 rounded-2xl p-7 hover:bg-white/10 transition border border-white/5 hover:border-brand-gold/30">
-                            <i class="fas fa-cogs text-brand-gold text-2xl mb-4"></i>
-                            <h4 class="font-bold text-white text-base mb-2">Machine</h4>
-                            <p class="text-sm text-slate-400 leading-relaxed">Smith Machine, Leg Press, Leg Extension, Leg Curl, Abductor, Adductor, Pec Fly, Pec Deck, Chest Press, Power Rack, Cable Cross, Pulldown, Row, Hang Bar, Dip Chin, Bicep Curl, Lateral Raise, Torso Rotation</p>
+                <div id="panel-alat" class="gym-panel relative z-10 p-8 md:p-12">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
+                        <div class="group relative bg-white/[0.02] rounded-3xl p-7 hover:bg-white/[0.04] transition-all duration-300 border border-white/5 hover:border-brand-gold/40 hover:-translate-y-1 hover:shadow-[0_15px_40px_-15px_rgba(212,175,55,0.2)] overflow-hidden">
+                            <div class="absolute top-0 right-0 w-32 h-32 bg-brand-gold/5 rounded-full blur-3xl group-hover:bg-brand-gold/20 transition-colors duration-500"></div>
+                            <div class="relative z-10">
+                                <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-brand-gold/20 to-brand-gold/5 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:from-brand-gold group-hover:to-yellow-300 transition-all duration-300 border border-brand-gold/20 group-hover:border-transparent group-hover:shadow-[0_0_20px_rgba(212,175,55,0.4)]">
+                                    <i class="fas fa-cogs text-brand-gold text-xl group-hover:text-slate-900 transition-colors"></i>
+                                </div>
+                                <h4 class="font-bold text-white text-lg tracking-wide mb-3">Machine</h4>
+                                <p class="text-sm text-slate-400 leading-relaxed group-hover:text-slate-300 transition-colors">Smith Machine, Leg Press, Leg Extension, Leg Curl, Abductor, Adductor, Pec Fly, Pec Deck, Chest Press, Power Rack, Cable Cross, Pulldown, Row, Hang Bar, Dip Chin, Bicep Curl, Lateral Raise, Torso Rotation</p>
+                            </div>
                         </div>
-                        <div class="bg-white/5 rounded-2xl p-7 hover:bg-white/10 transition border border-white/5 hover:border-brand-gold/30">
-                            <i class="fas fa-weight-hanging text-brand-gold text-2xl mb-4"></i>
-                            <h4 class="font-bold text-white text-base mb-2">Free Weight</h4>
-                            <p class="text-sm text-slate-400 leading-relaxed">Dumbbell, Barbell, Kettlebell, Plates</p>
+                        <div class="group relative bg-white/[0.02] rounded-3xl p-7 hover:bg-white/[0.04] transition-all duration-300 border border-white/5 hover:border-brand-gold/40 hover:-translate-y-1 hover:shadow-[0_15px_40px_-15px_rgba(212,175,55,0.2)] overflow-hidden">
+                            <div class="absolute top-0 right-0 w-32 h-32 bg-brand-gold/5 rounded-full blur-3xl group-hover:bg-brand-gold/20 transition-colors duration-500"></div>
+                            <div class="relative z-10">
+                                <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-brand-gold/20 to-brand-gold/5 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:from-brand-gold group-hover:to-yellow-300 transition-all duration-300 border border-brand-gold/20 group-hover:border-transparent group-hover:shadow-[0_0_20px_rgba(212,175,55,0.4)]">
+                                    <i class="fas fa-weight-hanging text-brand-gold text-xl group-hover:text-slate-900 transition-colors"></i>
+                                </div>
+                                <h4 class="font-bold text-white text-lg tracking-wide mb-3">Free Weight</h4>
+                                <p class="text-sm text-slate-400 leading-relaxed group-hover:text-slate-300 transition-colors">Dumbbell, Barbell, Kettlebell, Plates</p>
+                            </div>
                         </div>
-                        <div class="bg-white/5 rounded-2xl p-7 hover:bg-white/10 transition border border-white/5 hover:border-brand-gold/30">
-                            <i class="fas fa-bicycle text-brand-gold text-2xl mb-4"></i>
-                            <h4 class="font-bold text-white text-base mb-2">Cardio</h4>
-                            <p class="text-sm text-slate-400 leading-relaxed">Treadmill, Spinning Bike</p>
+                        <div class="group relative bg-white/[0.02] rounded-3xl p-7 hover:bg-white/[0.04] transition-all duration-300 border border-white/5 hover:border-brand-gold/40 hover:-translate-y-1 hover:shadow-[0_15px_40px_-15px_rgba(212,175,55,0.2)] overflow-hidden">
+                            <div class="absolute top-0 right-0 w-32 h-32 bg-brand-gold/5 rounded-full blur-3xl group-hover:bg-brand-gold/20 transition-colors duration-500"></div>
+                            <div class="relative z-10">
+                                <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-brand-gold/20 to-brand-gold/5 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:from-brand-gold group-hover:to-yellow-300 transition-all duration-300 border border-brand-gold/20 group-hover:border-transparent group-hover:shadow-[0_0_20px_rgba(212,175,55,0.4)]">
+                                    <i class="fas fa-bicycle text-brand-gold text-xl group-hover:text-slate-900 transition-colors"></i>
+                                </div>
+                                <h4 class="font-bold text-white text-lg tracking-wide mb-3">Cardio</h4>
+                                <p class="text-sm text-slate-400 leading-relaxed group-hover:text-slate-300 transition-colors">Treadmill, Spinning Bike</p>
+                            </div>
                         </div>
-                        <div class="bg-white/5 rounded-2xl p-7 hover:bg-white/10 transition border border-white/5 hover:border-brand-gold/30">
-                            <i class="fas fa-grip-lines text-brand-gold text-2xl mb-4"></i>
-                            <h4 class="font-bold text-white text-base mb-2">Lifting Bar</h4>
-                            <p class="text-sm text-slate-400 leading-relaxed">Olympic Bar, EZ Curl Bar, Hex Bar</p>
+                        <div class="group relative bg-white/[0.02] rounded-3xl p-7 hover:bg-white/[0.04] transition-all duration-300 border border-white/5 hover:border-brand-gold/40 hover:-translate-y-1 hover:shadow-[0_15px_40px_-15px_rgba(212,175,55,0.2)] overflow-hidden">
+                            <div class="absolute top-0 right-0 w-32 h-32 bg-brand-gold/5 rounded-full blur-3xl group-hover:bg-brand-gold/20 transition-colors duration-500"></div>
+                            <div class="relative z-10">
+                                <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-brand-gold/20 to-brand-gold/5 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:from-brand-gold group-hover:to-yellow-300 transition-all duration-300 border border-brand-gold/20 group-hover:border-transparent group-hover:shadow-[0_0_20px_rgba(212,175,55,0.4)]">
+                                    <i class="fas fa-grip-lines text-brand-gold text-xl group-hover:text-slate-900 transition-colors"></i>
+                                </div>
+                                <h4 class="font-bold text-white text-lg tracking-wide mb-3">Lifting Bar</h4>
+                                <p class="text-sm text-slate-400 leading-relaxed group-hover:text-slate-300 transition-colors">Olympic Bar, EZ Curl Bar, Hex Bar</p>
+                            </div>
                         </div>
-                        <div class="bg-white/5 rounded-2xl p-7 hover:bg-white/10 transition border border-white/5 hover:border-brand-gold/30">
-                            <i class="fas fa-layer-group text-brand-gold text-2xl mb-4"></i>
-                            <h4 class="font-bold text-white text-base mb-2">Mattress</h4>
-                            <p class="text-sm text-slate-400 leading-relaxed">Yoga mat anti-slip</p>
+                        <div class="group relative bg-white/[0.02] rounded-3xl p-7 hover:bg-white/[0.04] transition-all duration-300 border border-white/5 hover:border-brand-gold/40 hover:-translate-y-1 hover:shadow-[0_15px_40px_-15px_rgba(212,175,55,0.2)] overflow-hidden">
+                            <div class="absolute top-0 right-0 w-32 h-32 bg-brand-gold/5 rounded-full blur-3xl group-hover:bg-brand-gold/20 transition-colors duration-500"></div>
+                            <div class="relative z-10">
+                                <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-brand-gold/20 to-brand-gold/5 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:from-brand-gold group-hover:to-yellow-300 transition-all duration-300 border border-brand-gold/20 group-hover:border-transparent group-hover:shadow-[0_0_20px_rgba(212,175,55,0.4)]">
+                                    <i class="fas fa-layer-group text-brand-gold text-xl group-hover:text-slate-900 transition-colors"></i>
+                                </div>
+                                <h4 class="font-bold text-white text-lg tracking-wide mb-3">Mattress</h4>
+                                <p class="text-sm text-slate-400 leading-relaxed group-hover:text-slate-300 transition-colors">Yoga mat anti-slip</p>
+                            </div>
                         </div>
-                        <div class="bg-white/5 rounded-2xl p-7 hover:bg-white/10 transition border border-white/5 hover:border-brand-gold/30">
-                            <i class="fas fa-ellipsis-h text-brand-gold text-2xl mb-4"></i>
-                            <h4 class="font-bold text-white text-base mb-2">Lain-lain</h4>
-                            <p class="text-sm text-slate-400 leading-relaxed">Bosu Ball, Medicine Ball, Slam Ball, Stability Ball, TRX, ViPR, Battle Rope, Aerobic Step, Resistance Band, Resistance Tube, Equalizer dan lainnya</p>
+                        <div class="group relative bg-white/[0.02] rounded-3xl p-7 hover:bg-white/[0.04] transition-all duration-300 border border-white/5 hover:border-brand-gold/40 hover:-translate-y-1 hover:shadow-[0_15px_40px_-15px_rgba(212,175,55,0.2)] overflow-hidden">
+                            <div class="absolute top-0 right-0 w-32 h-32 bg-brand-gold/5 rounded-full blur-3xl group-hover:bg-brand-gold/20 transition-colors duration-500"></div>
+                            <div class="relative z-10">
+                                <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-brand-gold/20 to-brand-gold/5 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:from-brand-gold group-hover:to-yellow-300 transition-all duration-300 border border-brand-gold/20 group-hover:border-transparent group-hover:shadow-[0_0_20px_rgba(212,175,55,0.4)]">
+                                    <i class="fas fa-ellipsis-h text-brand-gold text-xl group-hover:text-slate-900 transition-colors"></i>
+                                </div>
+                                <h4 class="font-bold text-white text-lg tracking-wide mb-3">Lain-lain</h4>
+                                <p class="text-sm text-slate-400 leading-relaxed group-hover:text-slate-300 transition-colors">Bosu Ball, Medicine Ball, Slam Ball, Stability Ball, TRX, ViPR, Battle Rope, Aerobic Step, Resistance Band, Resistance Tube, Equalizer dan lainnya</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -351,16 +444,25 @@ $this->title = 'Membership - Hercules Fitness Centre';
         </div>
 
         <script>
-            function switchTab(tab) {
+            function switchTab(tab, index) {
                 document.querySelectorAll('.gym-panel').forEach(p => p.classList.add('hidden'));
+                
+                // Reset all tabs
                 document.querySelectorAll('.gym-tab').forEach(t => {
-                    t.classList.remove('bg-brand-gold', 'text-slate-900');
-                    t.classList.add('text-slate-400');
+                    t.classList.add('text-slate-400', 'hover:bg-white/5', 'hover:text-white');
+                    t.classList.remove('text-slate-900');
                 });
+                
+                // Show selected panel
                 document.getElementById('panel-' + tab).classList.remove('hidden');
+                
+                // Highlight active tab
                 const activeTab = document.getElementById('tab-' + tab);
-                activeTab.classList.add('bg-brand-gold', 'text-slate-900');
-                activeTab.classList.remove('text-slate-400');
+                activeTab.classList.remove('text-slate-400', 'hover:bg-white/5', 'hover:text-white');
+                activeTab.classList.add('text-slate-900');
+                
+                // Move slider
+                document.getElementById('tab-slider').style.transform = `translateX(${index * 100}%)`;
             }
         </script>
 

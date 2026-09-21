@@ -39,7 +39,7 @@ $this->title = 'Pendaftaran Membership - Hercules Fitness Centre';
           <div>
             <label for="full_name" class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">Nama Lengkap <span class="text-red-500">*</span></label>
             <input type="text" id="full_name" name="full_name" placeholder="Sesuai KTP" required
-                   class="w-full bg-slate-50 border border-slate-300 rounded-lg px-4 py-3 text-black placeholder-slate-400 text-sm focus:outline-none focus:border-brand-gold focus:ring-1 focus:ring-brand-gold transition-colors">
+                   class="w-full !bg-none bg-slate-50 border border-slate-300 rounded-lg px-4 py-3 text-black placeholder-slate-400 text-sm focus:outline-none focus:border-brand-gold focus:ring-1 focus:ring-brand-gold transition-colors">
           </div>
 
           <!-- WhatsApp -->
@@ -57,7 +57,7 @@ $this->title = 'Pendaftaran Membership - Hercules Fitness Centre';
           <div>
             <label for="email" class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">Email <span class="text-red-500">*</span></label>
             <input type="email" id="email" name="email" placeholder="nama@email.com" required
-                   class="w-full bg-slate-50 border border-slate-300 rounded-lg px-4 py-3 text-black placeholder-slate-400 text-sm focus:outline-none focus:border-brand-gold focus:ring-1 focus:ring-brand-gold transition-colors">
+                   class="w-full !bg-none bg-slate-50 border border-slate-300 rounded-lg px-4 py-3 text-black placeholder-slate-400 text-sm focus:outline-none focus:border-brand-gold focus:ring-1 focus:ring-brand-gold transition-colors">
           </div>
 
           <!-- Kota -->
@@ -65,7 +65,7 @@ $this->title = 'Pendaftaran Membership - Hercules Fitness Centre';
             <label for="selected_city" class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">Kota <span class="text-red-500">*</span></label>
             <div class="relative">
               <select id="selected_city" name="selected_city" required onchange="updateBranches()"
-                      class="w-full bg-slate-50 border border-slate-300 rounded-lg px-4 py-3 text-black placeholder-slate-400 text-sm focus:outline-none focus:border-brand-gold focus:ring-1 focus:ring-brand-gold transition-colors appearance-none">
+                      class="w-full !bg-none bg-slate-50 border border-slate-300 rounded-lg px-4 py-3 text-black placeholder-slate-400 text-sm focus:outline-none focus:border-brand-gold focus:ring-1 focus:ring-brand-gold transition-colors appearance-none">
                 <option value="" disabled selected hidden>Pilih Kota</option>
                 <option value="Batam">Batam</option>
                 <option value="Bali">Bali</option>
@@ -79,8 +79,8 @@ $this->title = 'Pendaftaran Membership - Hercules Fitness Centre';
             <label for="selected_branch" class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">Pilih Cabang<span class="text-red-500">*</span></label>
             <div class="relative">
               <select id="selected_branch" name="selected_branch" required disabled
-                      class="w-full bg-slate-50 border border-slate-300 rounded-lg px-4 py-3 text-black placeholder-slate-400 text-sm focus:outline-none focus:border-brand-gold focus:ring-1 focus:ring-brand-gold transition-colors appearance-none disabled:opacity-50 disabled:cursor-not-allowed">
-                <option value="" disabled selected hidden>Pilih kota terlebih dahulu</option>
+                      class="w-full !bg-none bg-slate-50 border border-slate-300 rounded-lg px-4 py-3 text-black placeholder-slate-400 text-sm focus:outline-none focus:border-brand-gold focus:ring-1 focus:ring-brand-gold transition-colors appearance-none disabled:opacity-50 disabled:cursor-not-allowed">
+                <option value=""></option>
               </select>
             </div>
             <p class="text-xs text-slate-500 mt-2">Kamu tetap bisa akses semua lokasi klub</p>
@@ -92,7 +92,7 @@ $this->title = 'Pendaftaran Membership - Hercules Fitness Centre';
             <label for="fitness_goal" class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">Target Fitness <span class="text-red-500">*</span></label>
             <div class="relative">
               <select id="fitness_goal" name="fitness_goal" required
-                      class="w-full bg-slate-50 border border-slate-300 rounded-lg px-4 py-3 text-black placeholder-slate-400 text-sm focus:outline-none focus:border-brand-gold focus:ring-1 focus:ring-brand-gold transition-colors appearance-none">
+                      class="w-full !bg-none bg-slate-50 border border-slate-300 rounded-lg px-4 py-3 text-black placeholder-slate-400 text-sm focus:outline-none focus:border-brand-gold focus:ring-1 focus:ring-brand-gold transition-colors appearance-none">
                 <option value="">Pilih Target Anda</option>
                 <option value="Menurunkan Berat Badan / Fat Loss">Menurunkan Berat Badan / Fat Loss</option>
                 <option value="Membentuk Otot & Body Building">Membentuk Otot & Body Building</option>
@@ -183,12 +183,12 @@ function updateBranches() {
     });
     
     // Add placeholder
-    options.unshift({ value: '', label: 'Pilih Cabang', disabled: true, selected: true });
+    options.unshift({ value: '', label: '', disabled: true, selected: true });
     
     window.branchChoice.setChoices(options, 'value', 'label', true);
     window.branchChoice.enable();
   } else {
-    window.branchChoice.setChoices([{ value: '', label: 'Pilih kota terlebih dahulu', disabled: true, selected: true }], 'value', 'label', true);
+    window.branchChoice.setChoices([{ value: '', label: '', disabled: true, selected: true }], 'value', 'label', true);
     window.branchChoice.disable();
   }
 }
@@ -261,7 +261,9 @@ document.addEventListener('DOMContentLoaded', function() {
     window.branchChoice = new Choices('#selected_branch', {
         searchEnabled: false,
         itemSelectText: '',
-        shouldSort: false
+        shouldSort: false,
+        placeholder: true,
+        placeholderValue: 'Pilih kota terlebih dahulu'
     });
 });
 </script>
