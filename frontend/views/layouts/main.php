@@ -731,7 +731,7 @@ use yii\helpers\Html;
       
 
 <!-- BEGIN: Footer -->
-<footer class="bg-white border-t border-slate-200 pt-16 pb-12" data-purpose="page-footer">
+<footer class="bg-white border-t border-slate-200 pt-16 pb-0 relative overflow-hidden" data-purpose="page-footer">
 <div class="max-w-7xl mx-auto px-6">
 <!-- Footer Newsletter Compact Bar -->
 <div class="pb-16 mb-16 border-b border-slate-100 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8">
@@ -817,13 +817,19 @@ use yii\helpers\Html;
 </div>
 </div>
 <!-- Copyright Bar -->
-<div class="pt-8 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-400 gap-4">
+<div class="pt-8 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-400 gap-4 mb-4 sm:mb-6">
 <p>© 2026 Hercules Fitness. Batam & Bali. Hak Cipta Dilindungi.</p>
 <div class="flex items-center gap-6">
 <a class="hover:text-slate-600 transition" href="#">Kebijakan Privasi</a>
 <a class="hover:text-slate-600 transition" href="#">Syarat & Ketentuan</a>
 </div>
 </div>
+
+<!-- Watermark Brand Text at Bottom of Footer (Scaled down additional ~10%) -->
+<div class="w-full flex justify-center items-end pointer-events-none select-none -mb-6 sm:-mb-9 md:-mb-12 lg:-mb-15 mt-6 sm:mt-10 pt-4 overflow-visible">
+  <span class="font-logo-main text-[13vw] sm:text-[14.5vw] lg:text-[16vw] leading-none text-slate-200/85 tracking-wider uppercase text-center block whitespace-nowrap">
+    HERCULES
+  </span>
 </div>
 </footer>
 <!-- END: Footer -->
