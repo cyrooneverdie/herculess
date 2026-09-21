@@ -43,6 +43,11 @@ return [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                'about' => 'site/about',
+                'membership' => 'site/membership',
+                'join' => 'site/join',
+                'login' => 'site/login',
+                'contact' => 'site/contact',
             ],
         ],
     ],

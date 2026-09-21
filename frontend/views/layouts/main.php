@@ -7,7 +7,7 @@ use yii\helpers\Html;
 <html class="scroll-smooth" lang="id"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Hercules Fitness</title>
+<title><?= Html::encode($this->title ? $this->title : 'Hercules Fitness') ?></title>
 <link rel="icon" type="image/jpeg" href="/img/hercules.jpeg">
 <!-- Google Fonts: Plus Jakarta Sans & Playfair Display for editorial italic accents -->
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
@@ -367,10 +367,10 @@ use yii\helpers\Html;
 </a>
 <!-- Desktop Nav Items -->
 <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-white/80">
-<a class="text-white hover:text-brand-gold transition-colors" href="<?= \yii\helpers\Url::to(['site/membership']) ?>">Membership</a>
-<a class="hover:text-brand-gold transition-colors" href="#filosofi">About Us</a>
-<a class="hover:text-brand-gold transition-colors" href="#layanan">Services</a>
-<a class="hover:text-brand-gold transition-colors" href="#paket">Testimonials</a>
+<a class="<?= Yii::$app->controller->action->id === 'membership' ? 'text-brand-gold font-bold' : 'hover:text-brand-gold' ?> transition-colors" href="<?= \yii\helpers\Url::to(['site/membership']) ?>">Membership</a>
+<a class="<?= Yii::$app->controller->action->id === 'about' ? 'text-brand-gold font-bold' : 'hover:text-brand-gold' ?> transition-colors" href="<?= \yii\helpers\Url::to(['site/about']) ?>">About Us</a>
+<a class="hover:text-brand-gold transition-colors" href="<?= \yii\helpers\Url::to(['site/index', '#' => 'layanan']) ?>">Services</a>
+<a class="hover:text-brand-gold transition-colors" href="<?= \yii\helpers\Url::to(['site/index', '#' => 'fasilitas']) ?>">Testimonials</a>
 </nav>
 <!-- Primary Action CTA & User Area -->
 <div class="flex items-center gap-6">
@@ -768,16 +768,16 @@ use yii\helpers\Html;
   Pusat kebugaran terbaik di Batam dan Bali. Kami hadir untuk membantu Anda mencapai target fisik dengan program latihan profesional dan tenaga ahli bersertifikat.
 </p>
 <p class="text-xs text-amber-700 font-semibold mb-1">📍 Tersedia di Batam & Bali</p>
-<p class="text-xs text-slate-500">🕐 Senin–Jumat: 07.00–24.00 | Sabtu–Minggu: 07.00–23.00</p>
+<p class="text-xs text-slate-500">🕐 Senin–Jumat: 07.00–23.00 | Sabtu–Minggu: 07.00–22.00</p>
 <div class="flex items-center gap-3 text-slate-400">
-<a class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center hover:text-brand-gold transition" href="#">
-<svg class="w-4 h-4 fill-current" viewbox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"></path></svg>
+<a class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center hover:text-brand-gold transition" href="https://instagram.com/hercules.fitnesscentre" target="_blank" title="Instagram">
+<i class="fab fa-instagram text-sm"></i>
 </a>
-<a class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center hover:text-brand-gold transition" href="#">
-<svg class="w-4 h-4 fill-current" viewbox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"></path></svg>
+<a class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center hover:text-brand-gold transition" href="https://wa.me/6282286680539" target="_blank" title="WhatsApp">
+<i class="fab fa-whatsapp text-sm"></i>
 </a>
-<a class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center hover:text-brand-gold transition" href="#">
-<svg class="w-4 h-4 fill-current" viewbox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"></path></svg>
+<a class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center hover:text-brand-gold transition" href="https://maps.app.goo.gl/dghCRwrLjwhYoE4H8" target="_blank" title="Google Maps">
+<i class="fas fa-map-marker-alt text-sm"></i>
 </a>
 </div>
 </div>
@@ -786,33 +786,33 @@ use yii\helpers\Html;
 <div>
 <p class="text-xs font-bold text-slate-900 uppercase tracking-wider mb-4">Beranda</p>
 <ul class="space-y-2.5 text-xs text-slate-600">
-<li><a class="hover:text-brand-gold transition" href="#">Gaya Hidup</a></li>
-<li><a class="hover:text-brand-gold transition" href="#">Harga Membership</a></li>
-<li><a class="hover:text-brand-gold transition" href="#">Jadwal Kelas</a></li>
-<li><a class="hover:text-brand-gold transition" href="#">Fasilitas</a></li>
-<li><a class="hover:text-brand-gold transition" href="#">Unduh Aplikasi</a></li>
+<li><a class="hover:text-brand-gold transition" href="<?= \yii\helpers\Url::to(['site/membership']) ?>">Harga Membership</a></li>
+<li><a class="hover:text-brand-gold transition" href="<?= \yii\helpers\Url::to(['site/index', '#' => 'fasilitas']) ?>">Fasilitas & Testimoni</a></li>
+<li><a class="hover:text-brand-gold transition" href="<?= \yii\helpers\Url::to(['site/index', '#' => 'layanan']) ?>">Layanan Latihan</a></li>
+<li><a class="hover:text-brand-gold transition" href="<?= \yii\helpers\Url::to(['site/join']) ?>">Daftar Member</a></li>
 </ul>
 </div>
 <!-- Col 3: About -->
 <div>
 <p class="text-xs font-bold text-slate-900 uppercase tracking-wider mb-4">Tentang Kami</p>
 <ul class="space-y-2.5 text-xs text-slate-600">
-<li><a class="hover:text-brand-gold transition" href="#">Karir</a></li>
-<li><a class="hover:text-brand-gold transition" href="#">Kepatuhan</a></li>
-<li><a class="hover:text-brand-gold transition" href="#">Misi Kami</a></li>
-<li><a class="hover:text-brand-gold transition" href="#">Layanan Kami</a></li>
-<li><a class="hover:text-brand-gold transition" href="#">Program Komunitas</a></li>
+<li><a class="hover:text-brand-gold transition" href="<?= \yii\helpers\Url::to(['site/about']) ?>">Profil Hercules Fitness</a></li>
+<li><a class="hover:text-brand-gold transition" href="<?= \yii\helpers\Url::to(['site/about', '#' => 'filosofi']) ?>">Kisah & Visi Misi</a></li>
+<li><a class="hover:text-brand-gold transition" href="<?= \yii\helpers\Url::to(['site/about', '#' => 'fasilitas-lengkap']) ?>">Peralatan & Fasilitas</a></li>
+<li><a class="hover:text-brand-gold transition" href="<?= \yii\helpers\Url::to(['site/about', '#' => 'ulasan-google']) ?>">Ulasan Google Maps (4.9★)</a></li>
+<li><a class="hover:text-brand-gold transition" href="<?= \yii\helpers\Url::to(['site/about', '#' => 'cabang-operasional']) ?>">Lokasi Cabang</a></li>
 </ul>
 </div>
 <!-- Col 4: Contact -->
 <div>
 <p class="text-xs font-bold text-slate-900 uppercase tracking-wider mb-4">Kontak Kami</p>
 <ul class="space-y-2.5 text-xs text-slate-600">
-<li class="flex items-start gap-1.5"><span class="text-brand-gold mt-0.5">📍</span> Batam & Bali</li>
-<li class="flex items-start gap-1.5"><span class="text-brand-gold mt-0.5">📞</span> <a href="tel:+62" class="hover:text-brand-gold transition">+62 xxx-xxxx-xxxx</a></li>
+<li class="flex items-start gap-1.5"><span class="text-brand-gold mt-0.5">📍</span> Komplek Macadam, Batu Ampar, Batam</li>
+<li class="flex items-start gap-1.5"><span class="text-brand-gold mt-0.5">📍</span> Jl. Dang Merdu, Batu Besar, Batam</li>
+<li class="flex items-start gap-1.5"><span class="text-brand-gold mt-0.5">📞</span> <a href="https://wa.me/6282286680539" class="hover:text-brand-gold transition" target="_blank">+62 822-8668-0539</a></li>
 <li class="flex items-start gap-1.5"><span class="text-brand-gold mt-0.5">📷</span> <a href="https://instagram.com/hercules.fitnesscentre" class="hover:text-brand-gold transition" target="_blank">@hercules.fitnesscentre</a></li>
-<li class="flex items-start gap-1.5"><span class="text-brand-gold mt-0.5">🕐</span> Sen–Jum: 07.00–24.00</li>
-<li class="flex items-start gap-1.5"><span class="text-brand-gold mt-0.5">🕐</span> Sab–Min: 07.00–23.00</li>
+<li class="flex items-start gap-1.5"><span class="text-brand-gold mt-0.5">🕐</span> Sen–Jum: 07.00–23.00</li>
+<li class="flex items-start gap-1.5"><span class="text-brand-gold mt-0.5">🕐</span> Sab–Min: 07.00–22.00</li>
 </ul>
 </div>
 </div>
@@ -1476,7 +1476,7 @@ function closeProgramModal() {
 </script>
 
 <!-- Floating WhatsApp Button -->
-<a id="wa-button" href="https://wa.me/6281234567890" target="_blank" rel="noopener noreferrer" 
+<a id="wa-button" href="https://wa.me/6282286680539?text=Halo%20Hercules%20Fitness,%20saya%20tertarik%20dengan%20program%20membership" target="_blank" rel="noopener noreferrer" 
    class="fixed bottom-6 right-6 z-[60] bg-[#25D366] hover:bg-[#20b858] text-white w-14 h-14 rounded-full shadow-lg shadow-[#25D366]/40 transition-all duration-300 transform scale-0 opacity-0 flex items-center justify-center">
   <i class="fab fa-whatsapp text-3xl"></i>
 </a>
@@ -1486,7 +1486,7 @@ function closeProgramModal() {
   const headerBg = document.getElementById("header-bg");
   const programSection = document.getElementById("program");
   const waButton = document.getElementById("wa-button");
-  const heroSection = document.getElementById("beranda");
+  const heroSection = document.getElementById("beranda") || document.getElementById("about-hero");
   const headerCtaBtn = document.getElementById("header-cta-btn");
   
   const isTrialPage = window.location.href.includes('site%2Fjoin') || window.location.href.includes('site/join');
@@ -1499,13 +1499,16 @@ function closeProgramModal() {
     }
     if (isTrialPage && headerCtaBtn) {
       headerCtaBtn.style.display = 'none';
+    } else if (hasNoHero && headerCtaBtn) {
+      headerCtaBtn.classList.remove("opacity-0", "pointer-events-none", "-translate-y-2");
+      headerCtaBtn.classList.add("opacity-100", "pointer-events-auto", "translate-y-0");
     }
   }
 
   window.addEventListener("scroll", () => {
     if (isTrialPage || hasNoHero) return; // Keep it solid on trial page or pages without hero
 
-    const threshold = programSection ? programSection.offsetTop - 80 : 100;
+    const threshold = programSection ? programSection.offsetTop - 80 : (heroSection ? (heroSection.offsetHeight * 0.35) : 100);
     
     if (window.scrollY >= threshold) {
       if (headerBg) {
