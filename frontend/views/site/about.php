@@ -179,6 +179,109 @@ $this->params['meta_description'] = 'Profil Hercules Fitness Centre Batam — Pu
     </section>
     <!-- ==================== END CORE VALUES SECTION ==================== -->
 
+    <!-- ==================== PROFESSIONAL TEAM SECTION (ACCORDION GSAP) ==================== -->
+    <section class="py-14 md:py-20 border-t border-white/10" id="professional-team">
+      
+      <!-- Section Header Matching Other Sub-title Sections -->
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-widest text-brand-gold block mb-1">Tim Pelatih &amp; Instruktur</span>
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-white uppercase font-condensed">
+            Tim Profesional <span class="italic-serif font-normal text-brand-gold normal-case">Siap Membimbing Anda</span>
+          </h2>
+        </div>
+        <p class="text-slate-400 text-xs sm:text-sm max-w-sm sm:text-right">
+          Bimbingan langsung dari pelatih berpengalaman untuk memastikan program latihan Anda terarah, efektif, dan aman.
+        </p>
+      </div>
+
+      <!-- Horizontal Accordion Gallery -->
+      <div class="team-accordion-wrap flex flex-col md:flex-row gap-2.5 sm:gap-3 w-full h-[480px] sm:h-[520px] lg:h-[560px] overflow-hidden select-none">
+        
+        <!-- Card 1 (Active by default) -->
+        <div class="team-card relative overflow-hidden rounded-xl bg-black cursor-pointer flex-[3.5] transition-[flex-grow] duration-500 ease-out border border-white/10 hover:border-brand-gold/50 shadow-2xl group" data-index="0">
+          <img src="/img/clip4.jpeg" alt="Coach Sadako Smith" class="team-img absolute inset-0 w-full h-full object-cover object-top filter grayscale-0 brightness-95 transition-all duration-700 pointer-events-none" />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent pointer-events-none"></div>
+          
+          <div class="team-info absolute bottom-0 left-0 right-0 p-6 sm:p-8 flex flex-col justify-end z-10 opacity-100 transform translate-y-0">
+            <span class="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-brand-gold block mb-1">Pelatih Kepala</span>
+            <h3 class="text-xl sm:text-2xl lg:text-3xl font-black text-white uppercase font-condensed tracking-tight leading-tight mb-2">Sadako Smith</h3>
+            <div class="flex items-center gap-4 text-xs font-semibold tracking-wider text-white/70">
+              <a href="https://instagram.com/hercules.fitnesscentre" target="_blank" class="hover:text-brand-gold transition-colors">FB</a>
+              <a href="https://wa.me/6282286680539" target="_blank" class="hover:text-brand-gold transition-colors">WA</a>
+              <a href="https://instagram.com/hercules.fitnesscentre" target="_blank" class="hover:text-brand-gold transition-colors">IG</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="team-card relative overflow-hidden rounded-xl bg-black cursor-pointer flex-[1] transition-[flex-grow] duration-500 ease-out border border-white/10 hover:border-brand-gold/50 shadow-2xl group" data-index="1">
+          <img src="/img/clip5.jpeg" alt="Coach Marcus Vance" class="team-img absolute inset-0 w-full h-full object-cover object-top filter grayscale brightness-75 transition-all duration-700 pointer-events-none" />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent pointer-events-none"></div>
+          
+          <div class="team-info absolute bottom-0 left-0 right-0 p-6 sm:p-8 flex flex-col justify-end z-10 opacity-0 transform translate-y-4 pointer-events-none">
+            <span class="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-brand-gold block mb-1">Kekuatan &amp; Pengondisian</span>
+            <h3 class="text-xl sm:text-2xl lg:text-3xl font-black text-white uppercase font-condensed tracking-tight leading-tight mb-2">Marcus Vance</h3>
+            <div class="flex items-center gap-4 text-xs font-semibold tracking-wider text-white/70">
+              <a href="https://instagram.com/hercules.fitnesscentre" target="_blank" class="hover:text-brand-gold transition-colors">FB</a>
+              <a href="https://wa.me/6282286680539" target="_blank" class="hover:text-brand-gold transition-colors">WA</a>
+              <a href="https://instagram.com/hercules.fitnesscentre" target="_blank" class="hover:text-brand-gold transition-colors">IG</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="team-card relative overflow-hidden rounded-xl bg-black cursor-pointer flex-[1] transition-[flex-grow] duration-500 ease-out border border-white/10 hover:border-brand-gold/50 shadow-2xl group" data-index="2">
+          <img src="/img/clip6.jpeg" alt="Coach Elena Rostova" class="team-img absolute inset-0 w-full h-full object-cover object-top filter grayscale brightness-75 transition-all duration-700 pointer-events-none" />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent pointer-events-none"></div>
+          
+          <div class="team-info absolute bottom-0 left-0 right-0 p-6 sm:p-8 flex flex-col justify-end z-10 opacity-0 transform translate-y-4 pointer-events-none">
+            <span class="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-brand-gold block mb-1">Mobilitas &amp; HIIT</span>
+            <h3 class="text-xl sm:text-2xl lg:text-3xl font-black text-white uppercase font-condensed tracking-tight leading-tight mb-2">Elena Rostova</h3>
+            <div class="flex items-center gap-4 text-xs font-semibold tracking-wider text-white/70">
+              <a href="https://instagram.com/hercules.fitnesscentre" target="_blank" class="hover:text-brand-gold transition-colors">FB</a>
+              <a href="https://wa.me/6282286680539" target="_blank" class="hover:text-brand-gold transition-colors">WA</a>
+              <a href="https://instagram.com/hercules.fitnesscentre" target="_blank" class="hover:text-brand-gold transition-colors">IG</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="team-card relative overflow-hidden rounded-xl bg-black cursor-pointer flex-[1] transition-[flex-grow] duration-500 ease-out border border-white/10 hover:border-brand-gold/50 shadow-2xl group" data-index="3">
+          <img src="/img/whyinfitnova.jpg" alt="Coach David Chen" class="team-img absolute inset-0 w-full h-full object-cover object-center filter grayscale brightness-75 transition-all duration-700 pointer-events-none" />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent pointer-events-none"></div>
+          
+          <div class="team-info absolute bottom-0 left-0 right-0 p-6 sm:p-8 flex flex-col justify-end z-10 opacity-0 transform translate-y-4 pointer-events-none">
+            <span class="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-brand-gold block mb-1">Bina Raga &amp; Teknik Latihan</span>
+            <h3 class="text-xl sm:text-2xl lg:text-3xl font-black text-white uppercase font-condensed tracking-tight leading-tight mb-2">David Chen</h3>
+            <div class="flex items-center gap-4 text-xs font-semibold tracking-wider text-white/70">
+              <a href="https://instagram.com/hercules.fitnesscentre" target="_blank" class="hover:text-brand-gold transition-colors">FB</a>
+              <a href="https://wa.me/6282286680539" target="_blank" class="hover:text-brand-gold transition-colors">WA</a>
+              <a href="https://instagram.com/hercules.fitnesscentre" target="_blank" class="hover:text-brand-gold transition-colors">IG</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 5 -->
+        <div class="team-card relative overflow-hidden rounded-xl bg-black cursor-pointer flex-[1] transition-[flex-grow] duration-500 ease-out border border-white/10 hover:border-brand-gold/50 shadow-2xl group" data-index="4">
+          <img src="/img/hero2.jpg" alt="Coach Arthur Pendelton" class="team-img absolute inset-0 w-full h-full object-cover object-center filter grayscale brightness-75 transition-all duration-700 pointer-events-none" />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent pointer-events-none"></div>
+          
+          <div class="team-info absolute bottom-0 left-0 right-0 p-6 sm:p-8 flex flex-col justify-end z-10 opacity-0 transform translate-y-4 pointer-events-none">
+            <span class="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-brand-gold block mb-1">Preparasi Atletik</span>
+            <h3 class="text-xl sm:text-2xl lg:text-3xl font-black text-white uppercase font-condensed tracking-tight leading-tight mb-2">Arthur Pendelton</h3>
+            <div class="flex items-center gap-4 text-xs font-semibold tracking-wider text-white/70">
+              <a href="https://instagram.com/hercules.fitnesscentre" target="_blank" class="hover:text-brand-gold transition-colors">FB</a>
+              <a href="https://wa.me/6282286680539" target="_blank" class="hover:text-brand-gold transition-colors">WA</a>
+              <a href="https://instagram.com/hercules.fitnesscentre" target="_blank" class="hover:text-brand-gold transition-colors">IG</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+    <!-- ==================== END PROFESSIONAL TEAM SECTION ==================== -->
+
     <!-- ==================== FACILITIES & ZONES (ALWAYS VISIBLE & BUG-FREE) ==================== -->
     <section class="py-14 md:py-20 border-t border-white/10" id="fasilitas-lengkap">
       
@@ -458,3 +561,50 @@ $this->params['meta_description'] = 'Profil Hercules Fitness Centre Batam — Pu
 
 </div>
 <!-- END: About Us Main Container -->
+
+<script>
+window.addEventListener('load', function() {
+  const cards = document.querySelectorAll('.team-card');
+  if (!cards.length) return;
+
+  cards.forEach((card) => {
+    card.addEventListener('mouseenter', () => {
+      cards.forEach((c) => {
+        const isTarget = c === card;
+        const img = c.querySelector('.team-img');
+        const info = c.querySelector('.team-info');
+
+        if (window.gsap) {
+          gsap.to(c, {
+            flexGrow: isTarget ? 3.5 : 1,
+            duration: 0.55,
+            ease: "power3.out",
+            overwrite: "auto"
+          });
+
+          if (img) {
+            gsap.to(img, {
+              scale: isTarget ? 1.05 : 1.0,
+              filter: isTarget ? "grayscale(0%) brightness(0.95)" : "grayscale(100%) brightness(0.65)",
+              duration: 0.55,
+              ease: "power3.out"
+            });
+          }
+
+          if (info) {
+            gsap.to(info, {
+              opacity: isTarget ? 1 : 0,
+              y: isTarget ? 0 : 16,
+              duration: isTarget ? 0.4 : 0.25,
+              delay: isTarget ? 0.08 : 0,
+              ease: "power2.out",
+              overwrite: "auto"
+            });
+            info.style.pointerEvents = isTarget ? 'auto' : 'none';
+          }
+        }
+      });
+    });
+  });
+});
+</script>
