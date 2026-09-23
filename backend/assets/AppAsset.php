@@ -1,19 +1,8 @@
 <?php
 
-/**
- * @link https://www.yiiframework.com/
- * @copyright Copyright (c) 2008 Yii Software LLC
- * @license https://www.yiiframework.com/license/
- */
-
-declare(strict_types=1);
-
 namespace backend\assets;
 
-use common\assets\ColorModeAsset;
-use yii\bootstrap5\BootstrapAsset;
 use yii\web\AssetBundle;
-use yii\web\YiiAsset;
 
 /**
  * Main backend application asset bundle.
@@ -23,11 +12,26 @@ class AppAsset extends AssetBundle
     public $basePath = '@webroot';
     public $baseUrl = '@web';
     public $css = [
-        'css/site.css',
+        'metronic/assets/plugins/custom/fullcalendar/fullcalendar.bundle.css',
+        'metronic/assets/plugins/custom/datatables/datatables.bundle.css',
+        'metronic/assets/plugins/custom/jstree/jstree.bundle.css',
+        'metronic/assets/plugins/global/plugins.bundle.css',
+        'metronic/assets/css/style.bundle.css',
+        'css/site.css?v=1'
     ];
+
+
+    public $js = [
+        'metronic/assets/plugins/global/plugins.bundle.js',
+        'metronic/assets/js/scripts.bundle.js',
+        'metronic/assets/plugins/custom/jstree/jstree.bundle.js',
+        'metronic/assets/plugins/custom/datatables/datatables.bundle.js',
+        'metronic/assets/plugins/custom/formrepeater/formrepeater.bundle.js',
+        'metronic/assets/plugins/custom/fullcalendar/fullcalendar.bundle.js'
+    ];
+
     public $depends = [
-        YiiAsset::class,
-        BootstrapAsset::class,
-        ColorModeAsset::class,
+        'yii\web\YiiAsset',
+        'yii\bootstrap5\BootstrapAsset',
     ];
 }

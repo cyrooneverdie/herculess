@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="stock" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="812084ee-5937-419f-926e-398dc201c12c">
+	<property name="ireport.zoom" value="0.751314800901578"/>
+	<property name="ireport.x" value="1"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Title" fontName="Times New Roman" fontSize="50" isBold="true" pdfFontName="Times-Bold"/>
+	<style name="SubTitle" forecolor="#736343" fontName="Arial" fontSize="18"/>
+	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
+	<style name="Detail" fontName="Arial" fontSize="12"/>
+	<style name="Row" mode="Transparent">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style backcolor="#E6DAC3"/>
+		</conditionalStyle>
+	</style>
+	<queryString language="SQL">
+		<![CDATA[SELECT c.contact_name, p.tgladd, p.deskripsi, p.price
+FROM contact c LEFT JOIN produk p
+ON c.contact_id = cast(p.produkid as text)]]>
+	</queryString>
+	<field name="contact_name" class="java.lang.String"/>
+	<field name="tgladd" class="java.sql.Timestamp"/>
+	<field name="deskripsi" class="java.lang.String"/>
+	<field name="price" class="java.lang.Double"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="136" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="38d0595d-975c-433f-9db8-d8278ee5101c" style="Title" x="182" y="34" width="455" height="62"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font pdfFontName="Times-Roman" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Laporan Invoices]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="16" splitType="Stretch">
+			<line>
+				<reportElement uuid="6c7d8189-d444-4784-8144-c0c22708dd7b" positionType="FixRelativeToBottom" x="0" y="15" width="802" height="1"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement uuid="0631f128-a3e1-4249-8d28-67eb43473051" style="Column header" x="0" y="0" width="200" height="15" forecolor="#736343"/>
+				<textElement/>
+				<text><![CDATA[Nama]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="05154167-92a5-4d71-b495-00f551dc8ce1" style="Column header" x="200" y="0" width="200" height="15" forecolor="#736343"/>
+				<textElement/>
+				<text><![CDATA[Tanggal Pesan]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="91dc2a8f-6817-4fd2-b6e2-defed4e588fc" style="Column header" x="400" y="0" width="200" height="15" forecolor="#736343"/>
+				<textElement/>
+				<text><![CDATA[Nama Produk]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="a993d068-7e01-4729-8c64-af33aad67e9d" style="Column header" x="600" y="0" width="200" height="15" forecolor="#736343"/>
+				<textElement/>
+				<text><![CDATA[Harga]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<frame>
+				<reportElement uuid="6ea51fd2-48be-413f-83e5-d17351e320d4" style="Row" mode="Opaque" x="0" y="0" width="802" height="15"/>
+				<textField isStretchWithOverflow="true">
+					<reportElement uuid="73d1564e-3c0c-4b10-8580-850a6ab881bc" style="Detail" x="0" y="0" width="200" height="15"/>
+					<textElement/>
+					<textFieldExpression><![CDATA[$F{contact_name}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement uuid="5c80ebb4-a9f6-4655-b608-66f153e6e2d1" style="Detail" x="200" y="0" width="200" height="15"/>
+					<textElement/>
+					<textFieldExpression><![CDATA[$F{tgladd}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement uuid="7eda1b20-0295-4449-8764-69952c6d1bcc" style="Detail" x="400" y="0" width="200" height="15"/>
+					<textElement/>
+					<textFieldExpression><![CDATA[$F{deskripsi}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement uuid="55d967c6-0876-45d7-bbc2-2e9fd3c0b5ed" style="Detail" x="600" y="0" width="200" height="15"/>
+					<textElement/>
+					<textFieldExpression><![CDATA[$F{price}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="6" splitType="Stretch">
+			<line>
+				<reportElement uuid="8bf9db79-7c5c-4f27-a13a-0d539aa997d8" positionType="FixRelativeToBottom" x="0" y="3" width="802" height="1"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="25" splitType="Stretch">
+			<frame>
+				<reportElement uuid="425b074e-45dd-4ab7-ab0b-2c6afaa11830" mode="Opaque" x="-21" y="1" width="843" height="24" forecolor="#D0B48E" backcolor="#F2EBDF"/>
+				<textField evaluationTime="Report">
+					<reportElement uuid="e82fe36b-4659-4c6b-a53a-ec5a53f28e84" style="Column header" x="783" y="1" width="40" height="20" forecolor="#736343"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement uuid="b0e433f5-72fb-4180-a8c7-506fe3077a81" style="Column header" x="703" y="1" width="80" height="20" forecolor="#736343"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+				</textField>
+				<textField pattern="EEEEE dd MMMMM yyyy">
+					<reportElement uuid="261530f2-080a-44f7-a638-a7f6bc8ee1f3" style="Column header" x="22" y="1" width="197" height="20" forecolor="#736343"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

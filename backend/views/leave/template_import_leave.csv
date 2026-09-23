@@ -1,0 +1,3 @@
+Nama Employee,Jenis Leave/Absent,Tanggal Mulai (DD/MM/YYYY),Tanggal Selesai (DD/MM/YYYY),Alasan/Note,Jam Masuk (HH:MM),Jam Pulang (HH:MM)
+John Doe,Hadir,01/01/2025,01/01/2025,Hadir normal,08:00,17:00
+Jane Smith,Cuti Tahunan,05/01/2025,07/01/2025,Liburan keluarga,,
