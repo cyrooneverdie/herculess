@@ -19,38 +19,32 @@ $this->params['meta_description'] = 'Profil Hercules Fitness Centre Batam — Pu
 
     <!-- Background Image with Overlays (Exact Match to Main Index Page True Size) -->
     <div class="absolute inset-0 z-0 w-full h-full">
-      <img src="/img/hero.jpg" alt="Hercules Fitness Centre Gym" class="w-full h-full object-cover" style="transform: scaleX(-1);" />
+      <img src="/img/lingkungan_gym.png" alt="Hercules Fitness Centre Gym" class="w-full h-full object-cover" />
       <!-- Dark overlays matching index.php: true image visibility -->
       <div class="absolute inset-0 bg-gradient-to-r from-black/65 via-black/30 to-transparent z-[1]"></div>
       <div class="absolute inset-0 bg-gradient-to-t from-[#0b0c10] via-black/20 to-black/10 z-[1]"></div>
     </div>
 
-    <!-- Content Container (Left-Aligned Minimal with Navbar Typography) -->
-    <div class="relative z-10 max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 w-full text-left pt-20">
+    <!-- Content Container (Clean & Grounded) -->
+    <div class="relative z-10 max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 w-full text-center pt-20">
       
-      <!-- Main Title (ABOUT US) -->
-      <h1 class="text-6xl sm:text-7xl lg:text-8xl xl:text-9xl font-black text-white tracking-tight uppercase font-condensed mb-2 drop-shadow-2xl leading-none">
-        ABOUT US
+      <!-- Main Title -->
+      <h1 class="text-5xl sm:text-6xl lg:text-7xl font-extrabold text-white uppercase font-condensed mb-4 drop-shadow-lg leading-[1.1] max-w-3xl mx-auto">
+        Lebih Dari Sekadar <br/>
+        <span class="text-brand-gold">Tempat Latihan.</span>
       </h1>
 
-      <!-- Cool Hercules Fitness Text (Matching Navbar Font, NO 'CENTRE') -->
-      <div class="flex items-center gap-3 sm:gap-4 mb-6">
-        <span class="text-4xl sm:text-5xl lg:text-6xl text-white font-logo-main uppercase tracking-wider drop-shadow-2xl">HERCULES</span>
-        <span class="text-xs sm:text-sm lg:text-base text-brand-gold font-logo-sub uppercase tracking-[0.35em] drop-shadow font-bold mt-1">FITNESS</span>
-      </div>
-
-      <!-- Description (Refined Scale) -->
-      <p class="text-sm sm:text-base lg:text-lg text-slate-200/90 font-normal leading-relaxed max-w-2xl mb-8 drop-shadow-md">
-        Pusat kebugaran terlengkap di Batam dengan fasilitas modern, suasana nyaman bebas intimidasi, dan bimbingan coach berpengalaman.
+      <!-- Description (Grounded, NO buzzwords) -->
+      <p class="text-base sm:text-lg text-slate-200 font-light leading-relaxed max-w-2xl mx-auto mb-8 drop-shadow-md">
+        Kami membangun komunitas di mana setiap orang dapat berlatih dengan aman. Mulai dari pemula hingga atlet, Anda akan didukung oleh fasilitas memadai dan lingkungan yang saling menghargai.
       </p>
 
-      <!-- Explore Memberships Button (Matching Scale) -->
-      <div>
-        <a href="<?= Url::to(['site/join']) ?>" class="px-8 sm:px-10 py-4 sm:py-4.5 rounded-lg bg-brand-gold hover:bg-amber-400 text-slate-950 text-sm sm:text-base font-extrabold uppercase tracking-wider transition-all duration-300 shadow-xl hover:shadow-brand-gold/40 hover:-translate-y-0.5 inline-flex items-center gap-3">
-          <span>Explore Memberships</span>
-          <i class="fas fa-arrow-right text-sm"></i>
+      <!-- CTA Button (Specific action, no decorative arrow, solid color) -->
+      <!-- <div class="flex justify-center">
+        <a href="<?= Url::to(['site/join']) ?>" class="px-8 py-3.5 rounded bg-brand-gold hover:bg-amber-400 text-slate-950 text-sm font-bold uppercase tracking-wide transition-colors inline-block shadow-lg">
+          Lihat Paket Membership
         </a>
-      </div>
+      </div> -->
 
     </div>
 
@@ -60,327 +54,88 @@ $this->params['meta_description'] = 'Profil Hercules Fitness Centre Batam — Pu
   <!-- Content Container for Below Sections -->
   <div class="relative z-10 max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 pt-10">
 
-    <!-- ==================== STORY & PHILOSOPHY (REDUCED TEXT) ==================== -->
-    <section class="py-14 md:py-20 border-t border-white/10" id="filosofi">
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
+    <!-- ==================== STORY & PHILOSOPHY (CLEAN & GROUNDED) ==================== -->
+    <section class="py-16 md:py-24 border-t border-white/10" id="filosofi">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
         
         <!-- Left: Image Visual -->
-        <div class="lg:col-span-6 relative">
-          <div class="relative rounded-3xl overflow-hidden shadow-2xl border border-white/15 aspect-[4/3] bg-slate-900">
-            <img src="/img/hero2.jpg" alt="Hercules Fitness Atmosphere" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
-            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
-            
-            <div class="absolute bottom-5 left-5 right-5 p-4 rounded-xl bg-black/60 backdrop-blur-md border border-white/10 flex items-center justify-between">
-              <div>
-                <p class="text-brand-gold text-xs font-bold uppercase">Komplek Macadam, Batu Ampar</p>
-                <p class="text-white text-sm font-semibold">Fasilitas Lengkap &amp; Bebas Intimidasi</p>
-              </div>
-              <span class="text-amber-400 text-sm font-bold shrink-0">4.9 ★</span>
-            </div>
+        <div class="relative">
+          <div class="rounded-2xl overflow-hidden aspect-[4/5] bg-[#12141a]">
+            <img src="/img/hero2.jpg" alt="Suasana latihan di Hercules Fitness Batam" class="w-full h-full object-cover" />
           </div>
+          <!-- Solid accent block instead of glowing glassmorphism -->
+          <div class="absolute -bottom-6 -right-6 w-48 h-48 bg-brand-gold rounded-2xl -z-10 hidden sm:block"></div>
         </div>
 
-        <!-- Right: Story Narrative (Concise) -->
-        <div class="lg:col-span-6">
-          <span class="text-brand-gold text-xs font-extrabold uppercase tracking-widest block mb-2">Tentang Kami</span>
-          <h2 class="text-3xl sm:text-4xl font-extrabold text-white uppercase font-condensed leading-tight mb-4">
-            Dedikasi Untuk <span class="italic-serif font-normal text-brand-gold normal-case">Kebugaran Anda.</span>
+        <!-- Right: Story Narrative -->
+        <div class="lg:pr-8">
+          <h2 class="text-3xl sm:text-5xl font-extrabold text-white uppercase font-condensed leading-[1.1] mb-8">
+            Dedikasi Total Untuk <span class="text-brand-gold">Kebugaran Anda.</span>
           </h2>
           
-          <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-6">
-            Hercules Fitness Centre didirikan untuk menghadirkan tempat latihan yang lengkap, nyaman, dan bersahabat bagi seluruh warga Batam. Tanpa rasa canggung, kami menyambut pemula hingga atlet dengan fasilitas standar profesional dan harga yang terjangkau.
-          </p>
-
-          <!-- 3 Compact Highlights -->
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            <div class="p-3.5 rounded-xl bg-[#13151c] border border-white/10">
-              <i class="fas fa-dumbbell text-brand-gold text-lg mb-2 block"></i>
-              <h4 class="text-white font-bold text-xs">Alat Lengkap</h4>
-              <p class="text-slate-400 text-[11px] mt-0.5">Free weight &amp; mesin komplit</p>
-            </div>
-
-            <div class="p-3.5 rounded-xl bg-[#13151c] border border-white/10">
-              <i class="fas fa-user-check text-brand-gold text-lg mb-2 block"></i>
-              <h4 class="text-white font-bold text-xs">Coach Ramah</h4>
-              <p class="text-slate-400 text-[11px] mt-0.5">Bimbingan form latihan</p>
-            </div>
-
-            <div class="p-3.5 rounded-xl bg-[#13151c] border border-white/10">
-              <i class="fas fa-tags text-brand-gold text-lg mb-2 block"></i>
-              <h4 class="text-white font-bold text-xs">Biaya Hemat</h4>
-              <p class="text-slate-400 text-[11px] mt-0.5">Tiket harian &amp; member murah</p>
-            </div>
+          <div class="space-y-6 text-slate-300 text-sm sm:text-base leading-relaxed font-light">
+            <p>
+              Berawal dari sebuah visi sederhana, Hercules Fitness Centre didirikan untuk menghadirkan tempat latihan yang memadai, nyaman, dan bersahabat bagi seluruh warga Batam. Kami percaya bahwa ruang kebugaran harus menjadi tempat yang ramah untuk semua kalangan.
+            </p>
+            <p>
+              <strong class="text-white font-medium">Tanpa rasa canggung dan intimidasi</strong>, kami membangun lingkungan di mana seorang pemula yang baru pertama kali menyentuh barbel dapat berlatih dengan nyaman berdampingan dengan para atlet berpengalaman.
+            </p>
+            <p>
+              Fokus kami sejak awal hingga saat ini tetap sama: menyediakan fasilitas berstandar profesional dan membangun komunitas yang saling mendukung, namun dengan komitmen harga yang masuk akal dan terjangkau untuk warga Batam.
+            </p>
           </div>
-        </div>
 
+        </div>
       </div>
     </section>
     <!-- ==================== END STORY SECTION ==================== -->
 
-    <!-- ==================== CORE VALUES (ALWAYS VISIBLE & BUG-FREE) ==================== -->
-    <section class="py-14 md:py-20 border-t border-white/10" id="nilai-utama">
-      
-      <div class="text-center mb-10">
-        <span class="text-xs font-bold uppercase tracking-widest text-brand-gold block mb-1">Filosofi &amp; Komitmen</span>
-        <h2 class="text-3xl sm:text-4xl font-extrabold text-white uppercase font-condensed">
-          4 Alasan Memilih <span class="italic-serif font-normal text-brand-gold normal-case">Hercules Fitness</span>
-        </h2>
-      </div>
 
-      <!-- 4 Pillars Grid (Guaranteed Render) -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-        
-        <!-- Card 1 -->
-        <div class="bg-[#12141a] hover:bg-[#161820] border border-white/10 hover:border-brand-gold/60 rounded-2xl p-6 transition-all duration-300 hover:-translate-y-1 shadow-lg">
-          <div class="w-12 h-12 rounded-xl bg-brand-gold/15 text-brand-gold flex items-center justify-center text-xl mb-4">
-            <i class="fas fa-dumbbell"></i>
-          </div>
-          <h3 class="text-lg font-bold text-white mb-2">Alat Lengkap &amp; Berat</h3>
-          <p class="text-slate-400 text-xs leading-relaxed">
-            Dumbbell set lengkap, Olympic barbells, cable crossover, dan squat rack tanpa antre lama.
-          </p>
-        </div>
 
-        <!-- Card 2 -->
-        <div class="bg-[#12141a] hover:bg-[#161820] border border-white/10 hover:border-brand-gold/60 rounded-2xl p-6 transition-all duration-300 hover:-translate-y-1 shadow-lg">
-          <div class="w-12 h-12 rounded-xl bg-brand-gold/15 text-brand-gold flex items-center justify-center text-xl mb-4">
-            <i class="fas fa-people-group"></i>
-          </div>
-          <h3 class="text-lg font-bold text-white mb-2">Komunitas Suportif</h3>
-          <p class="text-slate-400 text-xs leading-relaxed">
-            Kultur ramah tanpa tatapan intimidasi. Cocok bagi pemula yang baru mulai nge-gym.
-          </p>
-        </div>
-
-        <!-- Card 3 -->
-        <div class="bg-[#12141a] hover:bg-[#161820] border border-white/10 hover:border-brand-gold/60 rounded-2xl p-6 transition-all duration-300 hover:-translate-y-1 shadow-lg">
-          <div class="w-12 h-12 rounded-xl bg-brand-gold/15 text-brand-gold flex items-center justify-center text-xl mb-4">
-            <i class="fas fa-wallet"></i>
-          </div>
-          <h3 class="text-lg font-bold text-white mb-2">Harga Terjangkau</h3>
-          <p class="text-slate-400 text-xs leading-relaxed">
-            Pilihan tiket harian ramah kantong dan paket membership bulanan hemat tanpa biaya tersembunyi.
-          </p>
-        </div>
-
-        <!-- Card 4 -->
-        <div class="bg-[#12141a] hover:bg-[#161820] border border-white/10 hover:border-brand-gold/60 rounded-2xl p-6 transition-all duration-300 hover:-translate-y-1 shadow-lg">
-          <div class="w-12 h-12 rounded-xl bg-brand-gold/15 text-brand-gold flex items-center justify-center text-xl mb-4">
-            <i class="fas fa-clock"></i>
-          </div>
-          <h3 class="text-lg font-bold text-white mb-2">Buka Hingga 23.00</h3>
-          <p class="text-slate-400 text-xs leading-relaxed">
-            Jadwal fleksibel 07.00–23.00 WIB di hari kerja, memberi keleluasaan latihan setelah pulang kantor.
-          </p>
-        </div>
-
-      </div>
-
-    </section>
-    <!-- ==================== END CORE VALUES SECTION ==================== -->
-
-    <!-- ==================== PROFESSIONAL TEAM SECTION (ACCORDION GSAP) ==================== -->
+    <!-- ==================== PROFESSIONAL TEAM SECTION ==================== -->
     <section class="py-14 md:py-20 border-t border-white/10" id="professional-team">
-      
-      <!-- Section Header Matching Other Sub-title Sections -->
-      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
-        <div>
-          <span class="text-xs font-bold uppercase tracking-widest text-brand-gold block mb-1">Tim Pelatih &amp; Instruktur</span>
-          <h2 class="text-3xl sm:text-4xl font-extrabold text-white uppercase font-condensed">
-            Tim Profesional <span class="italic-serif font-normal text-brand-gold normal-case">Siap Membimbing Anda</span>
-          </h2>
-        </div>
-        <p class="text-slate-400 text-xs sm:text-sm max-w-sm sm:text-right">
-          Bimbingan langsung dari pelatih berpengalaman untuk memastikan program latihan Anda terarah, efektif, dan aman.
-        </p>
-      </div>
-
-      <!-- Horizontal Accordion Gallery -->
-      <div class="team-accordion-wrap flex flex-col md:flex-row gap-2.5 sm:gap-3 w-full h-[480px] sm:h-[520px] lg:h-[560px] overflow-hidden select-none">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
         
-        <!-- Card 1 (Active by default) -->
-        <div class="team-card relative overflow-hidden rounded-xl bg-black cursor-pointer flex-[3.5] transition-[flex-grow] duration-500 ease-out border border-white/10 hover:border-brand-gold/50 shadow-2xl group" data-index="0">
-          <img src="/img/clip4.jpeg" alt="Coach Sadako Smith" class="team-img absolute inset-0 w-full h-full object-cover object-top filter grayscale-0 brightness-95 transition-all duration-700 pointer-events-none" />
-          <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent pointer-events-none"></div>
+        <!-- Left: Narrative -->
+        <div class="order-2 lg:order-1 lg:pr-8">
+          <span class="text-xs font-bold uppercase tracking-widest text-brand-gold block mb-3">Tim Pelatih &amp; Instruktur</span>
+          <h2 class="text-3xl sm:text-5xl font-extrabold text-white uppercase font-condensed leading-[1.1] mb-8">
+            Tim Profesional <span class="text-brand-gold">Siap Membimbing Anda.</span>
+          </h2>
           
-          <div class="team-info absolute bottom-0 left-0 right-0 p-6 sm:p-8 flex flex-col justify-end z-10 opacity-100 transform translate-y-0">
-            <span class="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-brand-gold block mb-1">Pelatih Kepala</span>
-            <h3 class="text-xl sm:text-2xl lg:text-3xl font-black text-white uppercase font-condensed tracking-tight leading-tight mb-2">Sadako Smith</h3>
-            <div class="flex items-center gap-4 text-xs font-semibold tracking-wider text-white/70">
-              <a href="https://instagram.com/hercules.fitnesscentre" target="_blank" class="hover:text-brand-gold transition-colors">FB</a>
-              <a href="https://wa.me/6282286680539" target="_blank" class="hover:text-brand-gold transition-colors">WA</a>
-              <a href="https://instagram.com/hercules.fitnesscentre" target="_blank" class="hover:text-brand-gold transition-colors">IG</a>
+          <div class="space-y-6 text-slate-300 text-sm sm:text-base leading-relaxed font-light">
+            <p>
+              Bimbingan langsung dari pelatih berpengalaman untuk memastikan program latihan Anda terarah, efektif, dan aman. Kami memiliki pelatih dengan spesialisasi yang beragam mulai dari kekuatan &amp; pengondisian, mobilitas &amp; HIIT, hingga binaraga &amp; teknik latihan.
+            </p>
+            <p>
+              <strong class="text-white font-medium">Bukan sekadar mengawasi</strong>, pelatih kami merancang program yang disesuaikan dengan kapasitas dan tujuan spesifik Anda. Setiap sesi akan menjadi langkah yang terstruktur menuju hasil yang Anda inginkan.
+            </p>
+            <p>
+              Temukan pelatih yang tepat untuk Anda, dan mulailah perjalanan kebugaran Anda dengan bimbingan profesional yang suportif tanpa tekanan berlebihan.
+            </p>
+            
+            <div class="pt-4">
+              <a href="/site/trainer" class="px-8 py-3.5 rounded bg-brand-gold hover:bg-amber-400 text-slate-950 text-sm font-bold uppercase tracking-wide transition-colors inline-block">
+                Lihat Profil Pelatih Kami
+              </a>
             </div>
           </div>
         </div>
 
-        <!-- Card 2 -->
-        <div class="team-card relative overflow-hidden rounded-xl bg-black cursor-pointer flex-[1] transition-[flex-grow] duration-500 ease-out border border-white/10 hover:border-brand-gold/50 shadow-2xl group" data-index="1">
-          <img src="/img/clip5.jpeg" alt="Coach Marcus Vance" class="team-img absolute inset-0 w-full h-full object-cover object-top filter grayscale brightness-75 transition-all duration-700 pointer-events-none" />
-          <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent pointer-events-none"></div>
-          
-          <div class="team-info absolute bottom-0 left-0 right-0 p-6 sm:p-8 flex flex-col justify-end z-10 opacity-0 transform translate-y-4 pointer-events-none">
-            <span class="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-brand-gold block mb-1">Kekuatan &amp; Pengondisian</span>
-            <h3 class="text-xl sm:text-2xl lg:text-3xl font-black text-white uppercase font-condensed tracking-tight leading-tight mb-2">Marcus Vance</h3>
-            <div class="flex items-center gap-4 text-xs font-semibold tracking-wider text-white/70">
-              <a href="https://instagram.com/hercules.fitnesscentre" target="_blank" class="hover:text-brand-gold transition-colors">FB</a>
-              <a href="https://wa.me/6282286680539" target="_blank" class="hover:text-brand-gold transition-colors">WA</a>
-              <a href="https://instagram.com/hercules.fitnesscentre" target="_blank" class="hover:text-brand-gold transition-colors">IG</a>
-            </div>
+        <!-- Right: Image Visual -->
+        <div class="relative order-1 lg:order-2 pl-0 sm:pl-6">
+          <div class="rounded-2xl overflow-hidden aspect-[4/5] bg-[#12141a]">
+            <img src="/img/clip4.jpeg" alt="Pelatih Hercules Fitness membimbing member" class="w-full h-full object-cover" />
           </div>
-        </div>
-
-        <!-- Card 3 -->
-        <div class="team-card relative overflow-hidden rounded-xl bg-black cursor-pointer flex-[1] transition-[flex-grow] duration-500 ease-out border border-white/10 hover:border-brand-gold/50 shadow-2xl group" data-index="2">
-          <img src="/img/clip6.jpeg" alt="Coach Elena Rostova" class="team-img absolute inset-0 w-full h-full object-cover object-top filter grayscale brightness-75 transition-all duration-700 pointer-events-none" />
-          <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent pointer-events-none"></div>
-          
-          <div class="team-info absolute bottom-0 left-0 right-0 p-6 sm:p-8 flex flex-col justify-end z-10 opacity-0 transform translate-y-4 pointer-events-none">
-            <span class="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-brand-gold block mb-1">Mobilitas &amp; HIIT</span>
-            <h3 class="text-xl sm:text-2xl lg:text-3xl font-black text-white uppercase font-condensed tracking-tight leading-tight mb-2">Elena Rostova</h3>
-            <div class="flex items-center gap-4 text-xs font-semibold tracking-wider text-white/70">
-              <a href="https://instagram.com/hercules.fitnesscentre" target="_blank" class="hover:text-brand-gold transition-colors">FB</a>
-              <a href="https://wa.me/6282286680539" target="_blank" class="hover:text-brand-gold transition-colors">WA</a>
-              <a href="https://instagram.com/hercules.fitnesscentre" target="_blank" class="hover:text-brand-gold transition-colors">IG</a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Card 4 -->
-        <div class="team-card relative overflow-hidden rounded-xl bg-black cursor-pointer flex-[1] transition-[flex-grow] duration-500 ease-out border border-white/10 hover:border-brand-gold/50 shadow-2xl group" data-index="3">
-          <img src="/img/whyinfitnova.jpg" alt="Coach David Chen" class="team-img absolute inset-0 w-full h-full object-cover object-center filter grayscale brightness-75 transition-all duration-700 pointer-events-none" />
-          <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent pointer-events-none"></div>
-          
-          <div class="team-info absolute bottom-0 left-0 right-0 p-6 sm:p-8 flex flex-col justify-end z-10 opacity-0 transform translate-y-4 pointer-events-none">
-            <span class="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-brand-gold block mb-1">Bina Raga &amp; Teknik Latihan</span>
-            <h3 class="text-xl sm:text-2xl lg:text-3xl font-black text-white uppercase font-condensed tracking-tight leading-tight mb-2">David Chen</h3>
-            <div class="flex items-center gap-4 text-xs font-semibold tracking-wider text-white/70">
-              <a href="https://instagram.com/hercules.fitnesscentre" target="_blank" class="hover:text-brand-gold transition-colors">FB</a>
-              <a href="https://wa.me/6282286680539" target="_blank" class="hover:text-brand-gold transition-colors">WA</a>
-              <a href="https://instagram.com/hercules.fitnesscentre" target="_blank" class="hover:text-brand-gold transition-colors">IG</a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Card 5 -->
-        <div class="team-card relative overflow-hidden rounded-xl bg-black cursor-pointer flex-[1] transition-[flex-grow] duration-500 ease-out border border-white/10 hover:border-brand-gold/50 shadow-2xl group" data-index="4">
-          <img src="/img/hero2.jpg" alt="Coach Arthur Pendelton" class="team-img absolute inset-0 w-full h-full object-cover object-center filter grayscale brightness-75 transition-all duration-700 pointer-events-none" />
-          <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent pointer-events-none"></div>
-          
-          <div class="team-info absolute bottom-0 left-0 right-0 p-6 sm:p-8 flex flex-col justify-end z-10 opacity-0 transform translate-y-4 pointer-events-none">
-            <span class="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-brand-gold block mb-1">Preparasi Atletik</span>
-            <h3 class="text-xl sm:text-2xl lg:text-3xl font-black text-white uppercase font-condensed tracking-tight leading-tight mb-2">Arthur Pendelton</h3>
-            <div class="flex items-center gap-4 text-xs font-semibold tracking-wider text-white/70">
-              <a href="https://instagram.com/hercules.fitnesscentre" target="_blank" class="hover:text-brand-gold transition-colors">FB</a>
-              <a href="https://wa.me/6282286680539" target="_blank" class="hover:text-brand-gold transition-colors">WA</a>
-              <a href="https://instagram.com/hercules.fitnesscentre" target="_blank" class="hover:text-brand-gold transition-colors">IG</a>
-            </div>
-          </div>
+          <!-- Solid accent block on the bottom left (since image is on the right) -->
+          <div class="absolute -bottom-6 -left-6 w-48 h-48 bg-brand-gold rounded-2xl -z-10 hidden sm:block"></div>
         </div>
 
       </div>
     </section>
     <!-- ==================== END PROFESSIONAL TEAM SECTION ==================== -->
 
-    <!-- ==================== FACILITIES & ZONES (ALWAYS VISIBLE & BUG-FREE) ==================== -->
-    <section class="py-14 md:py-20 border-t border-white/10" id="fasilitas-lengkap">
-      
-      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
-        <div>
-          <span class="text-xs font-bold uppercase tracking-widest text-brand-gold block mb-1">Zona Latihan &amp; Sarana</span>
-          <h2 class="text-3xl sm:text-4xl font-extrabold text-white uppercase font-condensed">
-            Fasilitas Standar <span class="italic-serif font-normal text-brand-gold normal-case">Pusat Kebugaran Modern</span>
-          </h2>
-        </div>
-        <p class="text-slate-400 text-xs sm:text-sm max-w-sm sm:text-right">
-          Ruangan ber-AC, sirkulasi lega, dan lantai berperedam getaran yang aman.
-        </p>
-      </div>
 
-      <!-- Facility 3 Cards Grid (Guaranteed Render) -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        
-        <!-- Zone 1: Free Weights -->
-        <div class="group rounded-2xl overflow-hidden bg-[#13151c] border border-white/10 hover:border-brand-gold/50 transition-all flex flex-col">
-          <div class="h-48 overflow-hidden relative">
-            <img src="/img/hero.jpg" alt="Free Weights Area" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-            <span class="absolute top-3 left-3 px-2.5 py-1 rounded-md bg-black/70 text-brand-gold text-[10px] font-bold uppercase tracking-wider">
-              Free Weights
-            </span>
-          </div>
-          <div class="p-5 flex-1 flex flex-col justify-between">
-            <div>
-              <h3 class="text-lg font-bold text-white mb-1.5">Area Beban Bebas</h3>
-              <p class="text-slate-400 text-xs leading-relaxed mb-3">
-                Dumbbell beragam bobot, barbel Olympic, bench press datar &amp; miring, serta deadlift platform.
-              </p>
-            </div>
-            <p class="text-[11px] text-brand-gold font-semibold">✓ Dumbbells • Olympic Bars • Racks</p>
-          </div>
-        </div>
-
-        <!-- Zone 2: Machine & Isolation -->
-        <div class="group rounded-2xl overflow-hidden bg-[#13151c] border border-white/10 hover:border-brand-gold/50 transition-all flex flex-col">
-          <div class="h-48 overflow-hidden relative">
-            <img src="/img/whyinfitnova.jpg" alt="Machine Sector" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-            <span class="absolute top-3 left-3 px-2.5 py-1 rounded-md bg-black/70 text-blue-400 text-[10px] font-bold uppercase tracking-wider">
-              Machine Sector
-            </span>
-          </div>
-          <div class="p-5 flex-1 flex flex-col justify-between">
-            <div>
-              <h3 class="text-lg font-bold text-white mb-1.5">Mesin Beban &amp; Kabel</h3>
-              <p class="text-slate-400 text-xs leading-relaxed mb-3">
-                Cable crossover, leg press 45°, lat pulldown, dan mesin isolasi otot terawat.
-              </p>
-            </div>
-            <p class="text-[11px] text-brand-gold font-semibold">✓ Cable Station • Leg Press • Smith Machine</p>
-          </div>
-        </div>
-
-        <!-- Zone 3: Cardio & Functional -->
-        <div class="group rounded-2xl overflow-hidden bg-[#13151c] border border-white/10 hover:border-brand-gold/50 transition-all flex flex-col">
-          <div class="h-48 overflow-hidden relative">
-            <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=600&q=80" alt="Cardio & Functional" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-            <span class="absolute top-3 left-3 px-2.5 py-1 rounded-md bg-black/70 text-emerald-400 text-[10px] font-bold uppercase tracking-wider">
-              Cardio Arena
-            </span>
-          </div>
-          <div class="p-5 flex-1 flex flex-col justify-between">
-            <div>
-              <h3 class="text-lg font-bold text-white mb-1.5">Kardio &amp; Fungsional</h3>
-              <p class="text-slate-400 text-xs leading-relaxed mb-3">
-                Treadmill komersial, sepeda statis, battle rope, kettlebell, dan area matras stretching.
-              </p>
-            </div>
-            <p class="text-[11px] text-brand-gold font-semibold">✓ Treadmills • Battle Rope • Matras</p>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- Amenities Strip (Compact) -->
-      <div class="bg-[#12141a] border border-white/10 rounded-xl p-4 sm:p-5 grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-        <div class="flex items-center justify-center gap-2 text-xs text-slate-300">
-          <i class="fas fa-lock text-brand-gold"></i>
-          <span>Loker Penitipan</span>
-        </div>
-        <div class="flex items-center justify-center gap-2 text-xs text-slate-300">
-          <i class="fas fa-shower text-brand-gold"></i>
-          <span>Kamar Bilas Bersih</span>
-        </div>
-        <div class="flex items-center justify-center gap-2 text-xs text-slate-300">
-          <i class="fas fa-wifi text-brand-gold"></i>
-          <span>Free High-Speed Wi-Fi</span>
-        </div>
-        <div class="flex items-center justify-center gap-2 text-xs text-slate-300">
-          <i class="fas fa-square-parking text-brand-gold"></i>
-          <span>Parkir Luas &amp; Aman</span>
-        </div>
-      </div>
-
-    </section>
-    <!-- ==================== END FACILITIES SECTION ==================== -->
 
     <!-- ==================== GOOGLE REVIEWS PROOF ==================== -->
     <section class="py-14 md:py-20 border-t border-white/10" id="ulasan-google">
@@ -436,104 +191,7 @@ $this->params['meta_description'] = 'Profil Hercules Fitness Centre Batam — Pu
     </section>
     <!-- ==================== END GOOGLE REVIEWS SECTION ==================== -->
 
-    <!-- ==================== 2 CABANG BATAM ==================== -->
-    <section class="py-14 md:py-20 border-t border-white/10" id="cabang-operasional">
-      
-      <div class="text-center mb-10">
-        <span class="text-xs font-bold uppercase tracking-widest text-brand-gold block mb-1">📍 Cabang Kami</span>
-        <h2 class="text-3xl sm:text-4xl font-extrabold text-white uppercase font-condensed">
-          Lokasi &amp; Jam Operasional
-        </h2>
-      </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        
-        <!-- Cabang 1 -->
-        <div class="bg-[#12141a] border-2 border-brand-gold/40 rounded-2xl p-6 flex flex-col justify-between shadow-xl">
-          <div>
-            <div class="flex items-center justify-between mb-3">
-              <h3 class="text-xl font-bold text-white font-condensed uppercase">Cabang I — Batu Ampar (Utama)</h3>
-              <span class="text-[10px] font-bold uppercase bg-brand-gold text-slate-950 px-2.5 py-0.5 rounded-full">Pusat</span>
-            </div>
-            
-            <p class="text-xs text-slate-300 mb-2 flex items-start gap-2">
-              <i class="fas fa-location-dot text-brand-gold mt-0.5 shrink-0"></i>
-              <span>Komplek Macadam, Batu Ampar, Batam 29444</span>
-            </p>
-            <p class="text-xs text-slate-300 mb-2 flex items-start gap-2">
-              <i class="fas fa-clock text-brand-gold mt-0.5 shrink-0"></i>
-              <span>Sen–Jum: 07.00–23.00 | Sab–Min: 07.00–22.00 WIB</span>
-            </p>
-            <p class="text-xs text-slate-300 flex items-start gap-2">
-              <i class="fab fa-whatsapp text-emerald-400 mt-0.5 shrink-0"></i>
-              <span>WA: +62 822-8668-0539</span>
-            </p>
-          </div>
-
-          <div class="flex gap-3 mt-6 pt-4 border-t border-white/10">
-            <a href="https://maps.app.goo.gl/dghCRwrLjwhYoE4H8" target="_blank" class="flex-1 py-2.5 rounded-xl bg-brand-gold text-slate-950 text-xs font-bold uppercase tracking-wider text-center hover:bg-brand-gold-hover transition-colors">
-              Buka di Maps
-            </a>
-            <a href="https://wa.me/6282286680539?text=Halo%20Hercules%20Batu%20Ampar" target="_blank" class="flex-1 py-2.5 rounded-xl bg-white/10 text-white text-xs font-bold uppercase tracking-wider text-center hover:bg-white/15 border border-white/20 transition-colors">
-              Chat WA
-            </a>
-          </div>
-        </div>
-
-        <!-- Cabang 2 -->
-        <div class="bg-[#12141a] border border-white/15 rounded-2xl p-6 flex flex-col justify-between shadow-xl">
-          <div>
-            <div class="flex items-center justify-between mb-3">
-              <h3 class="text-xl font-bold text-white font-condensed uppercase">Cabang II — Batu Besar</h3>
-              <span class="text-[10px] font-bold uppercase bg-white/10 text-slate-300 px-2.5 py-0.5 rounded-full">Nongsa</span>
-            </div>
-            
-            <p class="text-xs text-slate-300 mb-2 flex items-start gap-2">
-              <i class="fas fa-location-dot text-brand-gold mt-0.5 shrink-0"></i>
-              <span>Jl. Dang Merdu Blok K1 No. 1, Batu Besar, Batam</span>
-            </p>
-            <p class="text-xs text-slate-300 mb-2 flex items-start gap-2">
-              <i class="fas fa-clock text-brand-gold mt-0.5 shrink-0"></i>
-              <span>Sen–Jum: 07.00–23.00 | Sab–Min: 07.00–22.00 WIB</span>
-            </p>
-            <p class="text-xs text-slate-300 flex items-start gap-2">
-              <i class="fab fa-whatsapp text-emerald-400 mt-0.5 shrink-0"></i>
-              <span>WA: +62 822-8668-0539</span>
-            </p>
-          </div>
-
-          <div class="mt-6 pt-4 border-t border-white/10">
-            <a href="https://wa.me/6282286680539?text=Halo%20Hercules%20Batu%20Besar" target="_blank" class="block w-full py-2.5 rounded-xl bg-white/10 text-white text-xs font-bold uppercase tracking-wider text-center hover:bg-white/15 border border-white/20 transition-colors">
-              Hubungi Admin Cabang II
-            </a>
-          </div>
-        </div>
-
-      </div>
-
-    </section>
-    <!-- ==================== END 2 CABANG BATAM ==================== -->
-
-    <!-- ==================== INSTAGRAM COMMUNITY ==================== -->
-    <section class="py-10 border-t border-white/10" id="instagram-community">
-      <div class="bg-gradient-to-r from-[#171922] via-[#1f1a26] to-[#171922] border border-white/10 rounded-2xl p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-6">
-        <div class="flex items-center gap-4 text-center sm:text-left">
-          <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-amber-500 via-rose-500 to-purple-600 flex items-center justify-center text-white text-2xl shadow-lg shrink-0">
-            <i class="fab fa-instagram"></i>
-          </div>
-          <div>
-            <span class="text-pink-400 text-xs font-bold block">@hercules.fitnesscentre</span>
-            <h3 class="text-lg font-bold text-white">Komunitas Fitness Batam</h3>
-            <p class="text-slate-400 text-xs">1.860+ Followers • 800+ Postingan Tips &amp; Workout</p>
-          </div>
-        </div>
-
-        <a href="https://www.instagram.com/hercules.fitnesscentre/?hl=en" target="_blank" class="shrink-0 px-6 py-3 rounded-full bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-500 hover:to-purple-500 text-white text-xs font-bold uppercase tracking-wider transition-all inline-flex items-center gap-2 shadow-md">
-          <i class="fab fa-instagram"></i>
-          <span>Buka Instagram</span>
-        </a>
-      </div>
-    </section>
 
     <!-- ==================== FINAL CALL TO ACTION ==================== -->
     <section class="py-14 md:py-20 border-t border-white/10 text-center" id="about-cta">

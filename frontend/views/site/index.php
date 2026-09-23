@@ -499,11 +499,11 @@ $this->title = 'Hercules Fitness Centre';
 
   <!-- Intro Text Overlay -->
   <div id="services-intro" class="absolute inset-0 flex flex-col items-center justify-center z-50 pointer-events-none px-6 transition-all duration-500 bg-black/40">
-    <h2 class="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-tight mb-6 drop-shadow-[0_5px_15px_rgba(0,0,0,0.8)] text-center">
-      Exclusive Benefits <br class="sm:hidden"><span class="italic-serif font-normal text-brand-gold">Included in Your</span> Membership
+    <h2 class="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-tight mb-6 drop-shadow-[0_5px_15px_rgba(0,0,0,0.8)] text-center uppercase">
+      Keuntungan <span class="text-brand-gold">EKSKLUSIF</span> <br class="sm:hidden">DI DALAM <span class="text-brand-gold">MEMBERSHIP</span> ANDA
     </h2>
     <p class="text-slate-200 text-sm md:text-base leading-relaxed mb-8 drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)] max-w-lg text-center font-medium">
-      Program latihan kami didesain terstruktur agar Anda tetap fit, makan bergizi seimbang, dan merasa percaya diri setiap hari.
+      Nikmati akses fasilitas lengkap dan pendampingan terarah tanpa biaya tersembunyi sejak hari pertama bergabung.
     </p>
   </div>
 

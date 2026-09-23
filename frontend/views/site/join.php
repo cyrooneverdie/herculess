@@ -3,8 +3,48 @@ use yii\helpers\Url;
 use yii\helpers\Html;
 
 $this->title = 'Pendaftaran Membership - Hercules Fitness Centre';
+$this->registerCssFile('/metronic/assets/plugins/global/plugins.bundle.css');
+$this->registerJsFile('/metronic/assets/plugins/global/plugins.bundle.js', ['depends' => [\yii\web\JqueryAsset::class]]);
+$this->registerCss("
+/* Metronic Select2 Dark Theme Override */
+.select2-container--bootstrap5 .select2-selection {
+    background-color: #1c1c1c !important;
+    border: 1px solid #334155 !important;
+    border-radius: 0.5rem !important;
+    color: #ffffff !important;
+    height: 46px !important;
+    padding: 0 1rem !important;
+    box-shadow: none !important;
+    display: flex !important;
+    align-items: center !important;
+}
+.select2-container--bootstrap5 .select2-selection--single {
+    background-image: url(\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%2364748b' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e\") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 1rem center !important;
+    background-size: 16px 12px !important;
+}
+.select2-container--bootstrap5 .select2-selection__rendered {
+    color: #ffffff !important;
+    width: 100% !important;
+    margin: 0 !important;
+}
+.select2-container--bootstrap5 .select2-selection__placeholder {
+    color: #64748b !important;
+}
+.select2-container--bootstrap5 .select2-dropdown {
+    background-color: #1c1c1c !important;
+    border: 1px solid #334155 !important;
+}
+.select2-container--bootstrap5 .select2-results__option {
+    color: #cbd5e1 !important;
+}
+.select2-container--bootstrap5 .select2-results__option--highlighted {
+    background-color: #334155 !important;
+    color: #ffffff !important;
+}
+");
 ?>
-
 
 <div class="min-h-screen bg-white font-sans flex flex-col md:flex-row-reverse">
 
@@ -17,18 +57,25 @@ $this->title = 'Pendaftaran Membership - Hercules Fitness Centre';
   </div>
 
   <!-- Right Side: Form -->
-  <div class="w-full md:w-[50%] lg:w-[45%] bg-slate-50 flex items-center justify-center p-6 md:p-12">
+  <div class="w-full md:w-[50%] lg:w-[45%] bg-[#121212] flex items-center justify-center p-6 md:p-12">
     <div class="w-full max-w-xl md:p-8">
       
       <!-- Mobile Back Button -->
-      <a href="/" class="md:hidden inline-flex items-center gap-2 text-slate-500 hover:text-black placeholder-slate-400 transition-colors mb-6">
+      <a href="/" class="md:hidden inline-flex items-center gap-2 text-slate-400 hover:text-white placeholder-slate-400 transition-colors mb-6">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
         <span class="text-xs font-bold uppercase tracking-wider">Kembali</span>
       </a>
 
       <div class="mb-8">
-        <h2 class="text-2xl font-extrabold text-black placeholder-slate-400">Daftar Membership HERCULES FITNESS</h2>
-        <p class="text-slate-500 text-sm mt-1">Lengkapi data diri Anda di bawah ini.</p>
+        <div class="flex items-center gap-3 mb-6">
+          <img src="/img/hercules.jpeg" alt="Hercules Logo" class="w-12 h-12 rounded-full object-cover shadow-lg shadow-brand-gold/20">
+          <div class="flex flex-col -gap-1 leading-none">
+              <span class="text-white text-3xl font-logo-main uppercase tracking-wide">HERCULES</span>
+              <span class="text-brand-gold text-xs font-bold tracking-[0.25em] mt-0.5">FITNESS</span>
+          </div>
+        </div>
+        <h2 class="text-2xl font-extrabold text-white">Daftar Membership</h2>
+        <p class="text-slate-400 text-sm mt-1">Lengkapi data diri Anda di bawah ini.</p>
       </div>
 
       <form id="join-form" method="POST" action="<?= Url::to(['site/submit-join']) ?>" onsubmit="handleFormSubmit(event)" novalidate class="space-y-6">
@@ -37,36 +84,35 @@ $this->title = 'Pendaftaran Membership - Hercules Fitness Centre';
         <div class="grid grid-cols-1 gap-6">
           <!-- Full Name -->
           <div>
-            <label for="full_name" class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">Nama Lengkap <span class="text-red-500">*</span></label>
+            <label for="full_name" class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Nama Lengkap <span class="text-brand-gold">*</span></label>
             <input type="text" id="full_name" name="full_name" placeholder="Sesuai KTP" required
-                   class="w-full !bg-none bg-slate-50 border border-slate-300 rounded-lg px-4 py-3 text-black placeholder-slate-400 text-sm focus:outline-none focus:border-brand-gold focus:ring-1 focus:ring-brand-gold transition-colors">
+                   class="w-full !bg-none bg-[#1c1c1c] border border-slate-700 rounded-lg px-4 py-3 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-brand-gold focus:ring-1 focus:ring-brand-gold transition-colors">
           </div>
 
           <!-- WhatsApp -->
           <div>
-            <label for="whatsapp_no" class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">Nomor HP / WA <span class="text-red-500">*</span></label>
+            <label for="whatsapp_no" class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Nomor HP / WA <span class="text-brand-gold">*</span></label>
             <div class="relative flex">
-              <span class="inline-flex items-center px-3 bg-slate-100 border border-r-0 border-slate-300 rounded-l-lg text-black text-sm font-medium">+62</span>
+              <span class="inline-flex items-center px-3 bg-[#2a2a2a] border border-r-0 border-slate-700 rounded-l-lg text-white text-sm font-medium">+62</span>
               <input type="tel" id="whatsapp_no" name="whatsapp_no" placeholder="812345678" required
                      oninput="formatWhatsapp(this)"
-                     class="flex-1 bg-slate-50 border border-slate-300 rounded-r-lg px-4 py-3 text-black placeholder-slate-400 text-grey focus:outline-none focus:border-brand-gold focus:ring-1 focus:ring-brand-gold transition-colors">
+                     class="flex-1 bg-[#1c1c1c] border border-slate-700 rounded-r-lg px-4 py-3 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-brand-gold focus:ring-1 focus:ring-brand-gold transition-colors">
             </div>
           </div>
 
           <!-- Email -->
           <div>
-            <label for="email" class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">Email <span class="text-red-500">*</span></label>
+            <label for="email" class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Email <span class="text-brand-gold">*</span></label>
             <input type="email" id="email" name="email" placeholder="nama@email.com" required
-                   class="w-full !bg-none bg-slate-50 border border-slate-300 rounded-lg px-4 py-3 text-black placeholder-slate-400 text-sm focus:outline-none focus:border-brand-gold focus:ring-1 focus:ring-brand-gold transition-colors">
+                   class="w-full !bg-none bg-[#1c1c1c] border border-slate-700 rounded-lg px-4 py-3 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-brand-gold focus:ring-1 focus:ring-brand-gold transition-colors">
           </div>
 
-          <!-- Kota -->
           <div class="relative">
-            <label for="selected_city" class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">Kota <span class="text-red-500">*</span></label>
+            <label for="selected_city" class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Kota <span class="text-brand-gold">*</span></label>
             <div class="relative">
-              <select id="selected_city" name="selected_city" required onchange="updateBranches()"
-                      class="w-full !bg-none bg-slate-50 border border-slate-300 rounded-lg px-4 py-3 text-black placeholder-slate-400 text-sm focus:outline-none focus:border-brand-gold focus:ring-1 focus:ring-brand-gold transition-colors appearance-none">
-                <option value="" disabled selected hidden>Pilih Kota</option>
+              <select id="selected_city" name="selected_city" required data-control="select2" data-hide-search="true" data-placeholder="Pilih Kota"
+                      class="w-full !bg-none bg-[#1c1c1c] border border-slate-700 rounded-lg px-4 py-3 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-brand-gold focus:ring-1 focus:ring-brand-gold transition-colors">
+                <option></option>
                 <option value="Batam">Batam</option>
                 <option value="Bali">Bali</option>
               </select>
@@ -74,26 +120,24 @@ $this->title = 'Pendaftaran Membership - Hercules Fitness Centre';
             </div>
           </div>
 
-          <!-- Cabang -->
           <div class="relative">
-            <label for="selected_branch" class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">Pilih Cabang<span class="text-red-500">*</span></label>
+            <label for="selected_branch" class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Pilih Cabang<span class="text-brand-gold">*</span></label>
             <div class="relative">
-              <select id="selected_branch" name="selected_branch" required disabled
-                      class="w-full !bg-none bg-slate-50 border border-slate-300 rounded-lg px-4 py-3 text-black placeholder-slate-400 text-sm focus:outline-none focus:border-brand-gold focus:ring-1 focus:ring-brand-gold transition-colors appearance-none disabled:opacity-50 disabled:cursor-not-allowed">
-                <option value=""></option>
+              <select id="selected_branch" name="selected_branch" required disabled data-control="select2" data-hide-search="true" data-placeholder="Pilih kota terlebih dahulu"
+                      class="w-full !bg-none bg-[#1c1c1c] border border-slate-700 rounded-lg px-4 py-3 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-brand-gold focus:ring-1 focus:ring-brand-gold transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                <option></option>
               </select>
             </div>
-            <p class="text-xs text-slate-500 mt-2">Kamu tetap bisa akses semua lokasi klub</p>
+            <p class="text-xs text-slate-400 mt-2">Kamu tetap bisa akses semua lokasi klub</p>
           </div>
 
 
-          <!-- Target Fitness -->
           <div class="relative">
-            <label for="fitness_goal" class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">Target Fitness <span class="text-red-500">*</span></label>
+            <label for="fitness_goal" class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Target Fitness <span class="text-brand-gold">*</span></label>
             <div class="relative">
-              <select id="fitness_goal" name="fitness_goal" required
-                      class="w-full !bg-none bg-slate-50 border border-slate-300 rounded-lg px-4 py-3 text-black placeholder-slate-400 text-sm focus:outline-none focus:border-brand-gold focus:ring-1 focus:ring-brand-gold transition-colors appearance-none">
-                <option value="">Pilih Target Anda</option>
+              <select id="fitness_goal" name="fitness_goal" required data-control="select2" data-hide-search="true" data-placeholder="Pilih Target Anda"
+                      class="w-full !bg-none bg-[#1c1c1c] border border-slate-700 rounded-lg px-4 py-3 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-brand-gold focus:ring-1 focus:ring-brand-gold transition-colors">
+                <option></option>
                 <option value="Menurunkan Berat Badan / Fat Loss">Menurunkan Berat Badan / Fat Loss</option>
                 <option value="Membentuk Otot & Body Building">Membentuk Otot & Body Building</option>
                 <option value="Meningkatkan Stamina & Kebugaran">Meningkatkan Stamina & Kebugaran</option>
@@ -105,12 +149,12 @@ $this->title = 'Pendaftaran Membership - Hercules Fitness Centre';
           </div>
         </div>
 
-        <hr class="border-slate-100 my-6">
+        <hr class="border-slate-800 my-6">
 
         <!-- Agreement -->
         <div class="mt-6">
-          <label class="flex items-start gap-3 text-sm text-slate-500 cursor-pointer">
-            <input type="checkbox" required name="agreement" class="mt-1 w-4 h-4 rounded border-slate-300 text-brand-gold focus:ring-brand-gold transition-colors accent-brand-gold">
+          <label class="flex items-start gap-3 text-sm text-slate-400 cursor-pointer">
+            <input type="checkbox" required name="agreement" class="mt-1 w-4 h-4 rounded border-slate-700 bg-[#1c1c1c] text-brand-gold focus:ring-brand-gold transition-colors accent-brand-gold">
             <span>Saya menyetujui <a href="#" class="text-brand-gold font-semibold hover:underline">Syarat & Ketentuan</a> serta <a href="#" class="text-brand-gold font-semibold hover:underline">Kebijakan Privasi</a> dari Hercules Fitness.</span>
           </label>
         </div>
@@ -122,10 +166,14 @@ $this->title = 'Pendaftaran Membership - Hercules Fitness Centre';
         
         <!-- Back Link -->
         <div class="mt-6 text-center hidden md:block">
-          <a href="/" class="inline-flex items-center gap-2 text-slate-500 hover:text-black placeholder-slate-400 transition-colors">
+          <a href="/" class="inline-flex items-center gap-2 text-slate-400 hover:text-white placeholder-slate-400 transition-colors">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
             <span class="text-xs font-bold uppercase tracking-wider">Kembali ke Beranda</span>
           </a>
+        </div>
+        
+        <div class="mt-8 text-center pt-6 border-t border-slate-800">
+            <p class="text-sm text-slate-400">Sudah punya akun? <a href="<?= Url::to(['site/login']) ?>" class="text-brand-gold font-bold hover:underline">Masuk</a></p>
         </div>
       </form>
 
@@ -163,36 +211,49 @@ $this->title = 'Pendaftaran Membership - Hercules Fitness Centre';
 
 
 
-<script>
+<?php
+$js = <<<JS
 // === DYNAMIC BRANCHES ===
 const branchesByCity = {
-  'Batam': ['Batu Ampar', 'Batu Besar'],
+  'Batam': ['Batu Ampar', 'Batu Besar', 'MTC'],
   'Bali': ['Canggu', 'Kuta']
 };
 
-function updateBranches() {
-  const city = document.getElementById('selected_city').value;
-  
-  // Clear choices
-  window.branchChoice.clearChoices();
-  window.branchChoice.clearStore();
-  
-  if (city && branchesByCity[city]) {
-    const options = branchesByCity[city].map(branch => {
-      return { value: branch, label: branch };
-    });
-    
-    // Add placeholder
-    options.unshift({ value: '', label: '', disabled: true, selected: true });
-    
-    window.branchChoice.setChoices(options, 'value', 'label', true);
-    window.branchChoice.enable();
-  } else {
-    window.branchChoice.setChoices([{ value: '', label: '', disabled: true, selected: true }], 'value', 'label', true);
-    window.branchChoice.disable();
-  }
-}
+// Inisialisasi manual Select2 karena kita tidak meload scripts.bundle.js dari Metronic
+$('#selected_city, #fitness_goal, #selected_branch').select2({
+    minimumResultsForSearch: Infinity
+});
 
+$('#selected_city').on('change', function() {
+    const city = $(this).val();
+    const branchSelect = $('#selected_branch');
+    
+    branchSelect.empty();
+    
+    if (city && branchesByCity[city]) {
+        branchSelect.append(new Option('', '', true, true)); // placeholder
+        branchesByCity[city].forEach(branch => {
+            branchSelect.append(new Option(branch, branch));
+        });
+        branchSelect.prop('disabled', false);
+        branchSelect.select2({
+            minimumResultsForSearch: Infinity,
+            placeholder: 'Pilih Cabang'
+        });
+    } else {
+        branchSelect.append(new Option('', '', true, true));
+        branchSelect.prop('disabled', true);
+        branchSelect.select2({
+            minimumResultsForSearch: Infinity,
+            placeholder: 'Pilih kota terlebih dahulu'
+        });
+    }
+});
+JS;
+$this->registerJs($js);
+?>
+
+<script>
 // === WHATSAPP FORMAT ===
 function formatWhatsapp(input) {
   let val = input.value.replace(/[^0-9]/g, '');
@@ -238,32 +299,3 @@ document.addEventListener("DOMContentLoaded", function() {
 
 </script>
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Initialize Choices for all selects except city & branch
-    const selects = document.querySelectorAll('select:not(#selected_city):not(#selected_branch)');
-    selects.forEach(select => {
-        new Choices(select, {
-            searchEnabled: false,
-            itemSelectText: '',
-            shouldSort: false
-        });
-    });
-
-    // Initialize City
-    window.cityChoice = new Choices('#selected_city', {
-        searchEnabled: false,
-        itemSelectText: '',
-        shouldSort: false
-    });
-
-    // Initialize Branch (empty at first)
-    window.branchChoice = new Choices('#selected_branch', {
-        searchEnabled: false,
-        itemSelectText: '',
-        shouldSort: false,
-        placeholder: true,
-        placeholderValue: 'Pilih kota terlebih dahulu'
-    });
-});
-</script>

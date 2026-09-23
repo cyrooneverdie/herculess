@@ -1,5 +1,91 @@
 <?php
 use yii\helpers\Html;
+
+$this->registerCssFile('https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css');
+$this->registerCssFile('https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css');
+$this->registerJsFile('https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js', ['depends' => [\yii\web\JqueryAsset::class]]);
+$this->registerCss("
+/* Metronic Select2 Dark Theme Override */
+.select2-container--bootstrap-5 .select2-selection {
+    background-color: #1c1c1c !important;
+    border: 1px solid #334155 !important;
+    border-radius: 0.5rem !important;
+    color: #ffffff !important;
+    min-height: 46px !important;
+    padding: 0.35rem 1rem !important;
+    box-shadow: none !important;
+}
+.select2-container--bootstrap-5 .select2-selection--single {
+    background-image: url(\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%2364748b' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e\") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 1rem center !important;
+    background-size: 16px 12px !important;
+}
+.select2-container--bootstrap-5 .select2-selection__rendered {
+    color: #ffffff !important;
+}
+.select2-container--bootstrap-5 .select2-selection__placeholder {
+    color: #64748b !important;
+}
+.select2-container--bootstrap-5 .select2-dropdown {
+    background-color: #1c1c1c !important;
+    border: 1px solid #334155 !important;
+}
+.select2-container--bootstrap-5 .select2-results__option {
+    color: #cbd5e1 !important;
+}
+.select2-container--bootstrap-5 .select2-results__option--highlighted {
+    background-color: #334155 !important;
+    color: #ffffff !important;
+}
+
+/* Autofill Dark Theme Override */
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px #1c1c1c inset !important;
+    -webkit-text-fill-color: white !important;
+    transition: background-color 5000s ease-in-out 0s;
+}
+");
+$this->registerJs("
+    // Initialize Select2 for Goal
+    if ($('#m-goal').length) {
+        $('#m-goal').select2({
+            theme: 'bootstrap-5',
+            minimumResultsForSearch: Infinity,
+            placeholder: 'Pilih Target Anda',
+            width: '100%'
+        });
+    }
+
+    // Initialize City
+    if ($('#m-city').length) {
+        $('#m-city').select2({
+            theme: 'bootstrap-5',
+            minimumResultsForSearch: Infinity,
+            placeholder: 'Pilih Kota',
+            width: '100%'
+        });
+    }
+
+    // Initialize Branch
+    if ($('#m-branch').length) {
+        $('#m-branch').select2({
+            theme: 'bootstrap-5',
+            minimumResultsForSearch: Infinity,
+            placeholder: 'Pilih kota terlebih dahulu',
+            width: '100%'
+        });
+    }
+
+    
+    // Bind change event to city
+    $('#m-city').on('change', function() {
+        updateSidebarBranches();
+    });
+");
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -92,25 +178,25 @@ use yii\helpers\Html;
 <!-- Choices.js CSS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
 <style>
-/* Custom Choices.js Styling to match Tailwind form fields */
+/* Custom Choices.js Styling to match Tailwind form fields (Dark Mode) */
 .choices {
     margin-bottom: 0 !important;
 }
 .choices__inner {
-    background-color: #f8fafc !important;
-    border: 1px solid #cbd5e1 !important;
+    background-color: #1c1c1c !important;
+    border: 1px solid #334155 !important;
     border-radius: 0.5rem !important;
     padding: 0.35rem 1rem 0.1rem 1rem !important;
     min-height: 46px !important;
     font-size: 0.875rem !important;
-    color: #000000 !important;
+    color: #ffffff !important;
     box-shadow: none !important;
 }
 .choices.is-disabled .choices__inner,
 .choices.is-disabled .choices__inner .choices__item,
 .choices.is-disabled .choices__inner .choices__placeholder {
-    background-color: #f1f5f9 !important;
-    color: #94a3b8 !important; /* slate-400 placeholder color */
+    background-color: #121212 !important;
+    color: #64748b !important; /* slate-500 */
     cursor: not-allowed !important;
     opacity: 1 !important;
 }
@@ -119,22 +205,24 @@ use yii\helpers\Html;
     box-shadow: 0 0 0 1px #D4AF37 !important;
 }
 .choices__list--dropdown {
+    background-color: #1c1c1c !important;
     border-radius: 0.5rem !important;
-    border-color: #cbd5e1 !important;
-    box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1) !important;
+    border-color: #334155 !important;
+    box-shadow: 0 10px 15px -3px rgba(0,0,0,0.5) !important;
     margin-top: 4px;
     z-index: 50 !important;
 }
 .choices__list--dropdown .choices__item {
     font-size: 0.875rem !important;
     padding: 0.75rem 1rem !important;
+    color: #cbd5e1 !important; /* slate-300 */
 }
 .choices__list--dropdown .choices__item[data-value=""] {
     display: none !important;
 }
 .choices__list--dropdown .choices__item--selectable.is-highlighted {
-    background-color: #f1f5f9 !important;
-    color: #000000 !important;
+    background-color: #334155 !important;
+    color: #ffffff !important;
 }
 .choices[data-type*="select-one"]::after {
     border: none !important;
@@ -204,40 +292,40 @@ use yii\helpers\Html;
   </div>
 
   <!-- Form Body -->
-  <form id="member-form" onsubmit="handleMemberSubmit(event)" class="flex-1 px-8 py-6 flex flex-col gap-4 bg-white overflow-y-auto">
+  <form id="member-form" onsubmit="handleMemberSubmit(event)" class="flex-1 px-8 py-6 flex flex-col gap-4 bg-[#121212] overflow-y-auto">
 
     <!-- Full Name -->
     <div class="flex flex-col gap-1.5">
-      <label class="text-xs font-bold text-slate-700 uppercase tracking-wider" for="m-name">Nama Lengkap <span class="text-red-500">*</span></label>
+      <label class="text-xs font-bold text-slate-400 uppercase tracking-wider" for="m-name">Nama Lengkap <span class="text-red-500">*</span></label>
       <input id="m-name" type="text" required placeholder="Sesuai KTP"
-        class="w-full !bg-none px-4 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-sm text-slate-900 placeholder-slate-400
+        class="w-full !bg-none px-4 py-2.5 rounded-xl border border-slate-700 bg-[#1c1c1c] text-sm text-white placeholder-slate-500
                focus:outline-none focus:ring-2 focus:ring-brand-gold/40 focus:border-brand-gold transition"/>
     </div>
 
     <!-- Phone -->
     <div class="flex flex-col gap-1.5">
-      <label class="text-xs font-bold text-slate-700 uppercase tracking-wider" for="m-phone">Nomor HP / WA <span class="text-red-500">*</span></label>
+      <label class="text-xs font-bold text-slate-400 uppercase tracking-wider" for="m-phone">Nomor HP / WA <span class="text-red-500">*</span></label>
       <div class="flex">
-        <span class="inline-flex items-center px-3 bg-slate-100 border border-slate-200 border-r-0 rounded-l-xl text-slate-600 text-sm font-medium">+62</span>
+        <span class="inline-flex items-center px-3 bg-[#2a2a2a] border border-slate-700 border-r-0 rounded-l-xl text-white text-sm font-medium">+62</span>
         <input id="m-phone" type="tel" required placeholder="812345678"
-          class="flex-1 px-4 py-2.5 rounded-r-xl border border-slate-200 bg-slate-50 text-sm text-slate-900 placeholder-slate-400
+          class="flex-1 px-4 py-2.5 rounded-r-xl border border-slate-700 bg-[#1c1c1c] text-sm text-white placeholder-slate-500
                  focus:outline-none focus:ring-2 focus:ring-brand-gold/40 focus:border-brand-gold transition"/>
       </div>
     </div>
 
     <!-- Email -->
     <div class="flex flex-col gap-1.5">
-      <label class="text-xs font-bold text-slate-700 uppercase tracking-wider" for="m-email">Email <span class="text-red-500">*</span></label>
+      <label class="text-xs font-bold text-slate-400 uppercase tracking-wider" for="m-email">Email <span class="text-red-500">*</span></label>
       <input id="m-email" type="email" required placeholder="nama@email.com"
-        class="w-full !bg-none px-4 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-sm text-slate-900 placeholder-slate-400
+        class="w-full !bg-none px-4 py-2.5 rounded-xl border border-slate-700 bg-[#1c1c1c] text-sm text-white placeholder-slate-500
                focus:outline-none focus:ring-2 focus:ring-brand-gold/40 focus:border-brand-gold transition"/>
     </div>
 
     <!-- Kota -->
     <div class="flex flex-col gap-1.5">
-      <label class="text-xs font-bold text-slate-700 uppercase tracking-wider" for="m-city">Kota <span class="text-red-500">*</span></label>
+      <label class="text-xs font-bold text-slate-400 uppercase tracking-wider" for="m-city">Kota <span class="text-red-500">*</span></label>
       <select id="m-city" required onchange="updateSidebarBranches()"
-        class="w-full !bg-none px-4 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-sm text-slate-900 placeholder-slate-400
+        class="w-full !bg-none px-4 py-2.5 rounded-xl border border-slate-700 bg-[#1c1c1c] text-sm text-white placeholder-slate-500
                focus:outline-none focus:ring-2 focus:ring-brand-gold/40 focus:border-brand-gold transition appearance-none cursor-pointer">
         <option value="" disabled selected hidden>Pilih Kota</option>
         <option value="Batam">Batam</option>
@@ -247,9 +335,9 @@ use yii\helpers\Html;
 
     <!-- Cabang -->
     <div class="flex flex-col gap-1.5">
-      <label class="text-xs font-bold text-slate-700 uppercase tracking-wider" for="m-branch">Pilih Cabang <span class="text-red-500">*</span></label>
+      <label class="text-xs font-bold text-slate-400 uppercase tracking-wider" for="m-branch">Pilih Cabang <span class="text-red-500">*</span></label>
       <select id="m-branch" required disabled
-        class="w-full !bg-none px-4 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-sm text-slate-900 placeholder-slate-400
+        class="w-full !bg-none px-4 py-2.5 rounded-xl border border-slate-700 bg-[#1c1c1c] text-sm text-white placeholder-slate-500
                focus:outline-none focus:ring-2 focus:ring-brand-gold/40 focus:border-brand-gold transition appearance-none cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">
         <option value=""></option>
       </select>
@@ -258,9 +346,9 @@ use yii\helpers\Html;
 
     <!-- Target Fitness -->
     <div class="flex flex-col gap-1.5">
-      <label class="text-xs font-bold text-slate-700 uppercase tracking-wider" for="m-goal">Target Fitness <span class="text-red-500">*</span></label>
+      <label class="text-xs font-bold text-slate-400 uppercase tracking-wider" for="m-goal">Target Fitness <span class="text-red-500">*</span></label>
       <select id="m-goal" required
-        class="w-full !bg-none px-4 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-sm text-slate-900 placeholder-slate-400
+        class="w-full !bg-none px-4 py-2.5 rounded-xl border border-slate-700 bg-[#1c1c1c] text-sm text-white placeholder-slate-500
                focus:outline-none focus:ring-2 focus:ring-brand-gold/40 focus:border-brand-gold transition appearance-none cursor-pointer">
         <option value="">Pilih Target Anda</option>
         <option value="Menurunkan Berat Badan / Fat Loss">Menurunkan Berat Badan / Fat Loss</option>
@@ -289,14 +377,14 @@ use yii\helpers\Html;
   </form>
 
   <!-- Success State (hidden) -->
-  <div id="member-success" class="hidden flex-1 flex flex-col items-center justify-center px-8 py-16 text-center bg-white">
+  <div id="member-success" class="hidden flex-1 flex flex-col items-center justify-center px-8 py-16 text-center bg-[#121212]">
     <div class="w-20 h-20 rounded-full bg-green-100 flex items-center justify-center mb-6">
       <svg class="w-10 h-10 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
       </svg>
     </div>
-    <h3 class="text-2xl font-extrabold text-slate-900 mb-2">Pendaftaran Berhasil!</h3>
-    <p class="text-slate-500 text-sm mb-8">Tim kami akan segera menghubungi Anda dalam 1×24 jam untuk konfirmasi membership.</p>
+    <h3 class="text-2xl font-extrabold text-white mb-2">Pendaftaran Berhasil!</h3>
+    <p class="text-slate-400 text-sm mb-8">Tim kami akan segera menghubungi Anda melalui nomor WhatsApp yang terdaftar untuk konfirmasi membership.</p>
     <button onclick="closeMemberPanel()" class="px-8 py-3 rounded-full bg-brand-gold text-white font-bold text-sm hover:bg-brand-gold-hover transition">
       Kembali ke Halaman
     </button>
@@ -350,7 +438,7 @@ use yii\helpers\Html;
 </div> -->
 <!-- END: PromoBanner -->
 
-<?php if (Yii::$app->controller->route !== 'site/join' && Yii::$app->controller->route !== 'site/trial'): ?>
+<?php if (Yii::$app->controller->route !== 'site/join' && Yii::$app->controller->route !== 'site/trial' && Yii::$app->controller->route !== 'site/login' && Yii::$app->controller->route !== 'site/settings'): ?>
 <!-- BEGIN: MainHeader -->
 <header class="fixed top-0 left-0 right-0 z-50" data-purpose="site-navigation" id="main-header">
   <!-- Background Layer -->
@@ -368,9 +456,23 @@ use yii\helpers\Html;
 <!-- Desktop Nav Items -->
 <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-white/80">
 <a class="<?= Yii::$app->controller->action->id === 'membership' ? 'text-brand-gold font-bold' : 'hover:text-brand-gold' ?> transition-colors" href="<?= \yii\helpers\Url::to(['site/membership']) ?>">Membership</a>
-<a class="<?= Yii::$app->controller->action->id === 'about' ? 'text-brand-gold font-bold' : 'hover:text-brand-gold' ?> transition-colors" href="<?= \yii\helpers\Url::to(['site/about']) ?>">About Us</a>
-<a class="hover:text-brand-gold transition-colors" href="<?= \yii\helpers\Url::to(['site/index', '#' => 'layanan']) ?>">Services</a>
-<a class="hover:text-brand-gold transition-colors" href="<?= \yii\helpers\Url::to(['site/index', '#' => 'fasilitas']) ?>">Testimonials</a>
+<a class="<?= Yii::$app->controller->action->id === 'about' ? 'text-brand-gold font-bold' : 'hover:text-brand-gold' ?> transition-colors" href="<?= \yii\helpers\Url::to(['site/about']) ?>">Tentang Kami</a>
+<a class="<?= Yii::$app->controller->action->id === 'trainer' ? 'text-brand-gold font-bold' : 'hover:text-brand-gold' ?> transition-colors" href="<?= \yii\helpers\Url::to(['site/trainer']) ?>">Personal Trainer</a>
+<div class="relative group">
+  <a class="<?= in_array(Yii::$app->controller->action->id, ['location-batam', 'location-bali']) ? 'text-brand-gold font-bold' : 'hover:text-brand-gold' ?> transition-colors cursor-pointer inline-flex items-center gap-1" href="#">Lokasi
+    <svg class="w-3.5 h-3.5 transition-transform duration-200 group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+  </a>
+  <div class="absolute top-full left-1/2 -translate-x-1/2 pt-3 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+    <div class="bg-[#1a1a1a] border border-slate-700/60 rounded-xl shadow-2xl shadow-black/40 p-1.5 flex items-center gap-1 overflow-hidden">
+      <a href="<?= \yii\helpers\Url::to(['site/location-batam']) ?>" class="flex items-center gap-2 px-4 py-2.5 text-sm text-slate-300 hover:text-white hover:bg-slate-800/60 rounded-lg transition-colors whitespace-nowrap">
+        Batam
+      </a>
+      <a href="<?= \yii\helpers\Url::to(['site/location-bali']) ?>" class="flex items-center gap-2 px-4 py-2.5 text-sm text-slate-300 hover:text-white hover:bg-slate-800/60 rounded-lg transition-colors whitespace-nowrap">
+        Bali
+      </a>
+    </div>
+  </div>
+</div>
 </nav>
 <!-- Primary Action CTA & User Area -->
 <div class="flex items-center gap-6">
@@ -380,18 +482,24 @@ use yii\helpers\Html;
   ?>
 
   <?php if ($isGuest): ?>
-      <a id="header-cta-btn" class="group relative overflow-hidden px-6 py-2.5 md:px-8 md:py-3 rounded-full bg-brand-gold text-white text-xs font-bold tracking-wide transition-all duration-300 shadow-[0_10px_25px_rgba(212,175,55,0.4)] hover:shadow-[0_15px_30px_rgba(212,175,55,0.6)] hover:-translate-y-0.5 inline-flex items-center justify-center opacity-0 pointer-events-none -translate-y-2" href="<?= \yii\helpers\Url::to(['site/join']) ?>">
-        <span class="absolute inset-0 flex items-center justify-center pointer-events-none">
-          <span class="w-[300px] h-[300px] rounded-full bg-black/20 scale-0 group-hover:scale-100 transition-transform duration-500 ease-out z-0"></span>
-        </span>
-        <span class="relative z-10 uppercase">Daftar Membership</span>
-      </a>
+      <div id="header-auth-group" class="flex items-center gap-5 transition-all duration-300 opacity-0 pointer-events-none -translate-y-2">
+          <a class="group relative overflow-hidden px-6 py-2.5 md:px-8 md:py-3 rounded-full bg-brand-gold text-white text-xs font-bold tracking-wide transition-all duration-300 shadow-[0_10px_25px_rgba(212,175,55,0.4)] hover:shadow-[0_15px_30px_rgba(212,175,55,0.6)] hover:-translate-y-0.5 inline-flex items-center justify-center" href="<?= \yii\helpers\Url::to(['site/join']) ?>">
+            <span class="absolute inset-0 flex items-center justify-center pointer-events-none">
+              <span class="w-[300px] h-[300px] rounded-full bg-black/20 scale-0 group-hover:scale-100 transition-transform duration-500 ease-out z-0"></span>
+            </span>
+            <span class="relative z-10 uppercase">Daftar Membership</span>
+          </a>
+          <a href="<?= \yii\helpers\Url::to(['site/login']) ?>" class="text-xs font-bold uppercase tracking-wider text-slate-300 hover:text-white transition-colors">
+              Masuk
+          </a>
+      </div>
   <?php endif; ?>
 
   <!-- User Profile / Login -->
   <div class="flex items-center gap-3 <?php echo $isGuest ? '' : 'border-l border-white/20 pl-6'; ?>">
       <?php if (!$isGuest): 
-          $displayUsername = $isMockLogin ? 'AHMAD (TEST)' : Html::encode(Yii::$app->user->identity->username);
+          $mockName = Yii::$app->session->get('mock_user_name', 'AHMAD (TEST)');
+          $displayUsername = $isMockLogin ? $mockName : Html::encode(Yii::$app->user->identity->username);
       ?>
           <div class="relative group cursor-pointer">
               <div class="text-brand-gold hover:text-white transition-colors flex items-center gap-2">
@@ -401,13 +509,24 @@ use yii\helpers\Html;
               </div>
               
               <!-- Dropdown Menu -->
-              <div class="absolute right-0 mt-3 w-48 bg-white rounded-xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.3)] border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-right scale-95 group-hover:scale-100 z-50 overflow-hidden">
+              <div class="absolute right-0 mt-3 w-[280px] bg-white rounded-xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.3)] border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-right scale-95 group-hover:scale-100 z-50 overflow-hidden">
+                  <div class="p-4 border-b border-slate-100 bg-slate-50/50">
+                      <p class="text-sm font-extrabold text-slate-800 uppercase tracking-wider mb-1 truncate"><?= $displayUsername ?></p>
+                      <p class="text-xs text-slate-500 font-medium">VIP All-Access &bull; Cabang MTC</p>
+                      <div class="mt-2 inline-flex items-center gap-1.5 px-2 py-1 rounded bg-green-100 text-green-700 text-[10px] font-bold tracking-widest border border-green-200">
+                          <div class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></div>
+                          AKTIF - S/D 21 SEP 2027
+                      </div>
+                  </div>
                   <div class="p-2">
-                      <a href="#" class="flex items-center gap-3 px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 hover:text-brand-gold rounded-lg transition-colors">
-                          <i class="fa-solid fa-user-gear w-4 text-center"></i> Pengaturan
+                      <a href="<?= \yii\helpers\Url::to(['site/settings']) ?>" class="flex items-center gap-3 px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50 hover:text-brand-gold rounded-lg transition-colors">
+                          <i class="fa-solid fa-gear w-4 text-center text-slate-400"></i> Pengaturan Akun
+                      </a>
+                      <a href="#" class="flex items-center gap-3 px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50 hover:text-brand-gold rounded-lg transition-colors">
+                          <i class="fa-solid fa-id-card w-4 text-center text-slate-400"></i> Detail & QR Tiket
                       </a>
                       <div class="h-px bg-slate-100 my-1"></div>
-                      <?= Html::a('<i class="fa-solid fa-arrow-right-from-bracket w-4 text-center"></i> Logout', ['site/logout'], ['data' => ['method' => 'post'], 'class' => 'flex items-center gap-3 px-4 py-2.5 text-sm font-bold text-red-500 hover:bg-red-50 rounded-lg transition-colors']) ?>
+                      <?= Html::a('<i class="fa-solid fa-arrow-right-from-bracket w-4 text-center opacity-70"></i> Logout', ['site/logout'], ['data' => ['method' => 'post'], 'class' => 'flex items-center gap-3 px-3 py-2 text-sm font-bold text-red-500 hover:bg-red-50 rounded-lg transition-colors']) ?>
                   </div>
               </div>
           </div>
@@ -421,7 +540,7 @@ use yii\helpers\Html;
 
 <?= $content ?>
 
-<?php if (strpos(Yii::$app->request->url, '/join') === false && strpos(Yii::$app->request->url, '/trial') === false && Yii::$app->controller->route !== 'site/join' && Yii::$app->controller->route !== 'site/trial'): ?>
+<?php if (strpos(Yii::$app->request->url, '/join') === false && strpos(Yii::$app->request->url, '/trial') === false && strpos(Yii::$app->request->url, '/login') === false && strpos(Yii::$app->request->url, '/settings') === false && Yii::$app->controller->route !== 'site/join' && Yii::$app->controller->route !== 'site/trial' && Yii::$app->controller->route !== 'site/login' && Yii::$app->controller->route !== 'site/settings' && Yii::$app->controller->route !== 'site/location-batam' && Yii::$app->controller->route !== 'site/location-bali' && Yii::$app->controller->route !== 'site/location-detail'): ?>
 <!-- BEGIN: LocationMap -->
 <section class="relative bg-[#0d0f13] overflow-hidden" id="lokasi">
   <!-- Section Header -->
@@ -570,10 +689,10 @@ use yii\helpers\Html;
   <script>
     (function() {
       const branches = [
-        { name: 'Hercules Fitness — Batu Ampar', lat: 1.166568987207872, lng: 104.0090237477667, address: 'Jl. Engku Putri, Batu Ampar, Batam', hours: 'Senin–Jumat 07.00–24.00 | Sabtu–Minggu 07.00–23.00', region: 'batam' },
-        { name: 'Hercules Fitness — Batu Besar', lat: 1.1402346807509265, lng: 104.11291618410677, address: 'Jl. Barelang, Batu Besar, Batam', hours: 'Senin–Jumat 07.00–24.00 | Sabtu–Minggu 07.00–23.00', region: 'batam' },
-        { name: 'Hercules Fitness — Canggu', lat: -8.635666883372355, lng: 115.14250261072259, address: 'Jl. Raya Canggu, Bali', hours: 'Senin–Jumat 06.00–24.00 | Sabtu–Minggu 06.00–22.00', region: 'bali' },
-        { name: 'Hercules Fitness — Kuta', lat: -8.725696688872542, lng: 115.17655350887125, address: 'Jl. Raya Kuta No.20, Badung, Bali', hours: 'Senin–Jumat 06.00–24.00 | Sabtu–Minggu 06.00–22.00', region: 'bali' }
+        { name: 'Hercules Fitness — Batu Ampar', lat: 1.166568987207872, lng: 104.0090237477667, address: 'Jl. Engku Putri, Batu Ampar, Batam', hours: 'Senin–Jumat 07.00–24.00 | Sabtu–Minggu 07.00–23.00', region: 'batam', link: '<?= \yii\helpers\Url::to(['site/location-detail', 'id' => 'batu-ampar']) ?>' },
+        { name: 'Hercules Fitness — Batu Besar', lat: 1.1402346807509265, lng: 104.11291618410677, address: 'Jl. Barelang, Batu Besar, Batam', hours: 'Senin–Jumat 07.00–24.00 | Sabtu–Minggu 07.00–23.00', region: 'batam', link: '<?= \yii\helpers\Url::to(['site/location-detail', 'id' => 'batu-besar']) ?>' },
+        { name: 'Hercules Fitness — Canggu', lat: -8.635666883372355, lng: 115.14250261072259, address: 'Jl. Raya Canggu, Bali', hours: 'Senin–Jumat 06.00–24.00 | Sabtu–Minggu 06.00–22.00', region: 'bali', link: '<?= \yii\helpers\Url::to(['site/location-detail', 'id' => 'canggu']) ?>' },
+        { name: 'Hercules Fitness — Kuta', lat: -8.725696688872542, lng: 115.17655350887125, address: 'Jl. Raya Kuta No.20, Badung, Bali', hours: 'Senin–Jumat 06.00–24.00 | Sabtu–Minggu 06.00–22.00', region: 'bali', link: '<?= \yii\helpers\Url::to(['site/location-detail', 'id' => 'kuta']) ?>' }
       ];
 
       const map = L.map('hercules-map', {
@@ -592,7 +711,7 @@ use yii\helpers\Html;
 
       const goldIcon = L.divIcon({
         className: 'custom-marker',
-        html: `<div style="width:36px;height:36px;background:#D4AF37;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 0 20px rgba(212,175,55,0.5),0 4px 12px rgba(0,0,0,0.4);border:3px solid #fff"><i class='fas fa-dumbbell' style='color:#fff;font-size:14px'></i></div>`,
+        html: `<div style="width:36px;height:36px;background:#D4AF37;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 0 20px rgba(212,175,55,0.5),0 4px 12px rgba(0,0,0,0.4);border:3px solid #fff;overflow:hidden;"><img src="/img/hercules.jpeg" style="width:100%;height:100%;object-fit:cover;" /></div>`,
         iconSize: [36, 36],
         iconAnchor: [18, 18],
         popupAnchor: [0, -22]
@@ -604,7 +723,8 @@ use yii\helpers\Html;
           <div style="font-family:'Plus Jakarta Sans',sans-serif;min-width:200px">
             <h4 style="font-weight:800;font-size:13px;margin:0 0 4px 0;color:#0a0a0a">${b.name}</h4>
             <p style="font-size:11px;color:#64748B;margin:0 0 4px 0">${b.address}</p>
-            <p style="font-size:10px;color:#D4AF37;font-weight:600;margin:0">🕐 ${b.hours}</p>
+            <p style="font-size:10px;color:#D4AF37;font-weight:600;margin:0 0 10px 0">🕐 ${b.hours}</p>
+            <a href="${b.link}" style="display:block;text-align:center;background:#121212;color:#D4A017;font-size:11px;font-weight:700;text-decoration:none;padding:6px 0;border-radius:6px;text-transform:uppercase;letter-spacing:1px;transition:background 0.2s;">Lihat Detail Cabang</a>
           </div>
         `, { className: 'hercules-popup' });
         return marker;
@@ -617,7 +737,7 @@ use yii\helpers\Html;
         map.flyTo([b.lat, b.lng], 15, { duration: 1.2 });
         markers[index].openPopup();
 
-        document.querySelectorAll('.branch-btn').forEach((btn) => {
+        document.querySelectorAll('#branch-buttons-container .branch-btn').forEach((btn) => {
           const branchIndex = parseInt(btn.id.replace('branch-btn-', ''));
           const iconContainer = btn.querySelector('.w-8');
           const icon = btn.querySelector('i');
@@ -659,7 +779,7 @@ use yii\helpers\Html;
         });
 
         let firstBranchIndex = -1;
-        document.querySelectorAll('.branch-btn').forEach(btn => {
+        document.querySelectorAll('#branch-buttons-container .branch-btn').forEach(btn => {
           if(btn.dataset.region === region) {
             btn.classList.add('flex');
             btn.classList.remove('hidden');
@@ -731,6 +851,7 @@ use yii\helpers\Html;
       
 
 <!-- BEGIN: Footer -->
+<?php if (!isset($this->params['hideFooter']) || !$this->params['hideFooter']): ?>
 <footer class="bg-white border-t border-slate-200 pt-16 pb-0 relative overflow-hidden" data-purpose="page-footer">
 <div class="max-w-7xl mx-auto px-6">
 <!-- Footer Newsletter Compact Bar -->
@@ -750,7 +871,7 @@ use yii\helpers\Html;
               Berlangganan
             </button>
 </div>
-<p class="text-[11px] text-slate-400 mt-2">Dengan mendaftar, Anda menyetujui <a class="underline" href="#">Kebijakan Privasi</a> kami</p>
+<p class="text-[11px] text-slate-400 mt-2">Dengan mendaftar, Anda menyetujui <a class="underline hover:text-slate-600 transition" href="javascript:void(0)">Kebijakan Privasi</a> kami</p>
 </div>
 </div>
 <!-- Main Footer 4-Columns Grid -->
@@ -786,10 +907,13 @@ use yii\helpers\Html;
 <div>
 <p class="text-xs font-bold text-slate-900 uppercase tracking-wider mb-4">Beranda</p>
 <ul class="space-y-2.5 text-xs text-slate-600">
+<li><a class="hover:text-brand-gold transition" href="<?= \yii\helpers\Url::to(['site/index']) ?>">Beranda</a></li>
 <li><a class="hover:text-brand-gold transition" href="<?= \yii\helpers\Url::to(['site/membership']) ?>">Harga Membership</a></li>
-<li><a class="hover:text-brand-gold transition" href="<?= \yii\helpers\Url::to(['site/index', '#' => 'fasilitas']) ?>">Fasilitas & Testimoni</a></li>
-<li><a class="hover:text-brand-gold transition" href="<?= \yii\helpers\Url::to(['site/index', '#' => 'layanan']) ?>">Layanan Latihan</a></li>
+<li><a class="hover:text-brand-gold transition" href="<?= \yii\helpers\Url::to(['site/location-batam']) ?>">Lokasi Batam</a></li>
+<li><a class="hover:text-brand-gold transition" href="<?= \yii\helpers\Url::to(['site/location-bali']) ?>">Lokasi Bali</a></li>
+<li><a class="hover:text-brand-gold transition" href="<?= \yii\helpers\Url::to(['site/trainer']) ?>">Personal Trainer</a></li>
 <li><a class="hover:text-brand-gold transition" href="<?= \yii\helpers\Url::to(['site/join']) ?>">Daftar Member</a></li>
+<li><a class="hover:text-brand-gold transition" href="<?= \yii\helpers\Url::to(['site/login']) ?>">Masuk Akun</a></li>
 </ul>
 </div>
 <!-- Col 3: About -->
@@ -798,17 +922,17 @@ use yii\helpers\Html;
 <ul class="space-y-2.5 text-xs text-slate-600">
 <li><a class="hover:text-brand-gold transition" href="<?= \yii\helpers\Url::to(['site/about']) ?>">Profil Hercules Fitness</a></li>
 <li><a class="hover:text-brand-gold transition" href="<?= \yii\helpers\Url::to(['site/about', '#' => 'filosofi']) ?>">Kisah & Visi Misi</a></li>
-<li><a class="hover:text-brand-gold transition" href="<?= \yii\helpers\Url::to(['site/about', '#' => 'fasilitas-lengkap']) ?>">Peralatan & Fasilitas</a></li>
-<li><a class="hover:text-brand-gold transition" href="<?= \yii\helpers\Url::to(['site/about', '#' => 'ulasan-google']) ?>">Ulasan Google Maps (4.9★)</a></li>
-<li><a class="hover:text-brand-gold transition" href="<?= \yii\helpers\Url::to(['site/about', '#' => 'cabang-operasional']) ?>">Lokasi Cabang</a></li>
+<li><a class="hover:text-brand-gold transition" href="<?= \yii\helpers\Url::to(['site/about', '#' => 'professional-team']) ?>">Tim Profesional</a></li>
+<li><a class="hover:text-brand-gold transition" href="<?= \yii\helpers\Url::to(['site/about', '#' => 'ulasan-google']) ?>">Ulasan Member (4.9★)</a></li>
+<li><a class="hover:text-brand-gold transition" href="<?= \yii\helpers\Url::to(['site/contact']) ?>">Hubungi Kami</a></li>
 </ul>
 </div>
 <!-- Col 4: Contact -->
 <div>
 <p class="text-xs font-bold text-slate-900 uppercase tracking-wider mb-4">Kontak Kami</p>
 <ul class="space-y-2.5 text-xs text-slate-600">
-<li class="flex items-start gap-1.5"><span class="text-brand-gold mt-0.5">📍</span> Komplek Macadam, Batu Ampar, Batam</li>
-<li class="flex items-start gap-1.5"><span class="text-brand-gold mt-0.5">📍</span> Jl. Dang Merdu, Batu Besar, Batam</li>
+<li class="flex items-start gap-1.5"><span class="text-brand-gold mt-0.5">📍</span> <span class="font-medium">Batam:</span> Batu Ampar, Batu Besar, MTC</li>
+<li class="flex items-start gap-1.5"><span class="text-brand-gold mt-0.5">📍</span> <span class="font-medium">Bali:</span> Canggu, Kuta</li>
 <li class="flex items-start gap-1.5"><span class="text-brand-gold mt-0.5">📞</span> <a href="https://wa.me/6282286680539" class="hover:text-brand-gold transition" target="_blank">+62 822-8668-0539</a></li>
 <li class="flex items-start gap-1.5"><span class="text-brand-gold mt-0.5">📷</span> <a href="https://instagram.com/hercules.fitnesscentre" class="hover:text-brand-gold transition" target="_blank">@hercules.fitnesscentre</a></li>
 <li class="flex items-start gap-1.5"><span class="text-brand-gold mt-0.5">🕐</span> Sen–Jum: 07.00–23.00</li>
@@ -820,8 +944,8 @@ use yii\helpers\Html;
 <div class="pt-8 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-400 gap-4 mb-4 sm:mb-6">
 <p>© 2026 Hercules Fitness. Batam & Bali. Hak Cipta Dilindungi.</p>
 <div class="flex items-center gap-6">
-<a class="hover:text-slate-600 transition" href="#">Kebijakan Privasi</a>
-<a class="hover:text-slate-600 transition" href="#">Syarat & Ketentuan</a>
+<a class="hover:text-slate-600 transition" href="javascript:void(0)">Kebijakan Privasi</a>
+<a class="hover:text-slate-600 transition" href="javascript:void(0)">Syarat & Ketentuan</a>
 </div>
 </div>
 
@@ -832,6 +956,7 @@ use yii\helpers\Html;
   </span>
 </div>
 </footer>
+<?php endif; ?>
 <!-- END: Footer -->
 <!-- GSAP + ScrollTrigger + Draggable CDN -->
 <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
@@ -1492,8 +1617,8 @@ function closeProgramModal() {
   const headerBg = document.getElementById("header-bg");
   const programSection = document.getElementById("program");
   const waButton = document.getElementById("wa-button");
-  const heroSection = document.getElementById("beranda") || document.getElementById("about-hero");
-  const headerCtaBtn = document.getElementById("header-cta-btn");
+  const heroSection = document.getElementById("beranda") || document.getElementById("about-hero") || document.getElementById("trainer-hero");
+  const headerCtaBtn = document.getElementById("header-auth-group") || document.getElementById("header-cta-btn");
   
   const isTrialPage = window.location.href.includes('site%2Fjoin') || window.location.href.includes('site/join');
   const hasNoHero = !heroSection;
@@ -1549,68 +1674,33 @@ function closeProgramModal() {
   }, { passive: true });
 </script>
 
-<!-- Choices.js Library -->
-<script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Initialize Choices for Goal
-    if(document.getElementById('m-goal')) {
-        new Choices('#m-goal', {
-            searchEnabled: false,
-            itemSelectText: '',
-            shouldSort: false
-        });
-    }
-
-    // Initialize City
-    if(document.getElementById('m-city')) {
-        window.sidebarCityChoice = new Choices('#m-city', {
-            searchEnabled: false,
-            itemSelectText: '',
-            shouldSort: false,
-            placeholderValue: 'Pilih Kota'
-        });
-    }
-
-    // Initialize Branch
-    if(document.getElementById('m-branch')) {
-        window.sidebarBranchChoice = new Choices('#m-branch', {
-            searchEnabled: false,
-            itemSelectText: '',
-            shouldSort: false,
-            placeholder: true,
-            placeholderValue: 'Pilih kota terlebih dahulu'
-        });
-    }
-});
-
 // Update branches dynamically for the sidebar
 function updateSidebarBranches() {
-    if(!window.sidebarBranchChoice) return;
+    if (typeof $ === 'undefined') return;
+    const $branch = $('#m-branch');
+    if (!$branch.length) return;
     
-    const city = document.getElementById('m-city').value;
-    window.sidebarBranchChoice.clearChoices();
-    window.sidebarBranchChoice.clearStore();
+    const city = $('#m-city').val();
+    $branch.empty();
     
     if (city === 'Batam') {
-        window.sidebarBranchChoice.enable();
-        window.sidebarBranchChoice.setChoices([
-            { value: 'Batu Ampar', label: 'Batu Ampar', selected: false },
-            { value: 'Batu Besar', label: 'Batu Besar', selected: false },
-            { value: 'MTC', label: 'MTC', selected: false }
-        ], 'value', 'label', true);
+        $branch.prop('disabled', false);
+        $branch.append(new Option('', '', true, true));
+        $branch.append(new Option('Batu Ampar', 'Batu Ampar'));
+        $branch.append(new Option('Batu Besar', 'Batu Besar'));
+        $branch.append(new Option('MTC', 'MTC'));
     } else if (city === 'Bali') {
-        window.sidebarBranchChoice.enable();
-        window.sidebarBranchChoice.setChoices([
-            { value: 'Kuta', label: 'Kuta', selected: false },
-            { value: 'Canggu', label: 'Canggu', selected: false }
-        ], 'value', 'label', true);
+        $branch.prop('disabled', false);
+        $branch.append(new Option('', '', true, true));
+        $branch.append(new Option('Kuta', 'Kuta'));
+        $branch.append(new Option('Canggu', 'Canggu'));
     } else {
-        window.sidebarBranchChoice.setChoices([
-            { value: '', label: '', disabled: true, selected: true }
-        ], 'value', 'label', true);
-        window.sidebarBranchChoice.disable();
+        $branch.prop('disabled', true);
+        $branch.append(new Option('', '', true, true));
     }
+    
+    $branch.trigger('change');
 }
 </script>
 
