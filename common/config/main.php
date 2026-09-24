@@ -21,7 +21,7 @@ if (SERVER_NAME == "localhost") {
     defined('DB_HOST') or define('DB_HOST', "localhost");
     defined('DB_NAME') or define('DB_NAME', "pg_tot");
     defined('DB_USER') or define('DB_USER', "postgres");
-    defined('DB_PORT') or define('DB_PORT', "5432"); // Changed to default postgres port
+    defined('DB_PORT') or define('DB_PORT', "5433"); // Changed to default postgres port
     defined('DB_PASS') or define('DB_PASS', "postgres");
 
     // defined('DB_HOST') or define('DB_HOST', "103.127.99.237");
