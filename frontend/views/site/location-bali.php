@@ -116,9 +116,19 @@ $this->params['meta_description'] = 'Temukan lokasi cabang Hercules Fitness di B
       <h2 class="text-2xl sm:text-3xl font-extrabold text-white uppercase font-condensed mb-4">Tertarik Bergabung?</h2>
       <p class="text-slate-400 text-sm sm:text-base mb-8 max-w-md mx-auto">Daftar sekarang dan mulai latihan di cabang terdekat Anda.</p>
       <div class="flex flex-col sm:flex-row gap-4 justify-center">
-        <a href="<?= Url::to(['site/join']) ?>" class="px-8 py-3.5 rounded bg-brand-gold hover:bg-amber-400 text-slate-950 text-sm font-bold uppercase tracking-wide transition-colors inline-block">
-          Daftar Membership
-        </a>
+        <?php 
+        $isMockLogin = Yii::$app->session->has('mock_login');
+        $isGuest = Yii::$app->user->isGuest && !$isMockLogin;
+        if ($isGuest): 
+        ?>
+          <a href="<?= Url::to(['site/join']) ?>" class="px-8 py-3.5 rounded bg-brand-gold hover:bg-amber-400 text-slate-950 text-sm font-bold uppercase tracking-wide transition-colors inline-block">
+            Daftar Membership
+          </a>
+        <?php else: ?>
+          <a href="<?= Url::to(['site/membership']) ?>" class="px-8 py-3.5 rounded bg-brand-gold hover:bg-amber-400 text-slate-950 text-sm font-bold uppercase tracking-wide transition-colors inline-block">
+            Lihat Paket Membership
+          </a>
+        <?php endif; ?>
         <a href="<?= Url::to(['site/location-batam']) ?>" class="px-8 py-3.5 rounded border border-slate-600 text-slate-300 hover:text-white hover:border-white text-sm font-bold uppercase tracking-wide transition-colors inline-block">
           Lihat Cabang Batam →
         </a>
