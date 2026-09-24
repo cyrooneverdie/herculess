@@ -363,6 +363,11 @@ class SiteController extends Controller
         return $this->render('membership');
     }
 
+    public function actionCheckout()
+    {
+        return $this->render('checkout');
+    }
+
     /**
      * Displays personal trainer page.
      *

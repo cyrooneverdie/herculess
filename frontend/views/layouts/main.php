@@ -540,7 +540,7 @@ $this->registerJs("
 
 <?= $content ?>
 
-<?php if (strpos(Yii::$app->request->url, '/join') === false && strpos(Yii::$app->request->url, '/trial') === false && strpos(Yii::$app->request->url, '/login') === false && strpos(Yii::$app->request->url, '/settings') === false && Yii::$app->controller->route !== 'site/join' && Yii::$app->controller->route !== 'site/trial' && Yii::$app->controller->route !== 'site/login' && Yii::$app->controller->route !== 'site/settings' && Yii::$app->controller->route !== 'site/location-batam' && Yii::$app->controller->route !== 'site/location-bali' && Yii::$app->controller->route !== 'site/location-detail'): ?>
+<?php if (strpos(Yii::$app->request->url, '/join') === false && strpos(Yii::$app->request->url, '/trial') === false && strpos(Yii::$app->request->url, '/login') === false && strpos(Yii::$app->request->url, '/settings') === false && strpos(Yii::$app->request->url, '/membership') === false && strpos(Yii::$app->request->url, '/checkout') === false && Yii::$app->controller->route !== 'site/join' && Yii::$app->controller->route !== 'site/trial' && Yii::$app->controller->route !== 'site/login' && Yii::$app->controller->route !== 'site/settings' && Yii::$app->controller->route !== 'site/membership' && Yii::$app->controller->route !== 'site/checkout' && Yii::$app->controller->route !== 'site/location-batam' && Yii::$app->controller->route !== 'site/location-bali' && Yii::$app->controller->route !== 'site/location-detail'): ?>
 <!-- BEGIN: LocationMap -->
 <section class="relative bg-[#0d0f13] overflow-hidden" id="lokasi">
   <!-- Section Header -->

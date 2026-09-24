@@ -52,3 +52,4 @@ phpunit.phar
 /backend/web/robots.txt
 common/config/firebase.json
 backend/config/firebase.json
+session/*
