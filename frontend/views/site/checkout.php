@@ -4,6 +4,7 @@ use yii\helpers\Url;
 use yii\helpers\Html;
 
 $this->title = 'Checkout Membership - Hercules Fitness Centre';
+$this->params['hideFooter'] = true;
 
 $package = Yii::$app->request->get('package', 'std');
 $branch = Yii::$app->request->get('branch', 'batu-ampar');
@@ -351,6 +352,7 @@ $duration = Yii::$app->request->get('duration', '12');
     var currentBranch = params.get('branch') || 'batu-ampar';
     var durMap = { '6': 0, '12': 1, '18': 2 };
     var currentDurIndex = durMap[params.get('duration')] !== undefined ? durMap[params.get('duration')] : 1;
+    window.initialDurIndex = currentDurIndex;
     var promoDiscount = 0;
 
     function fmt(n) {
@@ -390,12 +392,26 @@ $duration = Yii::$app->request->get('duration', '12');
         });
 
         // Duration buttons
+        var durLabels = ['6 Bulan', '12 Bulan', '18 Bulan'];
         for (var i = 0; i < 3; i++) {
             var btn = document.getElementById('dur-' + i);
+            var isInitial = (i === window.initialDurIndex);
+            
             if (i === currentDurIndex) {
-                btn.className = 'dur-opt py-3 rounded-xl text-center border-2 transition-all text-sm font-bold border-brand-gold text-brand-gold bg-brand-gold/10';
+                btn.className = 'dur-opt py-3 rounded-xl flex flex-col items-center justify-center border-2 transition-all border-brand-gold text-brand-gold bg-brand-gold/10';
+                if (isInitial) {
+                    btn.innerHTML = '<span class="text-[9px] uppercase tracking-wider font-extrabold mb-0.5 opacity-80">Pilihan Awal</span><span class="block text-sm font-bold">' + durLabels[i] + '</span>';
+                } else {
+                    btn.innerHTML = '<span class="block text-sm font-bold">' + durLabels[i] + '</span>';
+                }
             } else {
-                btn.className = 'dur-opt py-3 rounded-xl text-center border-2 transition-all text-sm font-bold border-white/10 text-slate-400 hover:border-white/20';
+                btn.className = 'dur-opt py-3 rounded-xl flex flex-col items-center justify-center border-2 transition-all border-white/10 text-slate-400 hover:border-white/20';
+                if (isInitial) {
+                    // if user asked to keep it visible, but they said "teks penanda nya hilang". We'll hide it.
+                    btn.innerHTML = '<span class="block text-sm font-bold">' + durLabels[i] + '</span>';
+                } else {
+                    btn.innerHTML = '<span class="block text-sm font-bold">' + durLabels[i] + '</span>';
+                }
             }
         }
 
