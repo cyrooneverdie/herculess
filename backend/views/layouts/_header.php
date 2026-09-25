@@ -3,7 +3,14 @@
 use yii\helpers\Url;
 
 $userId = Yii::$app->user->id;
-$data = Yii::$app->db->createCommand("SELECT * FROM company WHERE userid = '$userId'")->queryAll();
+$roleId = Yii::$app->user->identity->role_id;
+$roleName = Yii::$app->function->findByField("enum_name", "enums", " and enum_type='users_roles' and enum_no = '$roleId'");
+
+if ($roleId == 0) {
+    $data = Yii::$app->db->createCommand("SELECT * FROM company")->queryAll();
+} else {
+    $data = Yii::$app->db->createCommand("SELECT * FROM company WHERE userid = '$userId'")->queryAll();
+}
 
 $companyData = Yii::$app->session->get('company_data');
 
@@ -19,8 +26,6 @@ if ($companyData) {
 
 $model = $activeCompanyExists ? $companyData : ($data[0] ?? null);
 
-$roleId = Yii::$app->user->identity->role_id;
-$roleName = Yii::$app->function->findByField("enum_name", "enums", " and enum_type='users_roles' and enum_no = '$roleId'");
 ?>
 <div id="kt_app_header" class="app-header" data-kt-sticky="true" data-kt-sticky-activate="{default: true, lg: true}"
     data-kt-sticky-name="app-header-minimize" data-kt-sticky-offset="{default: '200px', lg: '0'}"

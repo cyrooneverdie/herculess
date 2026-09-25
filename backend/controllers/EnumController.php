@@ -202,55 +202,59 @@ class EnumController extends Controller
 
     public function actionSelect()
     {
-        $q = $_POST['q'];
-        $id = $_POST['id'];
-        $enumtype = $_POST['enumtype'];
+        $q = Yii::$app->request->post('q');
+        $id = Yii::$app->request->post('id');
+        $enumtype = Yii::$app->request->post('enumtype');
+        $positionid = Yii::$app->request->post('positionid');
 
-        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
 
-        $out = ['totalcount' => 0, 'items' => ['id' => '', 'text' => '']];
-        $filter = " WHERE 1=1 AND A.status <> '10'"; //hapus enum_code_id karna error
-        $filter .= " AND A.enumtype = 'position'"; //baru
+        $out = ['totalcount' => 0, 'items' => []];
 
-        $limit = isset($_POST['limit']) ? $_POST['limit'] : 5;
-        $start = $limit * (isset($_POST['page']) ? ($_POST['page'] - 1) : 0);
-        $order = " order by A.enum_code_id asc limit $limit offset $start";
+        $limit = isset($_POST['limit']) ? (int) $_POST['limit'] : 5;
+        $page = isset($_POST['page']) ? (int) $_POST['page'] : 1;
+        $start = $limit * ($page > 0 ? $page - 1 : 0);
 
-        if (!empty($q)) {
-            $filter .= " AND ("
-                . "A.enum_code_id ilike '%" . $q . "%' "
-                . " or A.enumtext_id ilike '%" . $q . "%' "
-                . ") ";
+        if (!empty($id)) {
+            $sql = "SELECT A.enumid as id, A.enumtext_id || ' [' || A.enum_code_id || ']' as text
+                FROM enum A
+                WHERE A.status <> '10' AND A.enumid = '{$id}'";
+
+            $data = Yii::$app->db->createCommand($sql)->queryAll();
+
+            $out['items'] = array_values($data);
+            $out['totalcount'] = count($data);
+            return $out;
         }
 
+        $filter = " WHERE A.status <> '10'";
+
         if (!empty($enumtype)) {
-            $filter .= " AND A.enumtype = '" . addslashes($enumtype) . "'";
+            $filter .= " AND A.enumtype = '{$enumtype}'";
+        } else {
+            $filter .= " AND A.enumtype = 'position'"; // Default jika enumtype kosong
+        }
+
+        if (!empty($q)) {
+            $filter .= " AND (A.enum_code_id ILIKE '%{$q}%' OR A.enumtext_id ILIKE '%{$q}%')";
         }
 
         if (!empty($positionid)) {
-            $filter .= " AND A.positionid = 'position." . addslashes($positionid) . "'";
+            $filter .= " AND A.positionid = 'position.{$positionid}'";
         }
 
+        $sqlBase = "SELECT A.enumid as id, A.enumtext_id || ' [' || A.enum_code_id || ']' as text
+                FROM enum A {$filter}";
 
-        if (!is_null($id)) {
-            $filter = " AND (A.enumid = '" . addslashes($id) . "'";
-        } else {
-        }
+        $sqlCount = "SELECT COUNT(*) FROM ({$sqlBase}) as temp";
+        $sqlQuery = $sqlBase . " ORDER BY A.enum_code_id ASC LIMIT {$limit} OFFSET {$start}";
 
-        $sql = "SELECT
-				A.enumid as id,  A.enumtext_id ||' ['||A.enum_code_id ||']'as text
-                FROM enum A
-                $filter";
-
-        $sqlcount = "SELECT COUNT(*) FROM ($sql) as temp";
-        $query = $sql . $order;
-        // var_dump($query);die();
-        // echo $query;exit;
-        $data = Yii::$app->db->createCommand($query)->queryAll();
-        $count = Yii::$app->db->createCommand($sqlcount)->queryScalar();
+        $data = Yii::$app->db->createCommand($sqlQuery)->queryAll();
+        $count = (int) Yii::$app->db->createCommand($sqlCount)->queryScalar();
 
         $out['items'] = array_values($data);
         $out['totalcount'] = $count;
+
         return $out;
     }
 

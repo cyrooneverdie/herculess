@@ -61,22 +61,21 @@ class ContactController extends BaseController
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['index', 'view', 'detail'],
+                        'actions' => ['view', 'detail'],
                         'allow' => true,
                         'roles' => ['@'],
                         'matchCallback' => function () {
                             return (bool) Yii::$app->enum->isaksestype("contacttype", "lihat");
                         }
                     ],
-                    [
-                        'actions' => ['create', 'createem'],
-                        'allow' => true,
-                        'roles' => ['@'],
-                        'matchCallback' => function () {
-                            return (bool) Yii::$app->enum->isaksestype("contacttype", "tambah");
-                        }
-                    ],
-                    // 3. Rule Hak Akses UBAH
+                    // [
+                    //     'actions' => ['create', 'createem'],
+                    //     'allow' => true,
+                    //     'roles' => ['@'],
+                    //     'matchCallback' => function () {
+                    //         return (bool) Yii::$app->enum->isaksestype("contacttype", "tambah");
+                    //     }
+                    // ],
                     // [
                     //     'actions' => ['update', 'updateem', 'update2', 'updatestatus'],
                     //     'allow' => true,
@@ -95,8 +94,12 @@ class ContactController extends BaseController
                     // ],
                     [
                         'actions' => [
+                            'create',
+                            'createem',
+                            'index',
                             'list',
                             'personlist',
+                            'select',
                             'delete',
                             'deletemassal',
                             'genderlist',
@@ -985,13 +988,13 @@ class ContactController extends BaseController
         $model->jobend = $model->jobend == null ? null : Yii::$app->formatter->asDate($model->jobend, "dd/MM/yyyy");
 
         if (Yii::$app->request->isAjax) {
-            return $this->renderAjax('_form', [
+            return $this->renderAjax('_forme', [
                 'model' => $model,
                 'modeldocument' => (empty($modeldocuments)) ? [new Document()] : $modeldocuments,
                 'isajax' => true
             ]);
         } else {
-            return $this->render('_form', [
+            return $this->render('_forme', [
                 'model' => $model,
                 'modeldocument' => (empty($modeldocuments)) ? [new Document()] : $modeldocuments,
                 'isajax' => false
