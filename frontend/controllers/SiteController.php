@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace frontend\controllers;
 
 use common\models\LoginForm;
+use common\models\User;
 use frontend\models\ContactForm;
 use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResendVerificationEmailForm;
@@ -159,19 +160,34 @@ class SiteController extends Controller
         if ($request->isPost) {
             $postData = $request->post();
             
-            // TODO: Tim Backend - Tambahkan logika validasi & simpan ke DB di sini
+            $name = $postData['name'] ?? 'Member Baru';
+            $username = $postData['username'] ?? '';
+            $email = $postData['email'] ?? '';
+            $password = $postData['password'] ?? '';
+            $whatsapp = $postData['whatsapp_no'] ?? '';
             
-            // Simulasi login setelah daftar
-            Yii::$app->session->set('mock_login', true);
-            Yii::$app->session->set('mock_user_name', $postData['full_name'] ?? 'Member Baru');
-
-            // Simulasi sukses (kembalikan data ke view via Flash)
-            Yii::$app->session->setFlash('success_join', [
-                'name' => $postData['full_name'] ?? 'Member',
-                'branch' => 'Cabang ' . ($postData['selected_branch'] ?? '-'),
-                'phone' => '+62 ' . ($postData['whatsapp_no'] ?? '-'),
-                'ticket_code' => 'HERC-' . rand(1000, 9999),
-            ]);
+            $user = new User();
+            $user->scenario = 'createUser';
+            $user->name = $name;
+            $user->username = $username;
+            $user->email = $email;
+            $user->password = $password;
+            $user->status = User::STATUS_INACTIVE; // Pendaftar baru belum aktif membership-nya
+            $user->generateAuthKey();
+            
+            if ($user->save()) {
+                Yii::$app->user->login($user, 3600 * 24 * 30);
+                
+                Yii::$app->session->setFlash('success_join', [
+                    'name' => $name,
+                    'branch' => '-',
+                    'phone' => '+62 ' . $whatsapp,
+                    'ticket_code' => 'HERC-' . rand(1000, 9999),
+                ]);
+            } else {
+                $errorMsg = current($user->getFirstErrors());
+                Yii::$app->session->setFlash('error', $errorMsg ?: 'Gagal menyimpan pendaftaran.');
+            }
             
             return $this->redirect(['site/join']);
         }

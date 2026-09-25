@@ -3,6 +3,15 @@ use yii\helpers\Html;
 
 $this->title = 'Pengaturan Akun - Hercules Fitness';
 $this->params['hideFooter'] = true;
+
+$currentUser = Yii::$app->user->identity;
+$displayName = $currentUser ? Html::encode($currentUser->name) : 'Guest';
+$displayUsername = $currentUser ? Html::encode($currentUser->username) : 'guest';
+$displayEmail = $currentUser ? Html::encode($currentUser->email) : 'guest@email.com';
+$isActive = $currentUser && $currentUser->status == \common\models\User::STATUS_ACTIVE;
+
+// Mock untuk tipe paket (bisa 'VIP' atau 'STANDARD'), nanti dihubungkan ke field tabel
+$membershipType = 'VIP'; 
 ?>
 
 <div class="min-h-screen bg-[#121212] pt-24 pb-12 relative overflow-hidden">
@@ -38,8 +47,9 @@ $this->params['hideFooter'] = true;
                             <i class="fa-solid fa-pen"></i>
                         </button>
                     </div>
-                    <h3 class="text-white font-extrabold text-sm tracking-wide"><?= Html::encode(Yii::$app->session->get('mock_user_name', 'Ahmad Fauzi')) ?></h3>
-                    <p class="text-brand-gold text-xs mt-1">Member VIP</p>
+                    <h3 class="text-white font-extrabold text-sm tracking-wide"><?= $displayName ?></h3>
+                    <p class="text-slate-400 text-xs"><?= $displayUsername ?></p>
+                    <p class="text-brand-gold text-xs mt-1"><?= $isActive ? $membershipType : 'Non-Member' ?></p>
                 </div>
 
                 <nav class="flex flex-col gap-1 text-sm font-semibold pl-4">
@@ -72,12 +82,17 @@ $this->params['hideFooter'] = true;
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-10">
                             <div class="md:col-span-2">
                                 <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Username</label>
-                                <input type="text" value="<?= Html::encode(Yii::$app->session->get('mock_user_name', 'Ahmad Fauzi')) ?>" class="w-full bg-transparent border-0 border-b border-slate-700 px-0 py-2 text-slate-300 placeholder-slate-600 text-sm focus:outline-none focus:ring-0 focus:border-brand-gold transition-colors">
+                                <input type="text" value="<?= $displayUsername ?>" class="w-full bg-transparent border-0 border-b border-slate-700 px-0 py-2 text-slate-300 placeholder-slate-600 text-sm focus:outline-none focus:ring-0 focus:border-brand-gold transition-colors">
+                            </div>
+
+                            <div class="md:col-span-2">
+                                <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Nama Lengkap</label>
+                                <input type="text" value="<?= $displayName ?>" class="w-full bg-transparent border-0 border-b border-slate-700 px-0 py-2 text-slate-300 placeholder-slate-600 text-sm focus:outline-none focus:ring-0 focus:border-brand-gold transition-colors">
                             </div>
 
                             <div class="md:col-span-2">
                                 <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Email</label>
-                                <input type="email" value="ahmad@email.com" class="w-full bg-transparent border-0 border-b border-slate-700 px-0 py-2 text-slate-300 placeholder-slate-600 text-sm focus:outline-none focus:ring-0 focus:border-brand-gold transition-colors">
+                                <input type="email" value="<?= $displayEmail ?>" class="w-full bg-transparent border-0 border-b border-slate-700 px-0 py-2 text-slate-300 placeholder-slate-600 text-sm focus:outline-none focus:ring-0 focus:border-brand-gold transition-colors">
                             </div>
                             
                             <div>
@@ -95,6 +110,12 @@ $this->params['hideFooter'] = true;
                                 <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Nomor HP / WA</label>
                                 <input type="text" value="+62 812 3456 7890" class="w-full bg-transparent border-0 border-b border-slate-700 px-0 py-2 text-slate-300 placeholder-slate-600 text-sm focus:outline-none focus:ring-0 focus:border-brand-gold transition-colors">
                             </div>
+
+                            <div class="md:col-span-2">
+                                <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Target Fitness</label>
+                                <input type="text" value="Menurunkan Berat Badan / Fat Loss" disabled class="w-full bg-transparent border-0 border-b border-slate-700 px-0 py-2 text-slate-500 text-sm cursor-not-allowed">
+                                <p class="text-[10px] text-slate-500 mt-1">Target fitness tidak dapat diubah melalui pengaturan.</p>
+                            </div>
                         </div>
                         
                         <div id="action-buttons" class="pt-8 flex gap-4 hidden transition-all duration-300">
@@ -107,40 +128,56 @@ $this->params['hideFooter'] = true;
 
                 <!-- Membership Status Card -->
                 <div id="tab-membership" class="tab-content hidden bg-slate-900 border border-slate-800 rounded-2xl p-6 md:p-8 shadow-xl relative overflow-hidden">
-                    <div class="absolute top-0 right-0 p-8 opacity-10">
-                        <i class="fa-solid fa-crown text-8xl text-brand-gold"></i>
-                    </div>
-                    <div class="relative z-10">
-                        <div class="flex items-center justify-between mb-2">
-                            <h2 class="text-brand-gold font-bold uppercase tracking-widest text-xs">Status Membership</h2>
-                            <span class="inline-flex items-center gap-1.5 px-2 py-1 rounded bg-green-500/20 text-green-400 text-[10px] font-bold tracking-widest border border-green-500/30">
-                                <div class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></div>
-                                AKTIF
-                            </span>
+                    <?php if ($isActive): ?>
+                        <div class="absolute top-0 right-0 p-8 opacity-10">
+                            <i class="fa-solid fa-crown text-8xl text-brand-gold"></i>
                         </div>
-                        <h3 class="text-2xl font-extrabold text-white">VIP All-Access</h3>
-                        <p class="text-slate-400 text-sm mt-1">Berlaku di seluruh cabang Hercules Fitness</p>
-                        
-                        <div class="mt-8 pt-6 border-t border-white/10 flex flex-wrap gap-x-12 gap-y-4">
-                            <div>
-                                <p class="text-[10px] text-slate-500 font-bold uppercase tracking-wider mb-1">Masa Berlaku s/d</p>
-                                <p class="text-white font-semibold">21 Sep 2027</p>
+                        <div class="relative z-10">
+                            <div class="flex items-center justify-between mb-2">
+                                <h2 class="text-brand-gold font-bold uppercase tracking-widest text-xs">Status Membership</h2>
+                                <span class="inline-flex items-center gap-1.5 px-2 py-1 rounded bg-green-500/20 text-green-400 text-[10px] font-bold tracking-widest border border-green-500/30">
+                                    <div class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></div>
+                                    AKTIF
+                                </span>
                             </div>
-                            <div>
-                                <p class="text-[10px] text-slate-500 font-bold uppercase tracking-wider mb-1">Cabang Pendaftaran</p>
-                                <p class="text-white font-semibold">Batam (MTC)</p>
+                            <h3 class="text-2xl font-extrabold text-white"><?= $membershipType ?> All-Access</h3>
+                            <p class="text-slate-400 text-sm mt-1">Berlaku di seluruh cabang Hercules Fitness</p>
+                            
+                            <div class="mt-8 pt-6 border-t border-white/10 flex flex-wrap gap-x-12 gap-y-4">
+                                <div>
+                                    <p class="text-[10px] text-slate-500 font-bold uppercase tracking-wider mb-1">Masa Berlaku s/d</p>
+                                    <p class="text-white font-semibold">21 Sep 2027</p>
+                                </div>
+                                <div>
+                                    <p class="text-[10px] text-slate-500 font-bold uppercase tracking-wider mb-1">Cabang Pendaftaran</p>
+                                    <p class="text-white font-semibold">Batam (MTC)</p>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-8 flex gap-3">
+                                <button class="px-5 py-2.5 rounded-xl bg-white text-slate-900 font-extrabold text-xs uppercase tracking-widest hover:bg-slate-100 transition-colors">
+                                    Perpanjang
+                                </button>
+                                <button class="px-5 py-2.5 rounded-xl border border-slate-700 text-white font-extrabold text-xs uppercase tracking-widest hover:bg-slate-800 transition-colors">
+                                    Lihat Tagihan
+                                </button>
                             </div>
                         </div>
-                        
-                        <div class="mt-8 flex gap-3">
-                            <button class="px-5 py-2.5 rounded-xl bg-white text-slate-900 font-extrabold text-xs uppercase tracking-widest hover:bg-slate-100 transition-colors">
-                                Perpanjang
-                            </button>
-                            <button class="px-5 py-2.5 rounded-xl border border-slate-700 text-white font-extrabold text-xs uppercase tracking-widest hover:bg-slate-800 transition-colors">
-                                Lihat Tagihan
-                            </button>
+                    <?php else: ?>
+                        <div class="absolute top-0 right-0 p-8 opacity-5">
+                            <i class="fa-solid fa-ban text-8xl text-slate-500"></i>
                         </div>
-                    </div>
+                        <div class="relative z-10 flex flex-col items-center justify-center text-center py-10">
+                            <div class="w-16 h-16 rounded-full bg-[#1c1c1c] border border-slate-800 flex items-center justify-center mb-5">
+                                <i class="fa-solid fa-id-card text-2xl text-slate-500"></i>
+                            </div>
+                            <h3 class="text-2xl font-extrabold text-white mb-2">Belum Berlangganan</h3>
+                            <p class="text-slate-400 text-sm max-w-sm mx-auto mb-8">Anda belum memiliki paket membership aktif. Segera hubungi admin untuk melakukan aktivasi dan nikmati fasilitas lengkap kami.</p>
+                            <a href="https://wa.me/6281234567890" target="_blank" class="px-8 py-3.5 rounded-xl bg-brand-gold hover:bg-brand-gold-hover text-white font-bold text-xs uppercase tracking-widest transition-all duration-300 shadow-lg shadow-brand-gold/30 hover:shadow-xl hover:-translate-y-0.5 inline-flex items-center gap-2">
+                                <i class="fa-brands fa-whatsapp text-lg"></i> Hubungi Admin
+                            </a>
+                        </div>
+                    <?php endif; ?>
                 </div>
 
             </div>
