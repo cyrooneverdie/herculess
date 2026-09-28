@@ -144,6 +144,57 @@ class SiteController extends Controller
         if (Yii::$app->user->isGuest && !Yii::$app->session->has('mock_login')) {
             return $this->redirect(['site/login']);
         }
+        
+        $request = Yii::$app->request;
+        $user = Yii::$app->user->identity;
+
+        if ($request->isPost && $user) {
+            $post = $request->post();
+            
+            if (isset($post['username'])) $user->username = $post['username'];
+            if (isset($post['name'])) $user->name = $post['name'];
+            if (isset($post['email'])) $user->email = $post['email'];
+            if (isset($post['contact_id'])) $user->contact_id = $post['contact_id'];
+            
+            $base64 = $request->post('avatar_base64');
+            if (!empty($base64)) {
+                // Determine mime type and process
+                if (preg_match('/^data:image\/(\w+);base64,/', $base64, $type)) {
+                    $data = substr($base64, strpos($base64, ',') + 1);
+                    $ext = strtolower($type[1]);
+                    
+                    if (in_array($ext, ['jpg', 'jpeg', 'png', 'webp'])) {
+                        $data = str_replace(' ', '+', $data);
+                        $imageData = base64_decode($data);
+                        
+                        // userid from User model
+                        $userId = isset($user->userid) ? $user->userid : time();
+                        $fileName = 'avatar_' . $userId . '_' . time() . '.' . $ext;
+                        $uploadDir = Yii::getAlias('@frontend/web/uploads/avatars');
+                        
+                        if (!is_dir($uploadDir)) {
+                            \yii\helpers\FileHelper::createDirectory($uploadDir, 0775, true);
+                        }
+                        
+                        // Delete old avatar if exists
+                        if ($user->avatar && file_exists(Yii::getAlias('@frontend/web') . $user->avatar)) {
+                            @unlink(Yii::getAlias('@frontend/web') . $user->avatar);
+                        }
+                        
+                        $filePath = $uploadDir . '/' . $fileName;
+                        file_put_contents($filePath, $imageData);
+                        
+                        $user->avatar = '/uploads/avatars/' . $fileName;
+                    }
+                }
+            }
+            
+            $user->save(false);
+            
+            Yii::$app->session->setFlash('success', 'Profil berhasil diperbarui!');
+            return $this->refresh();
+        }
+
         return $this->render('settings');
     }
 

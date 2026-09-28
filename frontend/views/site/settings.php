@@ -8,7 +8,9 @@ $currentUser = Yii::$app->user->identity;
 $displayName = $currentUser ? Html::encode($currentUser->name) : 'Guest';
 $displayUsername = $currentUser ? Html::encode($currentUser->username) : 'guest';
 $displayEmail = $currentUser ? Html::encode($currentUser->email) : 'guest@email.com';
+$contactId = $currentUser && $currentUser->contact_id ? Html::encode($currentUser->contact_id) : '';
 $isActive = $currentUser && $currentUser->status == \common\models\User::STATUS_ACTIVE;
+$avatar = $currentUser && $currentUser->avatar ? $currentUser->avatar : '';
 
 // Mock untuk tipe paket (bisa 'VIP' atau 'STANDARD'), nanti dihubungkan ke field tabel
 $membershipType = 'VIP'; 
@@ -39,12 +41,14 @@ $membershipType = 'VIP';
             <!-- Sidebar Navigation -->
             <div class="w-full lg:w-1/4">
                 <div class="flex flex-col items-center mb-10">
-                    <div class="relative mb-4">
-                        <div class="w-24 h-24 rounded-full bg-[#1c1c1c] border border-slate-800 flex items-center justify-center text-slate-400 text-4xl">
-                            <i class="fa-solid fa-user"></i>
+                    <div class="relative mb-4 group cursor-pointer" onclick="document.getElementById('avatar-upload').click()">
+                        <input type="file" id="avatar-upload" accept="image/png, image/jpeg, image/webp" class="hidden">
+                        <div class="w-24 h-24 rounded-full bg-[#1c1c1c] border border-slate-800 flex items-center justify-center text-slate-400 text-4xl overflow-hidden relative">
+                            <img id="avatar-preview" src="<?= $avatar ?>" alt="Profile" class="w-full h-full object-cover <?= $avatar ? '' : 'hidden' ?>">
+                            <i id="avatar-placeholder" class="fa-solid fa-user <?= $avatar ? 'hidden' : '' ?>"></i>
                         </div>
-                        <button class="absolute bottom-0 right-1 w-7 h-7 bg-[#121212] border border-slate-700 rounded-full flex items-center justify-center text-white text-[10px] hover:text-brand-gold transition-colors">
-                            <i class="fa-solid fa-pen"></i>
+                        <button type="button" class="absolute bottom-0 right-1 w-7 h-7 bg-[#121212] border border-slate-700 rounded-full flex items-center justify-center text-white text-[10px] group-hover:text-brand-gold transition-colors pointer-events-none">
+                            <i class="fa-solid fa-camera"></i>
                         </button>
                     </div>
                     <h3 class="text-white font-extrabold text-sm tracking-wide"><?= $displayName ?></h3>
@@ -78,37 +82,35 @@ $membershipType = 'VIP';
                 <div id="tab-profil" class="tab-content bg-[#1c1c1c] border border-slate-800 rounded-3xl p-8 lg:p-10 shadow-sm mb-8">
                     <h2 class="text-xl font-bold text-white mb-10 border-b border-slate-800 pb-6">Edit Information</h2>
                     
-                    <form class="space-y-8">
+                    <form class="space-y-8" method="POST" action="">
+                        <input type="hidden" name="<?= Yii::$app->request->csrfParam ?>" value="<?= Yii::$app->request->csrfToken ?>">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-10">
                             <div class="md:col-span-2">
                                 <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Username</label>
-                                <input type="text" value="<?= $displayUsername ?>" class="w-full bg-transparent border-0 border-b border-slate-700 px-0 py-2 text-slate-300 placeholder-slate-600 text-sm focus:outline-none focus:ring-0 focus:border-brand-gold transition-colors">
+                                <input type="text" name="username" value="<?= $displayUsername ?>" class="w-full bg-transparent border-0 border-b border-slate-700 px-0 py-2 text-slate-300 placeholder-slate-600 text-sm focus:outline-none focus:ring-0 focus:border-brand-gold transition-colors">
                             </div>
 
                             <div class="md:col-span-2">
                                 <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Nama Lengkap</label>
-                                <input type="text" value="<?= $displayName ?>" class="w-full bg-transparent border-0 border-b border-slate-700 px-0 py-2 text-slate-300 placeholder-slate-600 text-sm focus:outline-none focus:ring-0 focus:border-brand-gold transition-colors">
+                                <input type="text" name="name" value="<?= $displayName ?>" class="w-full bg-transparent border-0 border-b border-slate-700 px-0 py-2 text-slate-300 placeholder-slate-600 text-sm focus:outline-none focus:ring-0 focus:border-brand-gold transition-colors">
                             </div>
 
                             <div class="md:col-span-2">
                                 <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Email</label>
-                                <input type="email" value="<?= $displayEmail ?>" class="w-full bg-transparent border-0 border-b border-slate-700 px-0 py-2 text-slate-300 placeholder-slate-600 text-sm focus:outline-none focus:ring-0 focus:border-brand-gold transition-colors">
+                                <input type="email" name="email" value="<?= $displayEmail ?>" class="w-full bg-transparent border-0 border-b border-slate-700 px-0 py-2 text-slate-300 placeholder-slate-600 text-sm focus:outline-none focus:ring-0 focus:border-brand-gold transition-colors">
                             </div>
                             
                             <div>
                                 <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Gender</label>
-                                <div class="relative">
-                                    <select class="select2-gender w-full bg-transparent border-0 border-b border-slate-700 px-0 py-2 text-slate-300 text-sm focus:outline-none focus:ring-0 focus:border-brand-gold transition-colors cursor-pointer">
-                                        <option value="L">Laki-Laki</option>
-                                        <option value="P">Perempuan</option>
-                                    </select>
-                                    <i class="fa-solid fa-caret-down absolute right-2 top-3 text-slate-500 pointer-events-none text-xs"></i>
+                                <div class="relative group">
+                                    <input type="text" value="Laki-Laki" class="w-full bg-transparent border-0 border-b border-slate-700/50 px-0 py-2 text-slate-500 text-sm focus:outline-none focus:ring-0 cursor-not-allowed" readonly disabled>
+                                    <i class="fa-solid fa-lock absolute right-0 top-3 text-slate-600 pointer-events-none text-xs" title="Hubungi admin untuk mengubah gender"></i>
                                 </div>
                             </div>
                             
                             <div>
                                 <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Nomor HP / WA</label>
-                                <input type="text" value="+62 812 3456 7890" class="w-full bg-transparent border-0 border-b border-slate-700 px-0 py-2 text-slate-300 placeholder-slate-600 text-sm focus:outline-none focus:ring-0 focus:border-brand-gold transition-colors">
+                                <input type="text" name="contact_id" value="<?= $contactId ?>" placeholder="+62 812 3456 7890" class="w-full bg-transparent border-0 border-b border-slate-700 px-0 py-2 text-slate-300 placeholder-slate-600 text-sm focus:outline-none focus:ring-0 focus:border-brand-gold transition-colors">
                             </div>
 
                             <div class="md:col-span-2">
@@ -119,7 +121,7 @@ $membershipType = 'VIP';
                         </div>
                         
                         <div id="action-buttons" class="pt-8 flex gap-4 hidden transition-all duration-300">
-                            <button type="button" class="px-8 py-3 rounded-lg bg-white text-black font-extrabold text-xs uppercase tracking-widest hover:bg-slate-200 transition-colors">
+                            <button type="submit" class="px-8 py-3 rounded-lg bg-white text-black font-extrabold text-xs uppercase tracking-widest hover:bg-slate-200 transition-colors">
                                 Save
                             </button>
                         </div>
@@ -184,10 +186,29 @@ $membershipType = 'VIP';
         </div>
     </div>
 </div>
+<!-- Cropper Modal -->
+<div id="cropper-modal" class="fixed inset-0 z-[9999] hidden items-center justify-center bg-black/90 backdrop-blur-sm p-4">
+    <div class="bg-[#12141a] border border-white/10 rounded-2xl p-6 w-full max-w-md shadow-2xl flex flex-col">
+        <h3 class="text-white font-bold text-lg mb-4 uppercase tracking-wide">Sesuaikan Foto Profil</h3>
+        <div class="w-full aspect-square bg-[#0b0c10] rounded-xl overflow-hidden mb-6 relative">
+            <img id="cropper-image" src="" alt="Crop preview" class="max-w-full hidden">
+        </div>
+        <div class="flex items-center justify-end gap-4">
+            <button type="button" id="btn-cancel-crop" class="px-5 py-2.5 rounded text-sm font-bold text-slate-400 hover:text-white transition-colors">Batal</button>
+            <button type="button" id="btn-save-crop" class="px-5 py-2.5 rounded bg-brand-gold hover:bg-amber-400 text-slate-950 text-sm font-bold uppercase tracking-wide transition-colors">Simpan Profil</button>
+        </div>
+    </div>
+</div>
 
 <?php
+$this->registerCssFile('https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css');
+$this->registerJsFile('https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js', ['depends' => [\yii\web\JqueryAsset::class]]);
 $this->registerCssFile('https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css');
 $this->registerJsFile('https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js', ['depends' => [\yii\web\JqueryAsset::class]]);
+$this->registerCssFile('https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css');
+$this->registerJsFile('https://cdn.jsdelivr.net/npm/sweetalert2@11', ['depends' => [\yii\web\JqueryAsset::class]]);
+
+$flashSuccess = Yii::$app->session->getFlash('success');
 
 $css = <<<CSS
 /* Select2 Dark Mode - Bottom Border Style */
@@ -245,8 +266,24 @@ $css = <<<CSS
 CSS;
 $this->registerCss($css);
 
+$sweetAlertScript = '';
+if ($flashSuccess) {
+    $sweetAlertScript = "
+        Swal.fire({
+            title: 'Berhasil!',
+            text: '{$flashSuccess}',
+            icon: 'success',
+            background: '#12141a',
+            color: '#fff',
+            confirmButtonColor: '#D4AF37',
+            iconColor: '#D4AF37'
+        });
+    ";
+}
+
 $js = <<<JS
 $(document).ready(function() {
+    {$sweetAlertScript}
     $('.select2-gender').select2({
         minimumResultsForSearch: Infinity,
         width: '100%'
@@ -270,6 +307,71 @@ $(document).ready(function() {
     // Show Save button on input change
     $('#tab-profil form input, #tab-profil form select').on('input change', function() {
         $('#action-buttons').removeClass('hidden');
+    });
+
+    // Cropper Logic
+    let cropper;
+    const image = document.getElementById('cropper-image');
+    const input = document.getElementById('avatar-upload');
+    const modal = $('#cropper-modal');
+
+    $(input).on('change', function(e) {
+        const files = e.target.files;
+        if (files && files.length > 0) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                image.src = event.target.result;
+                $(image).removeClass('hidden');
+                modal.removeClass('hidden').addClass('flex');
+                
+                if (cropper) cropper.destroy();
+                cropper = new Cropper(image, {
+                    aspectRatio: 1,
+                    viewMode: 1,
+                    background: false,
+                    autoCropArea: 1,
+                });
+            };
+            reader.readAsDataURL(files[0]);
+        }
+    });
+
+    $('#btn-cancel-crop').on('click', function() {
+        modal.removeClass('flex').addClass('hidden');
+        if (cropper) {
+            cropper.destroy();
+            cropper = null;
+        }
+        input.value = '';
+    });
+
+    $('#btn-save-crop').on('click', function() {
+        if (!cropper) return;
+        
+        const canvas = cropper.getCroppedCanvas({
+            width: 300,
+            height: 300,
+        });
+
+        const base64Avatar = canvas.toDataURL('image/jpeg');
+        
+        // Update UI
+        $('#avatar-preview').attr('src', base64Avatar).removeClass('hidden');
+        $('#avatar-placeholder').addClass('hidden');
+        
+        // Hide Modal
+        modal.removeClass('flex').addClass('hidden');
+        cropper.destroy();
+        cropper = null;
+        
+        // Show Save Button
+        $('#action-buttons').removeClass('hidden');
+        
+        // Create a hidden input to submit the base64 string
+        if ($('#avatar_base64').length === 0) {
+            $('#tab-profil form').append('<input type="hidden" name="avatar_base64" id="avatar_base64">');
+        }
+        $('#avatar_base64').val(base64Avatar);
     });
 });
 JS;

@@ -16,7 +16,10 @@ $backLink = $isBali ? Url::to(['site/location-bali']) : Url::to(['site/location-
 $backText = $isBali ? 'Kembali ke Lokasi Bali' : 'Kembali ke Lokasi Batam';
 ?>
 
-<div class="bg-[#0b0c10] min-h-screen font-sans text-white overflow-hidden pb-20">
+<div class="bg-[#0b0c10] min-h-screen font-sans text-white relative overflow-hidden pb-20">
+
+  <!-- Subtle Background Grid Pattern -->
+  <div class="absolute inset-0 z-0 pointer-events-none opacity-40" style="background-image: linear-gradient(to right, rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.1) 1px, transparent 1px); background-size: 80px 80px;"></div>
 
     <!-- HERO SECTION -->
     <div class="relative h-[60vh] min-h-[500px] w-full flex items-end justify-center pb-16">

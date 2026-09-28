@@ -565,10 +565,16 @@ $this->registerJs("
               $displayUsername = $isMockLogin ? $mockName : Html::encode(Yii::$app->user->identity->name);
               $isActive = !$isMockLogin && Yii::$app->user->identity->status == \common\models\User::STATUS_ACTIVE;
               $membershipType = 'VIP';
+              $avatar = !$isMockLogin && Yii::$app->user->identity->avatar ? Yii::$app->user->identity->avatar : null;
+              $realUsername = !$isMockLogin && Yii::$app->user->identity->username ? Html::encode(Yii::$app->user->identity->username) : 'cyroo';
               ?>
               <div class="relative group cursor-pointer">
                 <div class="text-brand-gold hover:text-white transition-colors flex items-center gap-2">
-                  <i class="fa-solid fa-circle-user text-2xl group-hover:scale-110 transition-transform"></i>
+                  <?php if ($avatar): ?>
+                    <img src="<?= $avatar ?>" class="w-7 h-7 rounded-full object-cover group-hover:scale-110 transition-transform border border-brand-gold/30" alt="Avatar">
+                  <?php else: ?>
+                    <i class="fa-solid fa-circle-user text-2xl group-hover:scale-110 transition-transform"></i>
+                  <?php endif; ?>
                   <span
                     class="text-xs font-bold uppercase tracking-wider hidden md:inline-block"><?= $displayUsername ?></span>
                   <i class="fa-solid fa-chevron-down text-[10px] opacity-70"></i>
@@ -576,28 +582,42 @@ $this->registerJs("
 
                 <!-- Dropdown Menu -->
                 <div
-                  class="absolute right-0 mt-3 w-[280px] bg-white rounded-xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.3)] border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-right scale-95 group-hover:scale-100 z-50 overflow-hidden">
-                  <div class="p-4 border-b border-slate-100 bg-slate-50/50">
-                    <p class="text-sm font-extrabold text-slate-800 uppercase tracking-wider mb-1 truncate">
-                      <?= $displayUsername ?></p>
+                  class="absolute right-0 mt-3 w-[280px] bg-[#12141a] rounded-xl shadow-[0_15px_40px_-10px_rgba(0,0,0,0.6)] border border-brand-gold/50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-right scale-95 group-hover:scale-100 z-50 overflow-hidden">
+                  <div class="p-4 border-b border-white/10 bg-[#0b0c10]">
+                    <div class="flex items-center gap-3 mb-2">
+                        <?php if ($avatar): ?>
+                          <img src="<?= $avatar ?>" class="w-10 h-10 rounded-full object-cover border border-slate-700">
+                        <?php else: ?>
+                          <div class="w-10 h-10 rounded-full bg-[#1c1c1c] border border-slate-800 flex items-center justify-center text-slate-400">
+                            <i class="fa-solid fa-user"></i>
+                          </div>
+                        <?php endif; ?>
+                        <div>
+                            <p class="text-sm font-extrabold text-white uppercase tracking-wider mb-0 truncate">
+                              <?= $displayUsername ?></p>
+                            <p class="text-[10px] text-slate-400 font-medium mb-1 mt-0.5 lowercase tracking-wide"><?= $realUsername ?></p>
+                            <?php if ($isActive): ?>
+                              <p class="text-[10px] text-brand-gold font-medium mt-0.5"><?= $membershipType ?> All-Access</p>
+                            <?php else: ?>
+                              <p class="text-[10px] text-slate-500 font-medium mt-0.5">Non-Member</p>
+                            <?php endif; ?>
+                        </div>
+                    </div>
                     <?php if ($isActive): ?>
-                      <p class="text-xs text-slate-500 font-medium"><?= $membershipType ?> All-Access &bull; Cabang MTC</p>
                       <div
-                        class="mt-2 inline-flex items-center gap-1.5 px-2 py-1 rounded bg-green-100 text-green-700 text-[10px] font-bold tracking-widest border border-green-200">
+                        class="mt-2 inline-flex items-center gap-1.5 px-2 py-1 rounded bg-green-500/10 text-green-400 text-[10px] font-bold tracking-widest border border-green-500/20 w-full justify-center">
                         <div class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></div>
                         AKTIF - S/D 21 SEP 2027
                       </div>
-                    <?php else: ?>
-                      <p class="text-xs text-slate-500 font-medium">Non-Member</p>
                     <?php endif; ?>
                   </div>
                   <div class="p-2">
                     <a href="<?= \yii\helpers\Url::to(['site/settings']) ?>"
-                      class="flex items-center gap-3 px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50 hover:text-brand-gold rounded-lg transition-colors">
-                      <i class="fa-solid fa-gear w-4 text-center text-slate-400"></i> Pengaturan Akun
+                      class="flex items-center gap-3 px-3 py-2.5 text-sm font-semibold text-slate-300 hover:bg-white/5 hover:text-brand-gold rounded-lg transition-colors group/link">
+                      <i class="fa-solid fa-gear w-4 text-center text-slate-400 group-hover/link:text-brand-gold"></i> Pengaturan Akun
                     </a>
-                    <div class="h-px bg-slate-100 my-1"></div>
-                    <?= Html::a('<i class="fa-solid fa-arrow-right-from-bracket w-4 text-center opacity-70"></i> Logout', ['site/logout'], ['data' => ['method' => 'post'], 'class' => 'flex items-center gap-3 px-3 py-2 text-sm font-bold text-red-500 hover:bg-red-50 rounded-lg transition-colors']) ?>
+                    <div class="h-px bg-white/10 my-1"></div>
+                    <?= Html::a('<i class="fa-solid fa-arrow-right-from-bracket w-4 text-center opacity-70"></i> Logout', ['site/logout'], ['data' => ['method' => 'post'], 'class' => 'flex items-center gap-3 px-3 py-2.5 text-sm font-bold text-red-400 hover:bg-red-500/10 rounded-lg transition-colors group/logout']) ?>
                   </div>
                 </div>
               </div>
