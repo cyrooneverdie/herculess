@@ -14,6 +14,9 @@ $this->params['meta_description'] = 'Profil Hercules Fitness Centre Batam — Pu
 <!-- BEGIN: About Us Main Page -->
 <div class="bg-[#0b0c10] text-slate-100 min-h-screen pb-20 font-sans relative overflow-hidden">
 
+  <!-- Subtle Background Grid Pattern -->
+  <div class="absolute inset-0 z-0 pointer-events-none opacity-40" style="background-image: linear-gradient(to right, rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.1) 1px, transparent 1px); background-size: 80px 80px;"></div>
+
   <!-- ==================== HERO SECTION (FULL SIZE MATCHING INDEX PAGE) ==================== -->
   <section class="relative h-[100vh] min-h-[680px] w-full flex flex-col justify-center overflow-hidden bg-slate-950" id="about-hero">
 
@@ -91,105 +94,120 @@ $this->params['meta_description'] = 'Profil Hercules Fitness Centre Batam — Pu
     <!-- ==================== END STORY SECTION ==================== -->
 
 
-
-    <!-- ==================== PROFESSIONAL TEAM SECTION ==================== -->
-    <section class="py-14 md:py-20 border-t border-white/10" id="professional-team">
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-        
-        <!-- Left: Narrative -->
-        <div class="order-2 lg:order-1 lg:pr-8">
-          <span class="text-xs font-bold uppercase tracking-widest text-brand-gold block mb-3">Tim Pelatih &amp; Instruktur</span>
-          <h2 class="text-3xl sm:text-5xl font-extrabold text-white uppercase font-condensed leading-[1.1] mb-8">
-            Tim Profesional <span class="text-brand-gold">Siap Membimbing Anda.</span>
-          </h2>
-          
-          <div class="space-y-6 text-slate-300 text-sm sm:text-base leading-relaxed font-light">
-            <p>
-              Bimbingan langsung dari pelatih berpengalaman untuk memastikan program latihan Anda terarah, efektif, dan aman. Kami memiliki pelatih dengan spesialisasi yang beragam mulai dari kekuatan &amp; pengondisian, mobilitas &amp; HIIT, hingga binaraga &amp; teknik latihan.
-            </p>
-            <p>
-              <strong class="text-white font-medium">Bukan sekadar mengawasi</strong>, pelatih kami merancang program yang disesuaikan dengan kapasitas dan tujuan spesifik Anda. Setiap sesi akan menjadi langkah yang terstruktur menuju hasil yang Anda inginkan.
-            </p>
-            <p>
-              Temukan pelatih yang tepat untuk Anda, dan mulailah perjalanan kebugaran Anda dengan bimbingan profesional yang suportif tanpa tekanan berlebihan.
-            </p>
-            
-            <div class="pt-4">
-              <a href="/site/trainer" class="px-8 py-3.5 rounded bg-brand-gold hover:bg-amber-400 text-slate-950 text-sm font-bold uppercase tracking-wide transition-colors inline-block">
-                Lihat Profil Pelatih Kami
-              </a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Right: Image Visual -->
-        <div class="relative order-1 lg:order-2 pl-0 sm:pl-6">
-          <div class="rounded-2xl overflow-hidden aspect-[4/5] bg-[#12141a]">
-            <img src="/img/clip4.jpeg" alt="Pelatih Hercules Fitness membimbing member" class="w-full h-full object-cover" />
-          </div>
-          <!-- Solid accent block on the bottom left (since image is on the right) -->
-          <div class="absolute -bottom-6 -left-6 w-48 h-48 bg-brand-gold rounded-2xl -z-10 hidden sm:block"></div>
-        </div>
-
-      </div>
-    </section>
-    <!-- ==================== END PROFESSIONAL TEAM SECTION ==================== -->
-
-
-
     <!-- ==================== GOOGLE REVIEWS PROOF ==================== -->
-    <section class="py-14 md:py-20 border-t border-white/10" id="ulasan-google">
+    <style>
+      .hide-scrollbar::-webkit-scrollbar { display: none; }
+      .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+    <section class="py-14 md:py-24 border-t border-white/10 overflow-hidden" id="ulasan-google">
       
-      <!-- Verified Rating Card -->
-      <div class="bg-gradient-to-r from-[#15171f] via-[#1b1e27] to-[#15171f] border border-brand-gold/40 rounded-2xl p-6 sm:p-8 mb-8 flex flex-col sm:flex-row items-center justify-between gap-6">
-        <div class="flex items-center gap-4 text-center sm:text-left">
-          <div class="w-16 h-16 rounded-xl bg-black/60 border border-brand-gold/40 flex flex-col items-center justify-center shrink-0">
-            <span class="text-2xl font-black text-brand-gold font-condensed">4.9</span>
-            <span class="text-amber-400 text-[10px]">★★★★★</span>
+      <!-- Header (Centered) -->
+      <div class="max-w-4xl mx-auto px-6 text-center mb-16">
+        <h2 class="text-3xl md:text-5xl font-extrabold text-white font-condensed uppercase mb-4">
+          Apa Pengalaman Mereka Di <br><span class="text-brand-gold">Hercules Fitness?</span>
+        </h2>
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4">
+          <div class="flex items-center gap-2">
+            <span class="text-2xl font-black text-white font-condensed">4.9/5</span>
+            <span class="text-amber-400 text-lg">★★★★★</span>
           </div>
-          <div>
-            <h3 class="text-xl font-extrabold text-white font-condensed uppercase">Rating 4.9 di Google Maps</h3>
-            <p class="text-slate-300 text-xs mt-0.5">Dinilai dari 175+ ulasan asli pengunjung &amp; member di Batam.</p>
-          </div>
+          <span class="text-slate-400 text-sm hidden sm:inline">|</span>
+          <span class="text-slate-400 text-sm">Berdasarkan 175+ ulasan di Google Maps</span>
         </div>
-
-        <a href="https://maps.app.goo.gl/dghCRwrLjwhYoE4H8" target="_blank" class="shrink-0 px-6 py-3 rounded-full bg-brand-gold hover:bg-brand-gold-hover text-slate-950 text-xs font-bold uppercase tracking-wider transition-colors inline-flex items-center gap-2">
-          <span>Lihat Ulasan di Maps</span>
-          <i class="fas fa-arrow-up-right-from-square text-[10px]"></i>
-        </a>
       </div>
 
-      <!-- 3 Short Testimonials -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <!-- Content (Split) -->
+      <div class="max-w-[1600px] mx-auto px-6 sm:px-10 flex flex-col lg:flex-row gap-12 lg:gap-16">
         
-        <div class="bg-[#12141a] border border-white/10 rounded-xl p-4 flex flex-col justify-between">
-          <p class="text-slate-300 text-xs italic mb-3">"Tempatnya luas, alatnya super lengkap untuk beban maupun cardio. Suasananya bikin betah latihan!"</p>
-          <div class="flex items-center justify-between text-[11px] text-slate-400 border-t border-white/5 pt-2">
-            <span class="font-bold text-white">Rian Z.</span>
-            <span class="text-amber-400">★★★★★</span>
+        <!-- Left Column: Title & Controls -->
+        <div class="lg:w-1/3 shrink-0 flex flex-col justify-between">
+          <div>
+            <h3 class="text-5xl md:text-6xl lg:text-7xl font-black text-white font-condensed uppercase leading-[0.95] tracking-tight">Ini Kata <span class="block text-brand-gold text-6xl md:text-8xl lg:text-[7.5rem] leading-[0.8] mt-2">Mereka</span></h3>
+          </div>
+          
+          <!-- Arrows & Progress -->
+          <div class="flex items-center gap-4 mt-8 lg:mt-0">
+            <button id="scroll-left" class="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-white/10 transition-colors">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+            </button>
+            <div class="flex-1 h-px bg-white/10 relative">
+              <div id="scroll-progress" class="absolute left-0 top-0 h-full bg-brand-gold w-1/4 transition-all duration-300"></div>
+            </div>
+            <button id="scroll-right" class="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-white/10 transition-colors">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            </button>
           </div>
         </div>
 
-        <div class="bg-[#12141a] border border-white/10 rounded-xl p-4 flex flex-col justify-between">
-          <p class="text-slate-300 text-xs italic mb-3">"Staff dan coach ramah banget, diajarin gerakan yang benar. Biaya member juga sangat ramah kantong."</p>
-          <div class="flex items-center justify-between text-[11px] text-slate-400 border-t border-white/5 pt-2">
-            <span class="font-bold text-white">Dina S.</span>
-            <span class="text-amber-400">★★★★★</span>
-          </div>
-        </div>
+        <!-- Right Column: Horizontal Scroll -->
+        <div class="lg:w-3/4 overflow-x-auto snap-x snap-mandatory hide-scrollbar flex gap-6 pb-8" id="testimonial-container">
+          <?php 
+            $allTestimonials = [
+              ['name' => 'Rian Z.', 'text' => 'Tempatnya luas, alatnya super lengkap untuk beban maupun cardio. Suasananya bikin betah latihan!'],
+              ['name' => 'Dina S.', 'text' => 'Staff dan coach ramah banget, diajarin gerakan yang benar. Biaya member juga sangat ramah kantong.'],
+              ['name' => 'Andre H.', 'text' => 'Buka sampai jam 11 malam ngebantu banget buat yang kerja. Parkir gampang di Komplek Macadam.'],
+              ['name' => 'Kevin T.', 'text' => 'Gym paling nyaman di area Batu Ampar. Komunitasnya saling support dan nggak intimidatif buat pemula.'],
+            ];
+            foreach ($allTestimonials as $testi): 
+          ?>
+            <div class="snap-start shrink-0 w-[280px] md:w-[320px] flex flex-col gap-6">
+              
+              <!-- Chat Bubble Card -->
+              <div class="bg-[#12141a] border border-white/10 rounded-2xl p-6 sm:p-8 flex flex-col shadow-xl relative">
+                <p class="text-slate-300 text-xs sm:text-sm italic leading-relaxed mb-6">"<?= $testi['text'] ?>"</p>
+                <span class="text-amber-400 text-sm md:text-base tracking-widest block">★★★★★</span>
+                
+                <!-- Bubble Tail (Triangle) -->
+                <div class="absolute -bottom-2.5 left-10 w-5 h-5 bg-[#12141a] border-b border-r border-white/10 rotate-45 z-10"></div>
+              </div>
 
-        <div class="bg-[#12141a] border border-white/10 rounded-xl p-4 flex flex-col justify-between">
-          <p class="text-slate-300 text-xs italic mb-3">"Buka sampai jam 11 malam ngebantu banget buat yang kerja. Parkir gampang di Komplek Macadam."</p>
-          <div class="flex items-center justify-between text-[11px] text-slate-400 border-t border-white/5 pt-2">
-            <span class="font-bold text-white">Andre H.</span>
-            <span class="text-amber-400">★★★★★</span>
-          </div>
-        </div>
+              <!-- Profile Area -->
+              <div class="flex items-center gap-4 px-4">
+                <img src="https://ui-avatars.com/api/?name=<?= urlencode($testi['name']) ?>&background=random&color=fff&size=56" alt="<?= $testi['name'] ?>" class="w-14 h-14 rounded-full border border-white/10" />
+                <div class="flex flex-col">
+                  <span class="font-bold text-white text-base"><?= $testi['name'] ?></span>
+                  <span class="text-xs text-slate-500 mt-0.5">@<?= strtolower(str_replace([' ', '.'], '', $testi['name'])) . rand(10,99) ?></span>
+                </div>
+              </div>
 
+            </div>
+          <?php endforeach; ?>
+        </div>
       </div>
+      
+      <script>
+        document.addEventListener('DOMContentLoaded', () => {
+          const container = document.getElementById('testimonial-container');
+          const btnLeft = document.getElementById('scroll-left');
+          const btnRight = document.getElementById('scroll-right');
+          const progress = document.getElementById('scroll-progress');
 
+          if(container && btnLeft && btnRight && progress) {
+            const updateProgress = () => {
+              const scrollLeft = container.scrollLeft;
+              const maxScroll = container.scrollWidth - container.clientWidth;
+              const percent = maxScroll > 0 ? (scrollLeft / maxScroll) * 100 : 0;
+              progress.style.width = Math.max(10, percent) + '%';
+            };
+
+            container.addEventListener('scroll', updateProgress);
+            
+            btnLeft.addEventListener('click', () => {
+              container.scrollBy({ left: -340, behavior: 'smooth' });
+            });
+            
+            btnRight.addEventListener('click', () => {
+              container.scrollBy({ left: 340, behavior: 'smooth' });
+            });
+            
+            updateProgress();
+          }
+        });
+      </script>
     </section>
     <!-- ==================== END GOOGLE REVIEWS SECTION ==================== -->
+
+  <div class="relative z-10 max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 pt-10">
 
 
 

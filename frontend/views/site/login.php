@@ -46,23 +46,25 @@ $this->title = 'Login - Hercules Fitness Centre';
           <!-- Email -->
           <div>
             <label for="loginform-email" class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Email <span class="text-brand-gold">*</span></label>
-            <input type="email" id="loginform-email" name="LoginForm[email]" placeholder="nama@email.com" required
+            <input type="email" id="loginform-email" name="LoginForm[username]" placeholder="nama@email.com" required
                    class="w-full !bg-none bg-[#1c1c1c] border border-slate-700 rounded-lg px-4 py-3 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-brand-gold focus:ring-1 focus:ring-brand-gold transition-colors">
-            <?php if(isset($model) && $model->hasErrors('email')): ?>
-                <p class="text-red-500 text-xs mt-1"><?= Html::encode($model->getFirstError('email')) ?></p>
+            <?php if(isset($model) && $model->hasErrors('username')): ?>
+                <p class="text-red-500 text-xs mt-1"><?= Html::encode($model->getFirstError('username')) ?></p>
             <?php endif; ?>
           </div>
 
-          <!-- WhatsApp -->
+          <!-- Password -->
           <div>
-            <label for="loginform-whatsapp" class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Nomor HP / WA <span class="text-brand-gold">*</span></label>
-            <div class="relative flex">
-              <span class="inline-flex items-center px-3 bg-[#2a2a2a] border border-r-0 border-slate-700 rounded-l-lg text-white text-sm font-medium">+62</span>
-              <input type="tel" id="loginform-whatsapp" name="LoginForm[whatsapp]" placeholder="812345678" required
-                     class="flex-1 bg-[#1c1c1c] border border-slate-700 rounded-r-lg px-4 py-3 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-brand-gold focus:ring-1 focus:ring-brand-gold transition-colors">
+            <label for="loginform-password" class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Password <span class="text-brand-gold">*</span></label>
+            <div class="relative flex items-center">
+              <input type="password" id="loginform-password" name="LoginForm[password]" placeholder="Masukkan password Anda" required
+                     class="w-full !bg-none bg-[#1c1c1c] border border-slate-700 rounded-lg px-4 py-3 pr-10 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-brand-gold focus:ring-1 focus:ring-brand-gold transition-colors">
+              <button type="button" onclick="togglePassword()" class="absolute right-4 text-slate-400 hover:text-white transition-colors focus:outline-none">
+                <i class="fas fa-eye text-sm" id="togglePasswordIcon"></i>
+              </button>
             </div>
-            <?php if(isset($model) && $model->hasErrors('whatsapp')): ?>
-                <p class="text-red-500 text-xs mt-1"><?= Html::encode($model->getFirstError('whatsapp')) ?></p>
+            <?php if(isset($model) && $model->hasErrors('password')): ?>
+                <p class="text-red-500 text-xs mt-1"><?= Html::encode($model->getFirstError('password')) ?></p>
             <?php endif; ?>
           </div>
         </div>
@@ -97,3 +99,19 @@ $this->title = 'Login - Hercules Fitness Centre';
     </div>
   </div>
 </div>
+
+<script>
+function togglePassword() {
+  const input = document.getElementById('loginform-password');
+  const icon = document.getElementById('togglePasswordIcon');
+  if (input.type === 'password') {
+    input.type = 'text';
+    icon.classList.remove('fa-eye');
+    icon.classList.add('fa-eye-slash');
+  } else {
+    input.type = 'password';
+    icon.classList.remove('fa-eye-slash');
+    icon.classList.add('fa-eye');
+  }
+}
+</script>

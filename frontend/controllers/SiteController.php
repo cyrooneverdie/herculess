@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace frontend\controllers;
 
 use common\models\LoginForm;
+use common\models\User;
 use frontend\models\ContactForm;
 use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResendVerificationEmailForm;
@@ -143,6 +144,57 @@ class SiteController extends Controller
         if (Yii::$app->user->isGuest && !Yii::$app->session->has('mock_login')) {
             return $this->redirect(['site/login']);
         }
+        
+        $request = Yii::$app->request;
+        $user = Yii::$app->user->identity;
+
+        if ($request->isPost && $user) {
+            $post = $request->post();
+            
+            if (isset($post['username'])) $user->username = $post['username'];
+            if (isset($post['name'])) $user->name = $post['name'];
+            if (isset($post['email'])) $user->email = $post['email'];
+            if (isset($post['contact_id'])) $user->contact_id = $post['contact_id'];
+            
+            $base64 = $request->post('avatar_base64');
+            if (!empty($base64)) {
+                // Determine mime type and process
+                if (preg_match('/^data:image\/(\w+);base64,/', $base64, $type)) {
+                    $data = substr($base64, strpos($base64, ',') + 1);
+                    $ext = strtolower($type[1]);
+                    
+                    if (in_array($ext, ['jpg', 'jpeg', 'png', 'webp'])) {
+                        $data = str_replace(' ', '+', $data);
+                        $imageData = base64_decode($data);
+                        
+                        // userid from User model
+                        $userId = isset($user->userid) ? $user->userid : time();
+                        $fileName = 'avatar_' . $userId . '_' . time() . '.' . $ext;
+                        $uploadDir = Yii::getAlias('@frontend/web/uploads/avatars');
+                        
+                        if (!is_dir($uploadDir)) {
+                            \yii\helpers\FileHelper::createDirectory($uploadDir, 0775, true);
+                        }
+                        
+                        // Delete old avatar if exists
+                        if ($user->avatar && file_exists(Yii::getAlias('@frontend/web') . $user->avatar)) {
+                            @unlink(Yii::getAlias('@frontend/web') . $user->avatar);
+                        }
+                        
+                        $filePath = $uploadDir . '/' . $fileName;
+                        file_put_contents($filePath, $imageData);
+                        
+                        $user->avatar = '/uploads/avatars/' . $fileName;
+                    }
+                }
+            }
+            
+            $user->save(false);
+            
+            Yii::$app->session->setFlash('success', 'Profil berhasil diperbarui!');
+            return $this->refresh();
+        }
+
         return $this->render('settings');
     }
 
@@ -159,19 +211,34 @@ class SiteController extends Controller
         if ($request->isPost) {
             $postData = $request->post();
             
-            // TODO: Tim Backend - Tambahkan logika validasi & simpan ke DB di sini
+            $name = $postData['name'] ?? 'Member Baru';
+            $username = $postData['username'] ?? '';
+            $email = $postData['email'] ?? '';
+            $password = $postData['password'] ?? '';
+            $whatsapp = $postData['whatsapp_no'] ?? '';
             
-            // Simulasi login setelah daftar
-            Yii::$app->session->set('mock_login', true);
-            Yii::$app->session->set('mock_user_name', $postData['full_name'] ?? 'Member Baru');
-
-            // Simulasi sukses (kembalikan data ke view via Flash)
-            Yii::$app->session->setFlash('success_join', [
-                'name' => $postData['full_name'] ?? 'Member',
-                'branch' => 'Cabang ' . ($postData['selected_branch'] ?? '-'),
-                'phone' => '+62 ' . ($postData['whatsapp_no'] ?? '-'),
-                'ticket_code' => 'HERC-' . rand(1000, 9999),
-            ]);
+            $user = new User();
+            $user->scenario = 'createUser';
+            $user->name = $name;
+            $user->username = $username;
+            $user->email = $email;
+            $user->password = $password;
+            $user->status = User::STATUS_INACTIVE; // Pendaftar baru belum aktif membership-nya
+            $user->generateAuthKey();
+            
+            if ($user->save()) {
+                Yii::$app->user->login($user, 3600 * 24 * 30);
+                
+                Yii::$app->session->setFlash('success_join', [
+                    'name' => $name,
+                    'branch' => '-',
+                    'phone' => '+62 ' . $whatsapp,
+                    'ticket_code' => 'HERC-' . rand(1000, 9999),
+                ]);
+            } else {
+                $errorMsg = current($user->getFirstErrors());
+                Yii::$app->session->setFlash('error', $errorMsg ?: 'Gagal menyimpan pendaftaran.');
+            }
             
             return $this->redirect(['site/join']);
         }

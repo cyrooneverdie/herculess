@@ -8,12 +8,14 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 
 $this->title = 'Personal Trainer - Hercules Fitness Centre';
-$this->params['meta_description'] = 'Layanan personal trainer di Hercules Fitness Centre Batam. Bimbingan latihan 1-on-1 dari coach bersertifikat untuk program kebugaran yang terukur dan aman.';
+$this->params['meta_description'] = 'Layanan personal trainer di Hercules Fitness Centre Batam. Bimbingan latihan 1-on-1 dari Personal Trainer bersertifikat untuk program kebugaran yang terukur dan aman.';
 ?>
 
 <!-- BEGIN: Personal Trainer Page -->
 <div class="bg-[#0b0c10] text-slate-100 min-h-screen pb-20 font-sans relative overflow-hidden">
 
+  <!-- Subtle Background Grid Pattern -->
+  <div class="absolute inset-0 z-0 pointer-events-none opacity-40" style="background-image: linear-gradient(to right, rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.1) 1px, transparent 1px); background-size: 80px 80px;"></div>
   <!-- ==================== HERO SECTION ==================== -->
   <section class="relative h-[85vh] min-h-[600px] w-full flex items-center justify-center overflow-hidden bg-slate-950" id="trainer-hero">
 
@@ -28,10 +30,10 @@ $this->params['meta_description'] = 'Layanan personal trainer di Hercules Fitnes
     <div class="relative z-10 max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 w-full text-center">
       <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white uppercase font-condensed leading-[1.1] mb-4 max-w-2xl mx-auto">
         Latihan Terarah <br/>
-        <span class="text-brand-gold">Bersama Coach Kami.</span>
+        <span class="text-brand-gold">Bersama Personal Trainer.</span>
       </h1>
       <p class="text-base sm:text-lg text-slate-200 font-light leading-relaxed max-w-xl mx-auto mb-8">
-        Program latihan 1-on-1 yang dirancang khusus untuk tujuan kebugaran Anda, dibimbing oleh coach berpengalaman di Hercules Fitness.
+        Program latihan 1-on-1 yang dirancang khusus untuk tujuan kebugaran Anda, dibimbing oleh Personal Trainer berpengalaman di Hercules Fitness.
       </p>
       <a href="https://wa.me/6282286680539?text=Halo%20Hercules%2C%20saya%20ingin%20tanya%20soal%20personal%20trainer" target="_blank" class="px-8 py-3.5 rounded bg-brand-gold hover:bg-amber-400 text-slate-950 text-sm font-bold uppercase tracking-wide transition-colors inline-block">
         Konsultasi via WhatsApp
@@ -55,13 +57,13 @@ $this->params['meta_description'] = 'Layanan personal trainer di Hercules Fitnes
           </h2>
           <div class="space-y-6 text-slate-300 text-sm sm:text-base leading-relaxed font-light">
             <p>
-              Anda akan memulai dengan sesi konsultasi singkat bersama coach. Di sesi ini, kami mendengarkan tujuan Anda, baik itu menurunkan berat badan, membentuk otot, atau memulihkan cedera.
+              Anda akan memulai dengan sesi konsultasi singkat bersama Personal Trainer. Di sesi ini, kami mendengarkan tujuan Anda, baik itu menurunkan berat badan, membentuk otot, atau memulihkan cedera.
             </p>
             <p>
-              Berdasarkan kondisi fisik dan target Anda, coach akan merancang program latihan yang <strong class="text-white font-medium">spesifik dan terukur</strong>. Setiap sesi diarahkan langsung oleh coach untuk memastikan form yang benar dan progres yang konsisten.
+              Berdasarkan kondisi fisik dan target Anda, Personal Trainer akan merancang program latihan yang <strong class="text-white font-medium">spesifik dan terukur</strong>. Setiap sesi diarahkan langsung oleh Personal Trainer untuk memastikan form yang benar dan progres yang konsisten.
             </p>
             <p>
-              Program dievaluasi secara berkala. Jika ada yang perlu disesuaikan, coach akan menyesuaikan beban, frekuensi, dan variasi latihan bersama Anda.
+              Program dievaluasi secara berkala. Jika ada yang perlu disesuaikan, Personal Trainer akan menyesuaikan beban, frekuensi, dan variasi latihan bersama Anda.
             </p>
           </div>
         </div>
@@ -76,7 +78,7 @@ $this->params['meta_description'] = 'Layanan personal trainer di Hercules Fitnes
             <div class="pb-2">
               <strong class="text-white text-base block mb-1">Konsultasi Awal</strong>
               <p class="text-slate-400 text-sm leading-relaxed">
-                Ceritakan tujuan, riwayat latihan, dan kondisi kesehatan Anda. Coach akan mendengarkan sebelum merancang apapun.
+                Ceritakan tujuan, riwayat latihan, dan kondisi kesehatan Anda. Personal Trainer akan mendengarkan sebelum merancang apapun.
               </p>
             </div>
           </div>
@@ -100,9 +102,9 @@ $this->params['meta_description'] = 'Layanan personal trainer di Hercules Fitnes
               <div class="w-px flex-1 bg-white/10 mt-2"></div>
             </div>
             <div class="pb-2">
-              <strong class="text-white text-base block mb-1">Latihan Bersama Coach</strong>
+              <strong class="text-white text-base block mb-1">Latihan Bersama Personal Trainer</strong>
               <p class="text-slate-400 text-sm leading-relaxed">
-                Setiap gerakan dipandu langsung. Coach memastikan teknik yang benar untuk menghindari cedera dan memaksimalkan hasil.
+                Setiap gerakan dipandu langsung. Personal Trainer memastikan teknik yang benar untuk menghindari cedera dan memaksimalkan hasil.
               </p>
             </div>
           </div>

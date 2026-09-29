@@ -78,14 +78,27 @@ $this->registerCss("
         <p class="text-slate-400 text-sm mt-1">Lengkapi data diri Anda di bawah ini.</p>
       </div>
 
+      <?php if (Yii::$app->session->hasFlash('error')): ?>
+        <div class="mb-6 p-4 rounded-lg bg-red-900/50 border border-red-500/50 text-red-200 text-sm">
+          <?= Html::encode(Yii::$app->session->getFlash('error')) ?>
+        </div>
+      <?php endif; ?>
+
       <form id="join-form" method="POST" action="<?= Url::to(['site/submit-join']) ?>" onsubmit="handleFormSubmit(event)" novalidate class="space-y-6">
         <input type="hidden" name="<?= Yii::$app->request->csrfParam; ?>" value="<?= Yii::$app->request->csrfToken; ?>" />
         
         <div class="grid grid-cols-1 gap-6">
-          <!-- Full Name -->
+          <!-- Username -->
           <div>
-            <label for="full_name" class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Nama Lengkap <span class="text-brand-gold">*</span></label>
-            <input type="text" id="full_name" name="full_name" placeholder="Sesuai KTP" required
+            <label for="username" class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Username <span class="text-brand-gold">*</span></label>
+            <input type="text" id="username" name="username" placeholder="Masukkan Username" required
+                   class="w-full !bg-none bg-[#1c1c1c] border border-slate-700 rounded-lg px-4 py-3 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-brand-gold focus:ring-1 focus:ring-brand-gold transition-colors">
+          </div>
+
+          <!-- Name -->
+          <div>
+            <label for="name" class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Nama Lengkap <span class="text-brand-gold">*</span></label>
+            <input type="text" id="name" name="name" placeholder="Sesuai KTP" required
                    class="w-full !bg-none bg-[#1c1c1c] border border-slate-700 rounded-lg px-4 py-3 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-brand-gold focus:ring-1 focus:ring-brand-gold transition-colors">
           </div>
 
@@ -107,30 +120,31 @@ $this->registerCss("
                    class="w-full !bg-none bg-[#1c1c1c] border border-slate-700 rounded-lg px-4 py-3 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-brand-gold focus:ring-1 focus:ring-brand-gold transition-colors">
           </div>
 
+          <!-- Password -->
+          <div>
+            <label for="password" class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Password <span class="text-brand-gold">*</span></label>
+            <div class="relative flex items-center">
+              <input type="password" id="password" name="password" placeholder="Minimal 6 karakter" required minlength="6"
+                     class="w-full !bg-none bg-[#1c1c1c] border border-slate-700 rounded-lg px-4 py-3 pr-10 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-brand-gold focus:ring-1 focus:ring-brand-gold transition-colors">
+              <button type="button" onclick="togglePassword()" class="absolute right-4 text-slate-400 hover:text-white transition-colors focus:outline-none">
+                <i class="fas fa-eye text-sm" id="togglePasswordIcon"></i>
+              </button>
+            </div>
+          </div>
+
+
+          <!-- Gender -->
           <div class="relative">
-            <label for="selected_city" class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Kota <span class="text-brand-gold">*</span></label>
+            <label for="gender" class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Gender <span class="text-brand-gold">*</span></label>
             <div class="relative">
-              <select id="selected_city" name="selected_city" required data-control="select2" data-hide-search="true" data-placeholder="Pilih Kota"
+              <select id="gender" name="gender" required data-control="select2" data-hide-search="true" data-placeholder="Pilih Gender"
                       class="w-full !bg-none bg-[#1c1c1c] border border-slate-700 rounded-lg px-4 py-3 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-brand-gold focus:ring-1 focus:ring-brand-gold transition-colors">
                 <option></option>
-                <option value="Batam">Batam</option>
-                <option value="Bali">Bali</option>
-              </select>
-              
-            </div>
-          </div>
-
-          <div class="relative">
-            <label for="selected_branch" class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Pilih Cabang<span class="text-brand-gold">*</span></label>
-            <div class="relative">
-              <select id="selected_branch" name="selected_branch" required disabled data-control="select2" data-hide-search="true" data-placeholder="Pilih kota terlebih dahulu"
-                      class="w-full !bg-none bg-[#1c1c1c] border border-slate-700 rounded-lg px-4 py-3 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-brand-gold focus:ring-1 focus:ring-brand-gold transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
-                <option></option>
+                <option value="L">Laki-Laki</option>
+                <option value="P">Perempuan</option>
               </select>
             </div>
-            <p class="text-xs text-slate-400 mt-2">Kamu tetap bisa akses semua lokasi klub</p>
           </div>
-
 
           <div class="relative">
             <label for="fitness_goal" class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Target Fitness <span class="text-brand-gold">*</span></label>
@@ -213,41 +227,9 @@ $this->registerCss("
 
 <?php
 $js = <<<JS
-// === DYNAMIC BRANCHES ===
-const branchesByCity = {
-  'Batam': ['Batu Ampar', 'Batu Besar', 'MTC'],
-  'Bali': ['Canggu', 'Kuta']
-};
-
 // Inisialisasi manual Select2 karena kita tidak meload scripts.bundle.js dari Metronic
-$('#selected_city, #fitness_goal, #selected_branch').select2({
+$('#fitness_goal, #gender').select2({
     minimumResultsForSearch: Infinity
-});
-
-$('#selected_city').on('change', function() {
-    const city = $(this).val();
-    const branchSelect = $('#selected_branch');
-    
-    branchSelect.empty();
-    
-    if (city && branchesByCity[city]) {
-        branchSelect.append(new Option('', '', true, true)); // placeholder
-        branchesByCity[city].forEach(branch => {
-            branchSelect.append(new Option(branch, branch));
-        });
-        branchSelect.prop('disabled', false);
-        branchSelect.select2({
-            minimumResultsForSearch: Infinity,
-            placeholder: 'Pilih Cabang'
-        });
-    } else {
-        branchSelect.append(new Option('', '', true, true));
-        branchSelect.prop('disabled', true);
-        branchSelect.select2({
-            minimumResultsForSearch: Infinity,
-            placeholder: 'Pilih kota terlebih dahulu'
-        });
-    }
 });
 JS;
 $this->registerJs($js);
@@ -261,17 +243,35 @@ function formatWhatsapp(input) {
   input.value = val;
 }
 
+// === PASSWORD TOGGLE ===
+function togglePassword() {
+  const input = document.getElementById('password');
+  const icon = document.getElementById('togglePasswordIcon');
+  if (input.type === 'password') {
+    input.type = 'text';
+    icon.classList.remove('fa-eye');
+    icon.classList.add('fa-eye-slash');
+  } else {
+    input.type = 'password';
+    icon.classList.remove('fa-eye-slash');
+    icon.classList.add('fa-eye');
+  }
+}
+
 // === FORM SUBMIT ===
 function handleFormSubmit(e) {
   e.preventDefault();
-  const name = document.getElementById('full_name').value.trim();
+  const username = document.getElementById('username').value.trim();
+  const name = document.getElementById('name').value.trim();
   const phone = document.getElementById('whatsapp_no').value.trim();
   const email = document.getElementById('email').value.trim();
-  const branch = document.getElementById('selected_branch').value;
+  const password = document.getElementById('password').value.trim();
+  const gender = document.getElementById('gender').value;
   
 
-  if (!name || !phone || !email || !branch) { alert('Mohon lengkapi semua field yang diwajibkan.'); return; }
+  if (!username || !name || !phone || !email || !password || !gender) { alert('Mohon lengkapi semua field yang diwajibkan.'); return; }
   if (phone.length < 8 || phone.length > 14) { alert('Nomor WhatsApp tidak valid.'); return; }
+  if (password.length < 6) { alert('Password minimal 6 karakter.'); return; }
 
   // Submit the form to backend if validation passes
   e.target.submit();

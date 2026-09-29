@@ -13,6 +13,9 @@ $this->params['meta_description'] = 'Temukan lokasi cabang Hercules Fitness di B
 
 <div class="bg-[#0b0c10] text-slate-100 min-h-screen pb-20 font-sans relative overflow-hidden">
 
+  <!-- Subtle Background Grid Pattern -->
+  <div class="absolute inset-0 z-0 pointer-events-none opacity-40" style="background-image: linear-gradient(to right, rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.1) 1px, transparent 1px); background-size: 80px 80px;"></div>
+
   <!-- ==================== HERO SECTION ==================== -->
   <section class="relative h-[70vh] min-h-[500px] w-full flex items-center justify-center overflow-hidden bg-slate-950" id="location-hero">
     <div class="absolute inset-0 z-0 w-full h-full">
