@@ -212,6 +212,7 @@ $this->params['meta_description'] = 'Profil Hercules Fitness Centre Batam — Pu
 
 
     <!-- ==================== FINAL CALL TO ACTION ==================== -->
+    <?php if (Yii::$app->user->isGuest): ?>
     <section class="py-14 md:py-20 border-t border-white/10 text-center" id="about-cta">
       <div class="max-w-2xl mx-auto">
         <h2 class="text-3xl sm:text-5xl font-extrabold text-white uppercase font-condensed leading-tight mb-3">
@@ -232,6 +233,7 @@ $this->params['meta_description'] = 'Profil Hercules Fitness Centre Batam — Pu
         </div>
       </div>
     </section>
+    <?php endif; ?>
 
   </div>
 

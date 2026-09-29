@@ -26,7 +26,7 @@ $this->title = 'Membership - Hercules Fitness Centre';
                 Pilih Paket <span class="text-brand-gold">Membership</span> Anda
             </h1>
             <p class="text-slate-400 max-w-xl mx-auto">
-                All You Can Fit with One Membership. Bergabunglah dengan Hercules Fitness dan nikmati fasilitas kelas dunia.
+                All You Can Fit with One Membership. Bergabunglah dengan Hercules Fitness dan nikmati fasilitasnya.
             </p>
         </div>
 
@@ -99,7 +99,7 @@ $this->title = 'Membership - Hercules Fitness Centre';
                 </div>
 
                 <a id="link-std" href="<?= Url::to(['site/checkout', 'package' => 'std', 'branch' => 'batu-ampar', 'duration' => '12']) ?>" class="block w-full py-4 text-center rounded-xl font-bold uppercase tracking-widest transition-colors border-2 border-white/20 text-white hover:bg-white hover:text-slate-900 text-sm">
-                    Daftar Standard
+                    <?= Yii::$app->user->isGuest ? 'Daftar' : 'Bergabung' ?> Standard
                 </a>
             </div>
 
@@ -151,7 +151,7 @@ $this->title = 'Membership - Hercules Fitness Centre';
                 </div>
 
                 <a id="link-vip" href="<?= Url::to(['site/checkout', 'package' => 'vip', 'branch' => 'batu-ampar', 'duration' => '12']) ?>" class="block w-full py-4 text-center rounded-xl font-bold uppercase tracking-widest transition-all bg-brand-gold text-slate-900 hover:shadow-[0_0_20px_rgba(212,175,55,0.4)] hover:-translate-y-1 text-sm">
-                    Daftar VIP All-Access
+                    <?= Yii::$app->user->isGuest ? 'Daftar' : 'Bergabung' ?> VIP All-Access
                 </a>
             </div>
             
@@ -296,8 +296,12 @@ $this->title = 'Membership - Hercules Fitness Centre';
                 var base = '<?= Url::to(["site/checkout"]) ?>';
                 var stdLink = document.getElementById('link-std');
                 var vipLink = document.getElementById('link-vip');
-                if (stdLink) stdLink.href = base + '?package=std&branch=' + currentBranch + '&duration=' + durMonths[durIndex.std];
-                if (vipLink) vipLink.href = base + '?package=vip&branch=' + currentBranch + '&duration=' + durMonths[durIndex.vip];
+                
+                var stdCheckoutUrl = base + '?package=std&branch=' + currentBranch + '&duration=' + durMonths[durIndex.std];
+                var vipCheckoutUrl = base + '?package=vip&branch=' + currentBranch + '&duration=' + durMonths[durIndex.vip];
+
+                if (stdLink) stdLink.href = stdCheckoutUrl;
+                if (vipLink) vipLink.href = vipCheckoutUrl;
             }
 
             document.addEventListener('DOMContentLoaded', function() {

@@ -86,6 +86,7 @@ $this->registerCss("
 
       <form id="join-form" method="POST" action="<?= Url::to(['site/submit-join']) ?>" onsubmit="handleFormSubmit(event)" novalidate class="space-y-6">
         <input type="hidden" name="<?= Yii::$app->request->csrfParam; ?>" value="<?= Yii::$app->request->csrfToken; ?>" />
+        <input type="hidden" name="returnUrl" value="<?= Html::encode(Yii::$app->request->get('returnUrl', '')) ?>" />
         
         <div class="grid grid-cols-1 gap-6">
           <!-- Username -->

@@ -216,6 +216,7 @@ class SiteController extends Controller
             $email = $postData['email'] ?? '';
             $password = $postData['password'] ?? '';
             $whatsapp = $postData['whatsapp_no'] ?? '';
+            $returnUrl = $postData['returnUrl'] ?? '';
             
             $user = new User();
             $user->scenario = 'createUser';
@@ -228,6 +229,10 @@ class SiteController extends Controller
             
             if ($user->save()) {
                 Yii::$app->user->login($user, 3600 * 24 * 30);
+                
+                if (!empty($returnUrl)) {
+                    return $this->redirect($returnUrl);
+                }
                 
                 Yii::$app->session->setFlash('success_join', [
                     'name' => $name,
@@ -432,6 +437,10 @@ class SiteController extends Controller
 
     public function actionCheckout()
     {
+        if (\Yii::$app->user->isGuest) {
+            \Yii::$app->user->setReturnUrl(\Yii::$app->request->url);
+            return $this->redirect(['site/join']);
+        }
         return $this->render('checkout');
     }
 

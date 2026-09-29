@@ -484,7 +484,7 @@ $this->registerJs("
 </div> -->
   <!-- END: PromoBanner -->
 
-  <?php if (Yii::$app->controller->route !== 'site/join' && Yii::$app->controller->route !== 'site/trial' && Yii::$app->controller->route !== 'site/login' && Yii::$app->controller->route !== 'site/settings'): ?>
+  <?php if (Yii::$app->controller->route !== 'site/join' && Yii::$app->controller->route !== 'site/trial' && Yii::$app->controller->route !== 'site/login' && Yii::$app->controller->route !== 'site/settings' && Yii::$app->controller->route !== 'site/checkout'): ?>
     <!-- BEGIN: MainHeader -->
     <header class="fixed top-0 left-0 right-0 z-50" data-purpose="site-navigation" id="main-header">
       <!-- Background Layer -->
@@ -638,8 +638,8 @@ $this->registerJs("
       <div class="max-w-7xl mx-auto px-6 pt-16 pb-8">
         <div class="text-center">
           <span class="text-xs font-bold uppercase tracking-widest text-brand-gold">📍 Temukan Kami</span>
-          <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight mt-2">
-            Kunjungi <span class="italic-serif font-normal text-brand-gold">Cabang Kami</span>
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight mt-2 font-condensed uppercase">
+            Kunjungi <span class="italic text-brand-gold">Cabang Kami</span>
           </h2>
           <p class="text-slate-400 text-sm mt-3 max-w-lg mx-auto">Hercules Fitness hadir di Batam dan Bali untuk melayani
             Anda.</p>
@@ -737,36 +737,28 @@ $this->registerJs("
                   <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=600&q=80"
                     alt="Gym Interior"
                     class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
-                  <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
-                  <p class="absolute bottom-3 left-3 text-white text-[11px] font-bold drop-shadow-lg leading-tight">💪
-                    Area Beban</p>
+                  
                 </div>
                 <!-- Item 2 -->
                 <div class="rounded-xl overflow-hidden relative group aspect-[9/16]">
                   <img src="https://images.unsplash.com/photo-1571902943202-507ec2618e8f?auto=format&fit=crop&w=600&q=80"
                     alt="Cardio Zone"
                     class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
-                  <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
-                  <p class="absolute bottom-3 left-3 text-white text-[11px] font-bold drop-shadow-lg leading-tight">🏃
-                    Zona Cardio</p>
+                  
                 </div>
                 <!-- Item 3 -->
                 <div class="rounded-xl overflow-hidden relative group aspect-[9/16]">
                   <img src="https://images.unsplash.com/photo-1540497077202-7c8a3999166f?auto=format&fit=crop&w=600&q=80"
                     alt="Group Class"
                     class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
-                  <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
-                  <p class="absolute bottom-3 left-3 text-white text-[11px] font-bold drop-shadow-lg leading-tight">🔥
-                    Kelas Grup</p>
+                  
                 </div>
                 <!-- Item 4 -->
                 <div class="rounded-xl overflow-hidden relative group aspect-[9/16]">
                   <img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?auto=format&fit=crop&w=600&q=80"
                     alt="Personal Training"
                     class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
-                  <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
-                  <p class="absolute bottom-3 left-3 text-white text-[11px] font-bold drop-shadow-lg leading-tight">🎯
-                    Personal Training</p>
+                  
                 </div>
                 <!-- Duplicate for infinite loop -->
                 <!-- Item 5 -->
@@ -774,36 +766,28 @@ $this->registerJs("
                   <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=600&q=80"
                     alt="Gym Interior"
                     class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
-                  <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
-                  <p class="absolute bottom-3 left-3 text-white text-[11px] font-bold drop-shadow-lg leading-tight">💪
-                    Area Beban</p>
+                  
                 </div>
                 <!-- Item 6 -->
                 <div class="rounded-xl overflow-hidden relative group aspect-[9/16]">
                   <img src="https://images.unsplash.com/photo-1571902943202-507ec2618e8f?auto=format&fit=crop&w=600&q=80"
                     alt="Cardio Zone"
                     class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
-                  <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
-                  <p class="absolute bottom-3 left-3 text-white text-[11px] font-bold drop-shadow-lg leading-tight">🏃
-                    Zona Cardio</p>
+                  
                 </div>
                 <!-- Item 7 -->
                 <div class="rounded-xl overflow-hidden relative group aspect-[9/16]">
                   <img src="https://images.unsplash.com/photo-1540497077202-7c8a3999166f?auto=format&fit=crop&w=600&q=80"
                     alt="Group Class"
                     class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
-                  <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
-                  <p class="absolute bottom-3 left-3 text-white text-[11px] font-bold drop-shadow-lg leading-tight">🔥
-                    Kelas Grup</p>
+                  
                 </div>
                 <!-- Item 8 -->
                 <div class="rounded-xl overflow-hidden relative group aspect-[9/16]">
                   <img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?auto=format&fit=crop&w=600&q=80"
                     alt="Personal Training"
                     class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
-                  <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
-                  <p class="absolute bottom-3 left-3 text-white text-[11px] font-bold drop-shadow-lg leading-tight">🎯
-                    Personal Training</p>
+                  
                 </div>
               </div>
             </div>
@@ -945,8 +929,7 @@ $this->registerJs("
             }
             animateGallery();
 
-            container.addEventListener('mouseenter', () => { paused = true; });
-            container.addEventListener('mouseleave', () => { paused = false; });
+            
 
             // Ensure manual scroll wraps around smoothly
             container.addEventListener('scroll', () => {
@@ -1006,10 +989,9 @@ $this->registerJs("
         <div
           class="pb-16 mb-16 border-b border-slate-100 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8">
           <div>
-            <span class="text-xs font-bold uppercase tracking-wider text-brand-gold">• Daftar Newsletter</span>
-            <h4 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight mt-1">
+            <h4 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight mt-1 font-condensed uppercase">
               Perjalanan Anda menuju tubuh yang lebih kuat <br class="hidden sm:block" />
-              dan sehat <span class="italic-serif font-normal text-brand-gold">dimulai di sini.</span>
+              dan sehat <span class="italic text-brand-gold">dimulai di sini.</span>
             </h4>
           </div>
           <div class="w-full lg:w-auto">

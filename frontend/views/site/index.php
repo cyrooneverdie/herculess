@@ -148,15 +148,17 @@ $this->title = 'Hercules Fitness Centre';
               Hercules Fitness Centre Batam — program latihan profesional untuk semua level. Buka 07.00–24.00.
             </p>
           </div>
-          <a id="hero-cta-btn"
-            class="group relative overflow-hidden pointer-events-auto px-8 py-4 rounded-full bg-brand-gold text-white text-sm font-bold tracking-wide transition-all duration-300 shadow-[0_10px_30px_rgba(212,175,55,0.4)] hover:shadow-[0_15px_40px_rgba(212,175,55,0.6)] hover:-translate-y-0.5 inline-flex items-center justify-center"
-            href="<?= \yii\helpers\Url::to(['site/join']) ?>">
-            <span class="absolute inset-0 flex items-center justify-center pointer-events-none">
-              <span id="hero-cta-fill"
-                class="w-64 h-64 rounded-full bg-black/20 scale-0 group-hover:scale-100 group-[.is-held]:scale-100 transition-transform duration-500 group-[.is-held]:duration-[1500ms] ease-out group-[.is-held]:ease-linear z-0"></span>
-            </span>
-            <span class="relative z-10">MULAI SEKARANG</span>
-          </a>
+          <?php if (Yii::$app->user->isGuest): ?>
+            <a id="hero-cta-btn"
+              class="group relative overflow-hidden pointer-events-auto px-8 py-4 rounded-full bg-brand-gold text-white text-sm font-bold tracking-wide transition-all duration-300 shadow-[0_10px_30px_rgba(212,175,55,0.4)] hover:shadow-[0_15px_40px_rgba(212,175,55,0.6)] hover:-translate-y-0.5 inline-flex items-center justify-center"
+              href="<?= \yii\helpers\Url::to(['site/join']) ?>">
+              <span class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                <span id="hero-cta-fill"
+                  class="w-64 h-64 rounded-full bg-black/20 scale-0 group-hover:scale-100 group-[.is-held]:scale-100 transition-transform duration-500 group-[.is-held]:duration-[1500ms] ease-out group-[.is-held]:ease-linear z-0"></span>
+              </span>
+              <span class="relative z-10">MULAI SEKARANG</span>
+            </a>
+          <?php endif; ?>
         </div> <!-- End of Title Info -->
 
       </div> <!-- End of Bottom Row Container -->
@@ -172,7 +174,8 @@ $this->title = 'Hercules Fitness Centre';
   <div class="max-w-7xl mx-auto px-6">
     <!-- Program Header Statement -->
     <div class="flex flex-col items-center text-center gap-6 mb-12">
-      <h2 class="text-3xl sm:text-5xl font-extrabold text-slate-900 tracking-tight leading-[1.2] max-w-2xl">
+      <h2
+        class="text-3xl sm:text-5xl font-extrabold text-slate-900 tracking-tight leading-[1.2] max-w-2xl font-condensed uppercase">
         Lebih Seru Latihan <span class="italic-serif font-normal text-brand-accent"
           style="text-shadow: 0px 2px 4px rgba(0,0,0,0.15), 0px 1px 2px rgba(0,0,0,0.1);">Bareng Mereka.</span>
       </h2>
@@ -463,7 +466,8 @@ $this->title = 'Hercules Fitness Centre';
           <span class="w-8 h-px bg-brand-gold"></span>
           Keunggulan Kami
         </span> -->
-        <h2 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-[1.1]">
+        <h2
+          class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-[1.1] font-condensed uppercase">
           Mengapa Harus<br>
           <span class="italic-serif font-normal text-slate-400 text-brand-accent">di Hercules Fitness?</span>
         </h2>
@@ -494,7 +498,8 @@ $this->title = 'Hercules Fitness Centre';
           <span class="text-6xl font-black text-white/100 select-none">01</span>
         </div> -->
           <div class="max-w-lg">
-            <h3 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white leading-tight mb-5">
+            <h3
+              class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white leading-tight mb-5 font-condensed uppercase">
               Didampingi Coach<br><span class="italic-serif font-normal text-orange-300">Profesional
                 Bersertifikat</span>
             </h3>
@@ -536,7 +541,8 @@ $this->title = 'Hercules Fitness Centre';
           <span class="text-6xl font-black text-white/100 select-none">03</span>
         </div> -->
           <div class="max-w-lg">
-            <h3 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white leading-tight mb-5">
+            <h3
+              class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white leading-tight mb-5 font-condensed uppercase">
               25.000+ Member<br><span class="italic-serif font-normal text-blue-300">Saling Mendukung</span>
             </h3>
             <p class="text-white/70 text-sm sm:text-base leading-relaxed mb-8 max-w-md">
@@ -579,7 +585,8 @@ $this->title = 'Hercules Fitness Centre';
           <span class="text-6xl font-black text-white/100 select-none">04</span>
         </div> -->
           <div class="max-w-lg">
-            <h3 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white leading-tight mb-5">
+            <h3
+              class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white leading-tight mb-5 font-condensed uppercase">
               Progress Real-Time<br><span class="italic-serif font-normal text-emerald-300">Terhubung Smart
                 Device</span>
             </h3>
@@ -628,7 +635,7 @@ $this->title = 'Hercules Fitness Centre';
   <div id="services-intro"
     class="absolute inset-0 flex flex-col items-center justify-center z-50 pointer-events-none px-6 transition-all duration-500 bg-black/40">
     <h2
-      class="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-tight mb-6 drop-shadow-[0_5px_15px_rgba(0,0,0,0.8)] text-center uppercase">
+      class="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-tight mb-6 drop-shadow-[0_5px_15px_rgba(0,0,0,0.8)] text-center uppercase font-condensed">
       Keuntungan <span class="text-brand-gold">EKSKLUSIF</span> <br class="sm:hidden">DI DALAM <span
         class="text-brand-gold">MEMBERSHIP</span> ANDA
     </h2>
@@ -657,7 +664,9 @@ $this->title = 'Hercules Fitness Centre';
         <span
           class="px-3 py-1 rounded-full bg-brand-gold text-[11px] font-semibold text-white mb-4 inline-block shadow-lg">1-on-1
           Session</span>
-        <h3 class="text-4xl md:text-5xl font-extrabold text-white leading-snug mb-4 drop-shadow-xl">Personal<br>Training
+        <h3
+          class="text-4xl md:text-5xl font-extrabold text-white leading-snug mb-4 drop-shadow-xl font-condensed uppercase">
+          Personal<br>Training
         </h3>
         <p class="text-base md:text-lg text-slate-100 drop-shadow-lg leading-relaxed">Pendampingan instruktur
           tersertifikasi untuk koreksi postur dan percepatan target.</p>
@@ -680,7 +689,9 @@ $this->title = 'Hercules Fitness Centre';
         <span
           class="px-3 py-1 rounded-full bg-emerald-500 text-[11px] font-semibold text-white mb-4 inline-block shadow-lg">Dietary
           Support</span>
-        <h3 class="text-4xl md:text-5xl font-extrabold text-white leading-snug mb-4 drop-shadow-xl">Nutrition<br>Plans
+        <h3
+          class="text-4xl md:text-5xl font-extrabold text-white leading-snug mb-4 drop-shadow-xl font-condensed uppercase">
+          Nutrition<br>Plans
         </h3>
         <p class="text-base md:text-lg text-slate-100 drop-shadow-lg leading-relaxed">Menu makronutrisi harian yang
           lezat dan disesuaikan dengan metabolisme tubuh Anda.</p>
@@ -703,7 +714,9 @@ $this->title = 'Hercules Fitness Centre';
         <span
           class="px-3 py-1 rounded-full bg-blue-500 text-[11px] font-semibold text-white mb-4 inline-block shadow-lg">Mind
           & Body</span>
-        <h3 class="text-4xl md:text-5xl font-extrabold text-white leading-snug mb-4 drop-shadow-xl">Yoga
+        <h3
+          class="text-4xl md:text-5xl font-extrabold text-white leading-snug mb-4 drop-shadow-xl font-condensed uppercase">
+          Yoga
           &<br>Mindfulness</h3>
         <p class="text-base md:text-lg text-slate-100 drop-shadow-lg leading-relaxed">Pusatkan pikiran dan lenturkan
           tubuh melalui sesi yoga intensif untuk keseimbangan jiwa.</p>
@@ -726,7 +739,9 @@ $this->title = 'Hercules Fitness Centre';
         <span
           class="px-3 py-1 rounded-full bg-red-600 text-[11px] font-semibold text-white mb-4 inline-block shadow-lg">High
           Intensity</span>
-        <h3 class="text-4xl md:text-5xl font-extrabold text-white leading-snug mb-4 drop-shadow-xl">Cardio
+        <h3
+          class="text-4xl md:text-5xl font-extrabold text-white leading-snug mb-4 drop-shadow-xl font-condensed uppercase">
+          Cardio
           &<br>Endurance</h3>
         <p class="text-base md:text-lg text-slate-100 drop-shadow-lg leading-relaxed">Tingkatkan stamina dan bakar
           kalori maksimal dengan program kardio intensif kami.</p>
@@ -742,8 +757,8 @@ $this->title = 'Hercules Fitness Centre';
   style="height: 100vh; display: flex; align-items: center;">
   <div class="max-w-7xl mx-auto px-6 w-full py-12">
     <div class="text-center mb-10 relative z-10">
-      <h2 class="text-sm font-bold uppercase tracking-widest text-brand-gold mb-2">Simple Steps</h2>
-      <h3 class="text-3xl md:text-5xl font-extrabold text-slate-900 tracking-tight mb-2">How it works?</h3>
+      <h2 class="text-sm font-bold uppercase tracking-widest text-brand-gold mb-2 font-condensed">Simple Steps</h2>
+      <h3 class="text-3xl md:text-5xl font-extrabold text-slate-900 tracking-tight mb-2 font-condensed uppercase">How it <span class="text-[#D4AF37]">works?</span></h3>
       <p class="text-slate-600 max-w-2xl mx-auto text-base">Tidak perlu bingung atau ragu. Berikut alur mudah untuk
         memulai sesi latihan pertama Anda di Hercules Fitness.</p>
     </div>
@@ -780,7 +795,8 @@ $this->title = 'Hercules Fitness Centre';
             <i class="fas fa-check text-xl md:text-3xl text-brand-gold hiw-check absolute opacity-0"></i>
           </div>
           <div>
-            <h4 class="text-lg md:text-2xl font-bold text-slate-900 mb-1 mt-1">Klaim Pass / Registrasi</h4>
+            <h4 class="text-lg md:text-2xl font-bold text-slate-900 mb-1 mt-1 font-condensed uppercase">Klaim Pass /
+              Registrasi</h4>
             <p class="text-slate-600 leading-relaxed text-xs md:text-sm">Pilih cabang terdekat dan isi formulir online
               singkat melalui halaman pendaftaran, lalu dapatkan tiket membership anda.</p>
           </div>
@@ -797,7 +813,7 @@ $this->title = 'Hercules Fitness Centre';
             <div
               class="bg-brand-gold text-slate-900 text-[9px] font-black uppercase tracking-widest px-2 py-0.5 md:px-3 md:py-1 rounded-full shadow-md whitespace-nowrap inline-block mb-1">
               Akses Instan</div>
-            <h4 class="text-lg md:text-2xl font-bold text-slate-900 mb-1">Datang & Scan QR</h4>
+            <h4 class="text-lg md:text-2xl font-bold text-slate-900 mb-1 font-condensed uppercase">Datang & Scan QR</h4>
             <p class="text-slate-600 leading-relaxed text-xs md:text-sm">Kunjungi cabang pilihan Anda dan cukup
               <i>scan</i> QR code pada kartu keanggotaan digital yang Anda dapatkan saat pendaftaran untuk mulai
               berlatih.
@@ -813,14 +829,17 @@ $this->title = 'Hercules Fitness Centre';
             <i class="fas fa-check text-xl md:text-3xl text-brand-gold hiw-check absolute opacity-0"></i>
           </div>
           <div>
-            <h4 class="text-lg md:text-2xl font-bold text-slate-900 mb-1 mt-1">Mulai Berkeringat!</h4>
+            <h4 class="text-lg md:text-2xl font-bold text-slate-900 mb-1 mt-1 font-condensed uppercase">Mulai
+              Berkeringat!</h4>
             <p class="text-slate-600 leading-relaxed text-xs md:text-sm mb-4">Nikmati sesi latihan Anda dengan nyaman.
               Fasilitas kami super lengkap mulai dari alat fitness standar internasional hingga shower premium.</p>
 
-            <a href="<?= \yii\helpers\Url::to(['site/join']) ?>"
-              class="inline-block px-5 py-2.5 rounded-full bg-slate-900 text-brand-gold font-bold tracking-widest uppercase hover:bg-black transition-colors shadow-lg hover:shadow-xl hover:-translate-y-0.5 text-xs">
-              Mulai <i class="fas fa-arrow-right ml-1"></i>
-            </a>
+            <?php if (Yii::$app->user->isGuest): ?>
+              <a href="<?= \yii\helpers\Url::to(['site/join']) ?>"
+                class="inline-block px-5 py-2.5 rounded-full bg-slate-900 text-brand-gold font-bold tracking-widest uppercase hover:bg-black transition-colors shadow-lg hover:shadow-xl hover:-translate-y-0.5 text-xs">
+                Mulai <i class="fas fa-arrow-right ml-1"></i>
+              </a>
+            <?php endif; ?>
           </div>
         </div>
 
@@ -977,8 +996,9 @@ $this->title = 'Hercules Fitness Centre';
   "></div>
 
   <div class="max-w-4xl mx-auto px-6 relative z-10">
-    <h2 class="text-3xl sm:text-5xl font-extrabold text-white text-center tracking-tight mb-12">
-      Pertanyaan yang Sering Diajukan
+    <h2
+      class="text-3xl sm:text-5xl font-extrabold text-white text-center tracking-tight mb-12 font-condensed uppercase">
+      Pertanyaan yang <span class="text-[#D4AF37]">Sering Diajukan</span>
     </h2>
 
     <div class="space-y-4">
@@ -1101,12 +1121,9 @@ $this->title = 'Hercules Fitness Centre';
   </div>
 
   <div id="ig-header" class="text-center mb-12 md:mb-16 px-6 relative z-10">
-    <h2 class="text-3xl md:text-5xl lg:text-6xl font-extrabold text-slate-900 tracking-tight"
-      style="font-family: 'Inter', sans-serif;">
+    <h2 class="text-3xl md:text-5xl lg:text-6xl font-extrabold text-slate-900 tracking-tight font-condensed uppercase">
       Follow Us On <span class="text-[#D4AF37]">Instagram</span>
     </h2>
-    <p class="text-slate-500 mt-4 max-w-xl mx-auto">Boost your motivation with high-impact daily posts from our expert
-      trainers.</p>
   </div>
 
   <div id="ig-grid-container"
