@@ -1095,42 +1095,38 @@ class CashController extends Controller
 
         $search = Yii::$app->request->get('q', '');
         $type = Yii::$app->request->get('type', '');
-        // $id = Yii::$app->request->get('id', null);
+        $paymentStatus = Yii::$app->request->get('payment_status', '');
 
         $query = "SELECT DISTINCT ON (coa_no)
-            coa_id,
-            coa_no,
-            coa_name_id,
-            coa_name_en,
-            coa_type
-        FROM coas
-        WHERE coa_status = 1 ";
+                coa_id,
+                coa_no,
+                coa_name_id,
+                coa_name_en,
+                coa_type
+            FROM coas
+            WHERE coa_status = 1 ";
 
-        if ($type == '2') {
+        if ($paymentStatus === 'sudah') {
+            $query .= " AND coa_category IN (1, 3) ";
+        } else if ($type == '2') {
             $query .= " AND coa_category IN (2, 12) ";
         } else if ($type == '1') {
-            $query .= " AND coa_category = 1 AND coa_level = 2 ";
+            $query .= " AND coa_type = '1' ";
         }
 
         if (!empty($search)) {
             $query .= " AND (
-                coa_name_id ILIKE '%$search%'
-                OR coa_name_en ILIKE '%$search%'
-                OR coa_no ILIKE '%$search%'
-            )";
+            coa_name_id ILIKE '%' . $search . '%'
+            OR coa_name_en ILIKE '%' . $search . '%'
+            OR coa_no ILIKE '%' . $search . '%'
+        ) ";
+
         }
 
-        $query .= " GROUP BY coa_no, coa_id, coa_name_id, coa_name_en, coa_type";
-        $query .= " ORDER BY coa_no, coa_id ASC";
-        // echo $query; die;
+        $query .= " GROUP BY coa_no, coa_id, coa_name_id, coa_name_en, coa_type ";
+        $query .= " ORDER BY coa_no, coa_id ASC ";
 
-        $command = Yii::$app->db->createCommand($query);
-
-        if (!empty($search)) {
-            $command->bindValue(':search', '%' . $search . '%');
-        }
-
-        $data = $command->queryAll();
+        $data = Yii::$app->db->createCommand($query)->queryAll();
 
         $language = Yii::$app->language;
         foreach ($data as &$row) {
@@ -1138,12 +1134,10 @@ class CashController extends Controller
         }
         unset($row);
 
-        // var_dump($data);die;
         return [
             'data' => array_values($data)
         ];
     }
-
     public function actionContactlist()
     {
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;

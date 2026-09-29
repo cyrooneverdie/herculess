@@ -14,8 +14,8 @@ class Tranvariants extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['tranvariantid', 'variantid', 'trandetailid'], 'string'],
-            [['barcode', 'from_locationid', 'condition'], 'string', 'max' => 255],
+            [['tranvariantid', 'contact_id'], 'string'],
+            [['barcode', 'remarks', 'condition'], 'string', 'max' => 255],
             [['type', 'trandate', 'refid', 'productid'], 'safe'],
 
         ];

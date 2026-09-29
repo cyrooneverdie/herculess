@@ -2271,357 +2271,114 @@ class TranController extends Controller
     }
     public function actionCreateitem()
     {
-        $modelvariants = new Tranvariants;
+        $modelvariants = new Tranvariants();
 
         if (Yii::$app->request->isPost) {
+            Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
             $post = Yii::$app->request->post();
-            // var_dump($post);die;
 
-            $modelvariants->load($post);
-            $type = $post['Tranvariants']['type'] ?? null;
-            // $details = $post['Tranvariants'] ?? [];
-            // var_dump($type);die;
-            $trandetail = $post['Trandetail'] ?? [];
+            $contact_id = $post['Tran']['contact_id'] ?? null;
+            $barcode = $post['Tran']['barcode'] ?? null;
+            $forceOption = $post['force_option'] ?? null; // 'ignore', 'no_deduct', 'deduct'
 
-            $trandetailrow = null;
-            foreach ($trandetail as $row) {
-                if (!empty($row['barcode'])) {
-                    $trandetailrow = $row;
-                    break;
-                }
-            }
-
-            if (!$trandetailrow) {
-                Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+            if (empty($contact_id) || empty($barcode)) {
                 return [
                     'success' => false,
-                    'pesan' => 'Barcode tidak terbaca atau data scan kosong.'
+                    'pesan' => 'Data kontak atau barcode kosong.'
+                ];
+            }
+
+            $todayStart = date('Y-m-d 00:00:00');
+            $todayEnd = date('Y-m-d 23:59:59');
+
+            $sqlCheck = "SELECT COUNT(*) 
+                     FROM tranvariants 
+                     WHERE contact_id = '" . $contact_id . "' 
+                       AND status = 1 
+                       AND trandate >= '" . $todayStart . "' 
+                       AND trandate <= '" . $todayEnd . "'";
+
+            $alreadyCheckedIn = (int) Yii::$app->db->createCommand($sqlCheck)->queryScalar();
+
+            if ($alreadyCheckedIn > 0 && empty($forceOption)) {
+                $sqlContact = "SELECT contact_id, contact_name, contact_no 
+                           FROM contacts 
+                           WHERE contact_id = '" . $contact_id . "' 
+                           LIMIT 1";
+
+                $contact = Yii::$app->db->createCommand($sqlContact)->queryOne();
+
+                return [
+                    'success' => false,
+                    'already_checked_in' => true,
+                    'contact' => [
+                        'contact_id' => $contact['contact_id'] ?? $contact_id,
+                        'contact_name' => $contact['contact_name'] ?? 'Member',
+                        'contact_no' => $contact['contact_no'] ?? $barcode,
+                        'package_info' => 'Basic Monthly',
+                        'expired_info' => 's/d ' . date('d M Y', strtotime('+14 days')),
+                    ],
+                    'pesan' => 'Member sudah check-in hari ini'
+                ];
+            }
+
+            if ($forceOption === 'ignore') {
+                return [
+                    'success' => true,
+                    'finished' => false,
+                    'pesan' => 'Check-in dibatalkan (Abaikan).'
                 ];
             }
 
             $transaction = Yii::$app->db->beginTransaction();
 
             try {
-                // var_dump($trandetailrow['variantid']); exit; 
-                $isexist = '';
-                if ($type == '2') {
-                    $isexist =
-                        "SELECT COUNT(*) as count 
-                            FROM tranvariants A 
-                            JOIN trans B ON A.refid = B.tranid -- delivery
-                            LEFT JOIN trans C ON B.refid = C.tranid -- order
-                            WHERE A.type = '2' AND A.status <> 10 AND B.status <> 10
-                            AND C.statuspro IN ('1', '5', '10') AND C.status <> 10
-                            AND NOT EXISTS (
-                                SELECT 1 
-                                FROM tranvariants A2 
-                                JOIN trans B2 ON A2.refid = B2.tranid -- return
-                                WHERE A2.variantid = A.variantid 
-                                AND A2.type = '3' AND A2.status <> 10
-                                AND B2.status <> 10
-                                AND B2.refid = B.refid -- order
-                            )
-                        AND A.variantid = '" . $trandetailrow['variantid'] . "' ";
-
-                    $sumDel =
-                        "SELECT SUM((A.amount + A.amount2))
-                    FROM trandetails A
-                    LEFT JOIN trans B ON A.tranid = B.tranid -- delivery
-                    WHERE A.productid = '" . $trandetailrow['productid'] . "'
-                    AND B.status <> 10 AND B.trantype = 'sales/delivery'
-                    AND B.tranid = '" . $modelvariants->refid . "'";
-
-                    $countScan =
-                        "SELECT COUNT(*) FROM tranvariants A
-                    LEFT JOIN trans B ON A.refid = B.tranid -- delivery
-                    WHERE A.type = '2' AND A.status <> 10 AND B.status <> 10
-                    AND A.productid = '" . $trandetailrow['productid'] . "'
-                    AND B.tranid = '" . $modelvariants->refid . "'";
-
-                    $totalDel =
-                        "SELECT SUM((A.amount + A.amount2))
-                    FROM trandetails A
-                    LEFT JOIN trans B ON A.tranid = B.tranid -- delivery
-                    WHERE B.status <> 10 AND B.trantype = 'sales/delivery'
-                    AND B.tranid = '" . $modelvariants->refid . "'";
-
-                    $totalScan =
-                        "SELECT COUNT(*) FROM tranvariants A
-                    LEFT JOIN trans B ON A.refid = B.tranid -- delivery
-                    WHERE A.type = '2' AND A.status <> 10 AND B.status <> 10
-                    AND B.tranid = '" . $modelvariants->refid . "'";
-                    // var_dump($sumDel); exit;
-
-                } else if ($type == '3') {
-                    $getSOId =
-                        "SELECT refid FROM trans WHERE tranid = '" . $modelvariants->refid . "' AND status <> 10";
-
-                    $soId = Yii::$app->db->createCommand($getSOId)->queryScalar();
-
-                    $checkBarcode =
-                        "SELECT COUNT(*) FROM tranvariants A
-                        LEFT JOIN trans B ON A.refid = B.tranid -- delivery
-                        LEFT JOIN trans C ON B.refid = C.tranid -- Order
-                    WHERE A.refid = B.tranid AND B.refid = '" . $soId . "'
-                    AND A.type = '2' AND B.status <> 10
-                    AND A.status <> 10 AND C.statuspro IN ('1', '5', '10')
-                    AND A.barcode = '" . $trandetailrow['barcode'] . "'";
-                    // echo ($soId);exit;
-
-                    $existsInType2 = Yii::$app->db->createCommand($checkBarcode)->queryScalar();
-
-                    if ($existsInType2 == 0) {
-                        throw new Exception('Barcode tidak ditemukan dalam pengiriman untuk Order ini.');
-                    }
-
-                    $isexist = "SELECT COUNT(*) as count FROM tranvariants A 
-                            LEFT JOIN trans B on A.refid = B.tranid -- Return
-                            LEFT JOIN trans C on B.refid = C.tranid -- Order
-                            WHERE A.type ='3' AND B.status <> 10 
-                            AND A.status <> 10 AND C.statuspro IN ('1', '5', '10')
-                            AND A.refid = B.tranid AND B.refid = '" . $soId . "'
-                            AND A.variantid = '" . $trandetailrow['variantid'] . "' ";
-
-                    $sumRet =
-                        "SELECT SUM((A.amount + A.amount2))
-                    FROM trandetails A
-                    LEFT JOIN trans B ON A.tranid = B.tranid -- return
-                    WHERE A.productid = '" . $trandetailrow['productid'] . "'
-                    AND B.status <> 10 AND B.trantype = 'sales/return'
-                    AND B.tranid = '" . $modelvariants->refid . "'";
-
-                    $countScanRet =
-                        "SELECT COUNT(*) FROM tranvariants A
-                    LEFT JOIN trans B ON A.refid = B.tranid -- return
-                    WHERE A.type = '3' AND A.status <> 10 AND B.status <> 10
-                    AND A.productid = '" . $trandetailrow['productid'] . "'
-                    AND B.tranid = '" . $modelvariants->refid . "'";
-
-                    $totalRet =
-                        "SELECT SUM((A.amount + A.amount2))
-                    FROM trandetails A
-                    LEFT JOIN trans B ON A.tranid = B.tranid -- return
-                    WHERE B.status <> 10 AND B.trantype = 'sales/return'
-                    AND B.tranid = '" . $modelvariants->refid . "'";
-
-                    $totalScanRet =
-                        "SELECT COUNT(*) FROM tranvariants A
-                    LEFT JOIN trans B ON A.refid = B.tranid -- return
-                    WHERE A.type = '3' AND A.status <> 10 AND B.status <> 10
-                    AND B.tranid = '" . $modelvariants->refid . "'";
-                } else if ($type == '1') {
-                    $getSOId =
-                        "SELECT refid FROM trans WHERE tranid = '" . $modelvariants->refid . "' AND status <> 10";
-
-                    $soId = Yii::$app->db->createCommand($getSOId)->queryScalar();
-
-                    $checkBarcode =
-                        "SELECT COUNT(*) FROM tranvariants A
-                        LEFT JOIN trans B ON A.refid = B.tranid -- delivery
-                        LEFT JOIN trans C ON B.refid = C.tranid -- Order
-                    WHERE A.refid = B.tranid AND B.refid = '" . $soId . "'
-                    AND A.type = '2' AND B.status <> 10
-                    AND A.status <> 10 AND C.statuspro IN ('1', '5', '10')
-                    AND A.barcode = '" . $trandetailrow['barcode'] . "'";
-                    // echo ($soId);exit;
-
-                    $existsInType2 = Yii::$app->db->createCommand($checkBarcode)->queryScalar();
-
-                    if ($existsInType2 == 0) {
-                        throw new Exception('Barcode tidak ditemukan dalam pengiriman untuk Order ini.');
-                    }
-
-                    $isexist = "SELECT COUNT(*) as count FROM tranvariants A 
-                            LEFT JOIN trans B on A.refid = B.tranid -- Return
-                            LEFT JOIN trans C on B.refid = C.tranid -- Order
-                            WHERE A.type ='3' AND B.status <> 10 
-                            AND A.status <> 10 AND C.statuspro IN ('1', '5', '10')
-                            AND A.refid = B.tranid AND B.refid = '" . $soId . "'
-                            AND A.variantid = '" . $trandetailrow['variantid'] . "' ";
-
-                    $sumIn =
-                        "SELECT SUM((A.amount + A.amount2))
-                    FROM trandetails A
-                    LEFT JOIN trans B ON A.tranid = B.tranid -- return
-                    WHERE A.productid = '" . $trandetailrow['productid'] . "'
-                    AND B.status <> 10 AND B.trantype = 'purchase/delivery'
-                    AND B.tranid = '" . $modelvariants->refid . "'";
-
-                    $countScanIn =
-                        "SELECT COUNT(*) FROM tranvariants A
-                    LEFT JOIN trans B ON A.refid = B.tranid -- return
-                    WHERE A.type = '3' AND A.status <> 10 AND B.status <> 10
-                    AND A.productid = '" . $trandetailrow['productid'] . "'
-                    AND B.tranid = '" . $modelvariants->refid . "'";
-
-                    $totalIn =
-                        "SELECT SUM((A.amount + A.amount2))
-                    FROM trandetails A
-                    LEFT JOIN trans B ON A.tranid = B.tranid -- return
-                    WHERE B.status <> 10 AND B.trantype = 'purchase/delivery'
-                    AND B.tranid = '" . $modelvariants->refid . "'";
-
-                    $totalScanIn =
-                        "SELECT COUNT(*) FROM tranvariants A
-                    LEFT JOIN trans B ON A.refid = B.tranid -- return
-                    WHERE A.type = '3' AND A.status <> 10 AND B.status <> 10
-                    AND B.tranid = '" . $modelvariants->refid . "'";
-
-                } else {
-                    $isexist = "SELECT COUNT(*) as count FROM tranvariants A WHERE 1 = 0";
-                }
-                // echo ($isexist);exit;
-                $data = Yii::$app->db->createCommand($isexist)->queryAll();
-                // var_dump($data); exit;
-
-                if ($type == '3' && $data[0]['count'] > 0) {
-                    throw new Exception('Item telah direturn.');
-                } else if ($type == '1' && $data[0]['count'] > 0) {
-                    throw new Exception('Item telah diinputkan sebelumnya.');
-                } else {
-                    if ($data[0]['count'] > 0) {
-                        throw new Exception('Item masih terikat transaksi sebelumnya (belum return).');
-                    }
-                }
-
-                $variant = Variant::findOne($trandetailrow['variantid']);
-
-                if (!$variant) {
-                    throw new Exception('Variant tidak ditemukan.');
-                }
-
                 $tranvariant = new Tranvariants();
-                $tranvariant->tranvariantid = Yii::$app->db->createCommand('select uuid_generate_v4()')->queryScalar();
-                $tranvariant->trandetailid = $trandetailrow['trandetailid'];
-                $tranvariant->variantid = $trandetailrow['variantid'] ?? null;
-                $tranvariant->productid = $trandetailrow['productid'] ?? null;
-                $tranvariant->barcode = $trandetailrow['barcode'] ?? null;
-                $tranvariant->refid = $modelvariants->refid;
-                $tranvariant->trandate = date('Y-m-d H:i:s');
+                $tranvariant->tranvariantid = Yii::$app->db->createCommand('SELECT uuid_generate_v4()')->queryScalar();
+                $tranvariant->contact_id = $contact_id;
+                $tranvariant->barcode = $barcode;
                 $tranvariant->status = 1;
-                $tranvariant->type = ($type == '1') ? '3' : $type;
-                $tranvariant->from_locationid = $variant->locationid ?? null;
+                $tranvariant->trandate = date('Y-m-d H:i:s');
 
-                if ($variant) {
-                    if ($type == '2') {
-                        $variant->locationid = 'location.3';
-                        $variant->stock = 1;
-
-                    } else if ($type == '3' || $type == '1') {
-                        $lastDelivery = Tranvariants::find()
-                            ->where(['variantid' => $variant->variantid, 'type' => 2])
-                            ->andWhere(['<>', 'status', 10])
-                            ->orderBy(['trandate' => SORT_DESC])
-                            ->one();
-
-                        $lokasiAwal = ($lastDelivery && !empty($lastDelivery->from_locationid))
-                            ? $lastDelivery->from_locationid
-                            : 'location.1';
-
-                        $variant->locationid = $lokasiAwal;
-                    }
-
-                    if (!$variant->save()) {
-                        $errors = $variant->getFirstErrors();
-                        $fieldName = array_key_first($errors);
-                        $errorMessage = reset($errors);
-                        throw new Exception("Field [$fieldName] error: $errorMessage");
-                    }
-                } else {
-                    throw new Exception('Variant tidak ditemukan.');
+                if ($forceOption === 'no_deduct') {
+                    $tranvariant->remarks = 'no_deduct';
                 }
 
                 if (!$tranvariant->save()) {
-                    throw new Exception(implode(', ', $tranvariant->getFirstErrors()));
-                }
-
-                if ($type == '2') {
-                    $sumDelValue = Yii::$app->db->createCommand($sumDel)->queryScalar();
-                    $countScanValue = Yii::$app->db->createCommand($countScan)->queryScalar();
-                    $totalDelVal = Yii::$app->db->createCommand($totalDel)->queryScalar();
-                    $totalScanVal = Yii::$app->db->createCommand($totalScan)->queryScalar();
-
-                    $finished = ($totalDelVal == $totalScanVal && $totalDelVal > 0);
-
-                } else if ($type == '3') {
-                    $sumRetValue = Yii::$app->db->createCommand($sumRet)->queryScalar();
-                    $countScanRetValue = Yii::$app->db->createCommand($countScanRet)->queryScalar();
-                    $totalRetVal = Yii::$app->db->createCommand($totalRet)->queryScalar();
-                    $totalScanRetVal = Yii::$app->db->createCommand($totalScanRet)->queryScalar();
-
-                    $finished = ($totalRetVal == $totalScanRetVal && $totalRetVal > 0);
-                } else if ($type == '1') {
-                    $sumInValue = Yii::$app->db->createCommand($sumIn)->queryScalar();
-                    $countScanInValue = Yii::$app->db->createCommand($countScanIn)->queryScalar();
-                    $totalInVal = Yii::$app->db->createCommand($totalIn)->queryScalar();
-                    $totalScanInVal = Yii::$app->db->createCommand($totalScanIn)->queryScalar();
-
-                    $finished = ($totalInVal == $totalScanInVal && $totalInVal > 0);
-                } else {
-                    $finished = false;
+                    throw new \Exception(implode(', ', $tranvariant->getFirstErrors()));
                 }
 
                 $transaction->commit();
 
-                $pesan = "Scan Berhasil! " . $trandetailrow['productname'];
-                if ($type == '2') {
-                    $pesan = $finished
-                        ? "<b>Scan Berhasil! Semua Item Telah di Scan.</b><br><br>" .
-                        "Silahkan Print Surat Jalan pada Menu Stock Out<br><br>" .
-                        "Jika Ada Barang yang Tidak Terpakai, Silahkan Input Barang Kembali Pada Menu Return Stock<br><br>"
-                        : "<b>Scan Berhasil! " . $trandetailrow['productname'] . "</b><br><br>" .
-                        "Total Item: $sumDelValue<br><br>" .
-                        "Sudah Scan: $countScanValue<br>";
-                } else if ($type == '3') {
-                    $pesan = $finished
-                        ? "<b>Scan Berhasil! Semua Item Telah Direturn.</b><br><br>" .
-                        "Jika Sudah Penarikan Barang, Silahkan Input Penarikan Barang Pada Menu Stock In<br><br>"
-                        : "<b>Scan Berhasil! " . $trandetailrow['productname'] . "</b><br><br>" .
-                        "Total Item: $sumRetValue<br><br>" .
-                        "Sudah Scan: $countScanRetValue<br>";
-                } else if ($type == '1') {
-                    $pesan = $finished
-                        ? "<b>Scan Berhasil! Semua Item Telah di Scan.</b><br><br>" .
-                        "Jika Proyek Selesai, Silahkan Ubah Status Proyek Menjadi Finish pada Menu Stock In"
-                        : "<b>Scan Berhasil! " . $trandetailrow['productname'] . "</b><br><br>" .
-                        "Total Item: $sumInValue<br><br>" .
-                        "Sudah Scan: $countScanInValue<br>";
-                }
+                $sqlGetName = "SELECT contact_name FROM contacts WHERE contact_id = '" . $contact_id . "' LIMIT 1";
+                $contactName = Yii::$app->db->createCommand($sqlGetName)->queryScalar() ?: 'Member';
 
-                Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
                 return [
                     'success' => true,
-                    'finished' => $finished,
-                    'pesan' => $pesan,
+                    'finished' => false,
+                    'pesan' => "<b>Check-in Berhasil!</b><br>Nama: " . $contactName . "<br>No Kontak: " . $barcode,
                 ];
 
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 $transaction->rollBack();
 
-                Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
                 return [
                     'success' => false,
                     'pesan' => $e->getMessage(),
-                    'debug' => $e instanceof \yii\db\Exception ? $e->errorInfo : null,
                 ];
             }
         }
 
         $modelvariants->trandate = date("Y-m-d H:i:s");
-        $modeldetails = [];
-
-        $form = 'delivery';
 
         if (Yii::$app->request->isAjax) {
-            return $this->renderAjax($form, [
-                'modeldetails' => (empty($modeldetails)) ? [new Trandetail] : $modeldetails,
+            return $this->renderAjax('delivery', [
                 'modelvariants' => $modelvariants,
                 'isajax' => true,
             ]);
         }
 
-        return $this->render($form, [
-            'modeldetails' => (empty($modeldetails)) ? [new Trandetail] : $modeldetails,
+        return $this->render('delivery', [
             'modelvariants' => $modelvariants,
             'isajax' => false,
         ]);
@@ -5882,149 +5639,110 @@ class TranController extends Controller
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         $params = Yii::$app->request->queryParams;
 
-        $id = $params['id'] ?? '';
         $search = $params['search'] ?? '';
-        $module = $params['module'] ?? 'purchase';
-        $type = $params['type'] ?? '';
-        $reftype2 = $params['reftype2'] ?? '';
-
-        // var_dump($reftype2, $module, $type);exit;
-
-        $trantype = "$module/$type";
-        $sortcolumn = $params['order'][0]['column'] ?? 0;
-        $ordercolumn = $params['columns'][$sortcolumn]['data'] ?? 'trandate';
-        $columnorder = $params['order'][0]['dir'] ?? 'DESC';
-
         $date = $params['datefilter'] ?? '';
 
-        if ($trantype == 'stock/return') {
-            $trantype = 'sales/return';
-        } else if ($trantype == 'sales/item') {
-            $trantype = 'sales/delivery';
-        } else if ($trantype == 'stock/in' && $reftype2 == 'sales/order') {
-            $trantype = 'purchase/delivery';
+        $contacttype = $params['contacttype'] ?? 'customer';
+
+        $sortcolumn = $params['order'][0]['column'] ?? 0;
+        $ordercolumn = $params['columns'][$sortcolumn]['data'] ?? 'trandate';
+        $columnorder = strtoupper($params['order'][0]['dir'] ?? 'DESC') === 'ASC' ? 'ASC' : 'DESC';
+
+        $columnMap = ['trandate' => 'tv.trandate', 'barcode' => 'tv.barcode', 'contact_name' => 'c.contact_name', 'contact_no' => 'c.contact_no',];
+        $sortColumnSql = $columnMap[$ordercolumn] ?? 'tv.trandate';
+
+        $whereCondition = " WHERE tv.status <> 10 AND (tv.remarks IS NULL OR tv.remarks <> 'no_deduct')";
+
+        if (!empty($search)) {
+            $safeSearch = addslashes($search);
+            $whereCondition .= " AND (
+            c.contact_name ILIKE '%$safeSearch%'
+            OR c.contact_no ILIKE '%$safeSearch%'
+            OR tv.barcode ILIKE '%$safeSearch%'
+        )";
         }
 
-        $query = "";
-        $alias = "";
+        $defaultToday = date('Y-m-d') . ' - ' . date('Y-m-d');
+        $date = !empty($params['datefilter']) ? $params['datefilter'] : $defaultToday;
 
-        if ($trantype == 'stock/in' && $reftype2 == 'purchase/request') {
-            $alias = "v";
-            $query = "SELECT DISTINCT 
-                p.productname,
-                v.barcode,
-                v.trandate,
-                v.variantid as primaryid,
-                t.tranid
-            FROM variants v
-            JOIN trandetails td ON td.productid = v.productid AND td.tranid = v.tranid 
-            JOIN trans t ON t.tranid = td.tranid
-            JOIN products p ON p.productid = td.productid
-            WHERE t.trantype = 'purchase/delivery'
-                AND t.status <> 10 AND v.status <> 10
-            ";
-
-        } else {
-            $alias = "tv";
-            $query = "SELECT
-                p.productname,
-                tv.barcode,
-                tv.trandate,
-                tv.tranvariantid as primaryid,
-                t.tranid
-            FROM tranvariants tv
-            JOIN trandetails td ON td.trandetailid = tv.trandetailid
-            JOIN trans t ON t.tranid = td.tranid
-            JOIN products p ON p.productid = td.productid
-            WHERE t.trantype='$trantype'
-            AND t.status <> 10 AND tv.status <> 10
-            ";
+        if (!empty($date)) {
+            $dates = explode(" - ", $date);
+            if (count($dates) == 2) {
+                $startDate = date('Y-m-d 00:00:00', strtotime($dates[0]));
+                $endDate = date('Y-m-d 23:59:59', strtotime($dates[1]));
+                $whereCondition .= " AND tv.trandate BETWEEN '$startDate' AND '$endDate'";
+            }
         }
+        $countQuery = "SELECT 
+                    LOWER(c.contacttype) AS contacttype, 
+                    COUNT(DISTINCT tv.tranvariantid) AS total_count
+                   FROM tranvariants tv
+                   LEFT JOIN contacts c ON c.contact_id = tv.contact_id AND c.contact_status <> '10'
+                   $whereCondition
+                   GROUP BY LOWER(c.contacttype)";
 
-        if (!empty($id)) {
-            $safeId = addslashes($id);
-            if ($trantype == 'stock/in' && $reftype2 == 'purchase/request') {
-                $query .= " AND
-             $alias.tranid = '$safeId' ";
-            } else {
-                $query .= " AND
-             $alias.refid = '$safeId' ";
+        $countsRaw = Yii::$app->db->createCommand($countQuery)->queryAll();
+
+        $countMember = 0;
+        $countCoach = 0;
+        foreach ($countsRaw as $c) {
+            if ($c['contacttype'] === 'customer') {
+                $countMember = (int) $c['total_count'];
+            } elseif ($c['contacttype'] === 'employee') {
+                $countCoach = (int) $c['total_count'];
             }
         }
 
-        if ($search !== '') {
-            $safeSearch = addslashes($search);
-            $query .= " AND (
-            p.productname ILIKE '%$safeSearch%'
-            OR t.tranno ILIKE '%$safeSearch%'
-            OR $alias.barcode ILIKE '%$safeSearch%'
-            )";
-        }
-
-        if ($date !== '') {
-            $dates = explode(" - ", $date);
-            $startDate = date('Y-m-d', strtotime($dates[0]));
-            $endDate = date('Y-m-d', strtotime($dates[1]));
-            $query .= " AND DATE(t.trandate) BETWEEN '$startDate' AND '$endDate'";
-        }
-
-        $query .= " ORDER BY $ordercolumn $columnorder";
-        // echo $query;exit;
+        $safeContactType = addslashes(strtolower($contacttype));
+        $query = "SELECT 
+                tv.tranvariantid AS primaryid,
+                COUNT(tv.tranvariantid) OVER (PARTITION BY tv.contact_id) AS total,
+                tv.trandate,
+                tv.barcode,
+                tv.contact_id,
+                c.contact_name,
+                c.contact_no,
+                c.jobend,
+                c.contacttype,
+                tv.remarks
+              FROM tranvariants tv
+              LEFT JOIN contacts c ON c.contact_id = tv.contact_id AND c.contact_status <> '10'
+              $whereCondition
+              AND LOWER(c.contacttype) = '$safeContactType'
+              ORDER BY $sortColumnSql $columnorder";
 
         $data = Yii::$app->db->createCommand($query)->queryAll();
 
         foreach ($data as &$row) {
-            if (isset($row['trandate'])) {
-                $row['trandate_display'] = Yii::$app->formatter->asDate($row['trandate'], 'php:d-m-Y');
-            }
-            if (isset($row['tranduedate'])) {
-                $row['tranduedate_display'] = $row['tranduedate'] ? Yii::$app->formatter->asDate($row['tranduedate'], 'php:d-m-Y') : null;
-            }
-            if (isset($row['trantype'])) {
-                $parts = explode('/', $row['trantype']);
-                $row['module'] = $parts[0] ?? 'purchase';
-                $row['type'] = $parts[1] ?? 'request';
+            if (!empty($row['trandate'])) {
+                $row['trandate_display'] = Yii::$app->formatter->asDate($row['trandate'], 'php:d-m-Y H:i');
             }
         }
 
         return [
             'data' => $data ?: [],
-            'module' => $module,
-            'type' => $type
-
+            'count_member' => $countMember,
+            'count_coach' => $countCoach,
         ];
     }
     public function actionSearchproductbybarcode()
     {
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         $barcode = trim(Yii::$app->request->get('barcode', ''));
-        // $type = trim(Yii::$app->request->get('type', ''));
 
         if (empty($barcode)) {
             return ['success' => false, 'message' => 'Barcode tidak boleh kosong'];
         }
 
-        // $where = "";
-        // if ($type === '2') {
-        //     $where .= "AND v.locationid NOT IN ('location.4', '620e729b-483f-4527-b2f7-9dbf2719e884')";
-        // } else if ($type === '3') {
-        //     $where .= "AND v.locationid NOT IN ('location.4', '620e729b-483f-4527-b2f7-9dbf2719e884')";
-        // }
-
         try {
             $sql =
                 "SELECT
-                v.productid,
-                v.variantid,
-                v.barcode,
-                p.productname
-            FROM variants v
-            JOIN products p ON p.productid = v.productid AND p.status <> 10
-            LEFT JOIN enum c ON c.enumid = v.condition AND c.enumtype ='condition'
-            LEFT JOIN enum l ON l.enumid = v.locationid AND l.enumtype = 'location' 
-            WHERE v.barcode = '$barcode' AND v.sku IS NULL
-            AND v.status <> 10 AND c.enumtext_id = 'Baik' AND l.enumtext_id !~* 'Bengkel|Dijual'
-         
+                c.contact_id,
+                c.contact_name,
+                c.contact_no,
+                c.jobend
+            FROM contacts c
+            WHERE c.contact_status <> '10' AND c.contact_no = '$barcode'
             ";
 
             $product = Yii::$app->db->createCommand($sql)->queryOne();
@@ -6033,21 +5751,18 @@ class TranController extends Controller
             if (!$product) {
                 return [
                     'success' => false,
-                    'message' => 'Produk dengan barcode ' . $barcode . ' tidak ditemukan di Gudang'
+                    'message' => 'Kontak dengan No Kontak ' . $barcode . ' tidak ditemukan'
                 ];
             }
 
             return [
                 'success' => true,
                 'product' => [
-                    'productid' => $product['productid'],
-                    'productname' => $product['productname']
+                    'contact_id' => $product['contact_id'],
+                    'contact_name' => $product['contact_name'],
+                    'contact_no' => $product['contact_no'],
+                    'jobend' => $product['jobend']
                 ],
-                'variant' => [
-                    'variantid' => $product['variantid'],
-                    'barcode' => $product['barcode'],
-                    'trandetailid' => $product['trandetailid'],
-                ]
             ];
         } catch (Exception $e) {
             return [

@@ -127,7 +127,8 @@ class ContactController extends BaseController
                             'updateem',
                             'update2',
                             'updatestatus',
-                            'get-dashboard-data'
+                            'get-dashboard-data',
+                            'akunlist'
                         ],
                         'allow' => true,
                         'roles' => ['@'], // Hanya user login yang bisa akses
@@ -221,15 +222,8 @@ class ContactController extends BaseController
     {
         Yii::$app->lang->genLang();
     }
+  
 
-    // public function actionIndex()
-    // {
-    //     $companyid = Yii::$app->session->get('companyid');
-    //     // var_dump($companyid);
-    //     return $this->render('index', [
-    //         'companyid' => $companyid,
-    //     ]);
-    // }
     public function actionIndex($companyid = null, $contacttype = '')
     {
         // $this->isAkses($contacttype, "lihat");

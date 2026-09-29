@@ -31,7 +31,18 @@ $form = ActiveForm::begin(
 	data-kt-scroll-offset="300px">
 	<!--begin::Input group-->
 	<div class="row">
-		<div class="mb-7 col-lg-4 col-md-4 col-sm-12">
+
+		<div class="col-lg-3 col-md-6 col-sm-12">
+			<?= $form->field($model, 'nama_lengkap')->dropDownList(
+				$model->nama_lengkap
+				? [$model->nama_lengkap => Yii::$app->function->findByField("enumtext_id", "enum", " and enumid ='" . $model->nama_lengkap . "' ")]
+				: [],
+				['id' => 'nama_lengkap', 'class' => 'form-select nama_lengkap', 'data-control' => 'select2']
+			) ?>
+		
+		</div>
+
+		<div class="mb-7 col-lg-3 col-md-6 col-sm-12">
 			<?= $form->field($model, 'nama_perusahaan', [
 				'errorOptions' => ['class' => 'text-danger mt-3'],
 			])->textInput([
@@ -39,7 +50,7 @@ $form = ActiveForm::begin(
 						'id' => 'nama_perusahaan'
 					]); ?>
 		</div>
-		<div class="mb-7 col-lg-4 col-md-4 col-sm-12">
+		<div class="mb-7 col-lg-3 col-md-6 col-sm-12">
 			<?= $form->field($model, 'email', [
 				'errorOptions' => ['class' => 'text-danger mt-3'],
 			])->textInput([
@@ -50,7 +61,7 @@ $form = ActiveForm::begin(
 					]);
 			?>
 		</div>
-		<div class="mb-7 col-lg-4 col-md-4 col-sm-12">
+		<div class="mb-7 col-lg-3 col-md-6 col-sm-12">
 			<?= $form->field($model, 'nomor_telepon', [
 				'errorOptions' => ['class' => 'text-danger mt-3'],
 			])->textInput(
@@ -74,9 +85,8 @@ $form = ActiveForm::begin(
 			<div class="d-flex justify-content-center">
 				<div class="image-input image-input-outline" data-kt-image-input="true">
 					<!--begin::Preview existing avatar-->
-					<div class="image-input-wrapper w-150px h-150px"
-						style="background-image: url('<?= !$model->isNewRecord && !empty($model->company_photo) ?
-							Yii::getAlias('@web') . $model->company_photo : Yii::getAlias('@web') . "/assets/media/logos/rbg.png" ?>');">
+					<div class="image-input-wrapper w-150px h-150px" style="background-image: url('<?= !$model->isNewRecord && !empty($model->company_photo) ?
+						Yii::getAlias('@web') . $model->company_photo : Yii::getAlias('@web') . "/assets/media/logos/rbg.png" ?>');">
 					</div>
 					<!--end::Preview existing avatar-->
 
@@ -115,9 +125,11 @@ $form = ActiveForm::begin(
 	<!--begin::Actions-->
 	<div class="text-end pt-10">
 		<?php if ($isajax): ?>
-			<button type="button" class="btn btn-light me-3" data-bs-dismiss="modal"><?= Yii::$app->lang->t('extra', 'extra17') ?></button>
+			<button type="button" class="btn btn-light me-3"
+				data-bs-dismiss="modal"><?= Yii::$app->lang->t('extra', 'extra17') ?></button>
 		<?php else: ?>
-			<a href="<?= Url::to(['company/index']) ?>" class="btn btn-light me-3" id="kembali"><?= Yii::$app->lang->t('extra', 'extra17') ?></a>
+			<a href="<?= Url::to(['company/index']) ?>" class="btn btn-light me-3"
+				id="kembali"><?= Yii::$app->lang->t('extra', 'extra17') ?></a>
 		<?php endif; ?>
 
 		<?= Html::submitButton($model->isNewRecord ? Yii::$app->lang->t('extra', 'extra16') : Yii::$app->lang->t('extra', 'extra16'), ['id' => 'btnsubmit', 'class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
@@ -128,36 +140,62 @@ $form = ActiveForm::begin(
 	<?php ActiveForm::end(); ?>
 
 	<script>
-		function initSelect2(elementID, url, placeholder) {
-			if (!$(elementID).data('select2')) {
-				$(elementID).select2({
-					ajax: {
-						url: url,
-						type: "GET",
-						dataType: "json",
-						delay: 250,
-						data: params => ({
-							q: params.term
-						}),
-						processResults: data => ({
-							results: data.results
-						}),
-						cache: true
-					},
-					placeholder: placeholder,
-					allowClear: true,
-					dropdownParent: $("#FormValid")
-				});
-			}
-		}
+		 function initEnumSelect2(selector, enumtype, addNewText, refSelector = null) {
+            $(selector).select2({
+                placeholder: addNewText,
+                allowClear: true,
+                cache: false,
+                ajax: {
+                    url: "<?= Url::to(['enum/list']) ?>",
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            enumtype: enumtype,
+                            refid: refSelector ? $(refSelector).val() : '',
+                            search: params.term || '',
+                            page: params.page || 1,
+                            for: 'select2'
+                        };
+                    },
+                    processResults: function (data, params) {
+                        params.page = params.page || 1;
 
-		function select() {
-			if ($("#jumlahkaryawan").length && !$("#jumlahkaryawan").data('select2')) {
-				initSelect2("#jumlahkaryawan", "<?= \yii\helpers\Url::to(['company/jumlahkaryawanlist']) ?>", <?= json_encode(Yii::$app->lang->t('kasform', 'kasform2')) ?>);
-			}
-		}
+                        var results = data.data.map(function (item) {
+                            return {
+                                id: item.enumid,
+                                text: item.enumtext_id
+                            };
+                        });
 
-		function form() { }
+                        return {
+                            results: results,
+                            pagination: {
+                                more: data.pagination.more
+                            }
+                        };
+                    }
+                },
+                minimumInputLength: 0,
+                width: '100%',
+                dropdownParent: $(selector).closest('.modal')
+            }).on('select2:open', function () {
+                let $dropdown = $('.select2-dropdown');
+                $dropdown.find('.add-new-btn').remove();
+
+                $dropdown.append(
+                    '<div class="add-new-btn p-3 text-center border-top border-gray-300 bg-light">' +
+                    '<button type="button" class="btn btn-sm btn-primary" ' +
+                    'data-enumtype="' + enumtype + '">' +
+                    '<i class="fas fa-plus-circle me-2"></i> Tambah ' + enumtype +
+                    '</button>' +
+                    '</div>'
+                );
+
+            });
+        };
+
+        initEnumSelect2('.nama_lengkap', 'location', 'Lokasi', null);
 
 		function setupSubmission() {
 			$('#FormValid').off('submit').on('submit', function (e) {
@@ -177,12 +215,7 @@ $form = ActiveForm::begin(
 					$('#email').removeClass('is-invalid');
 				}
 
-				if ($('#notel').val().trim() === '') {
-					$('#notel').addClass('is-invalid');
-					isValid = false;
-				} else {
-					$('#notel').removeClass('is-invalid');
-				}
+				
 
 				if (isValid) {
 					window.isSubmitting = true;
@@ -237,59 +270,58 @@ $form = ActiveForm::begin(
 		}
 
 		<?php if ($isajax): ?>
-		
-		function handleSuccessResponse(response) {
-			$('#modal_form_company').modal('hide');
 
-			if ($.fn.DataTable && $.fn.DataTable.isDataTable('#datatable')) {
-				$('#datatable').DataTable().ajax.reload(null, false);
-			}
+			function handleSuccessResponse(response) {
+				$('#modal_form_company').modal('hide');
 
-			if (typeof updateCompanyList === 'function') {
-				updateCompanyList();
-			}
-			if (typeof reloadCompanyDropdown === 'function') {
-				reloadCompanyDropdown();
-			}
+				if ($.fn.DataTable && $.fn.DataTable.isDataTable('#datatable')) {
+					$('#datatable').DataTable().ajax.reload(null, false);
+				}
 
-			setTimeout(function () {
-				Swal.fire({
-					icon: "success",
-					title: "<?= Yii::$app->lang->t('extra', 'extra62') ?>",
-					text: response.pesan || "<?= Yii::$app->lang->t('extra', 'extra95') ?>"
-				});
-			}, 300);
-		}
+				if (typeof updateCompanyList === 'function') {
+					updateCompanyList();
+				}
+				if (typeof reloadCompanyDropdown === 'function') {
+					reloadCompanyDropdown();
+				}
+
+				setTimeout(function () {
+					Swal.fire({
+						icon: "success",
+						title: "<?= Yii::$app->lang->t('extra', 'extra62') ?>",
+						text: response.pesan || "<?= Yii::$app->lang->t('extra', 'extra95') ?>"
+					});
+				}, 300);
+			}
 		<?php else: ?>
-		
 
-		function handleSuccessResponse(response) {
-			Swal.fire({
-				title: '<?= Yii::$app->lang->t('extra', 'extra62') ?>',
-				text: "<?= Yii::$app->lang->t('extra', 'extra95') ?>",
-				icon: "success",
-				timer: 2000,
-				showConfirmButton: true,
-				confirmButtonText: "OK"
-			}).then(() => {
-				var url = "<?= Url::to(['company/index']) ?>";
-				history.pushState(null, '', url);
+			function handleSuccessResponse(response) {
+				Swal.fire({
+					title: '<?= Yii::$app->lang->t('extra', 'extra62') ?>',
+					text: "<?= Yii::$app->lang->t('extra', 'extra95') ?>",
+					icon: "success",
+					timer: 2000,
+					showConfirmButton: true,
+					confirmButtonText: "OK"
+				}).then(() => {
+					var url = "<?= Url::to(['company/index']) ?>";
+					history.pushState(null, '', url);
 
-				$.ajax({
-					url: url,
-					type: 'GET',
-					cache: false,
-					success: function (data) {
-						reloadCompanyDropdown();
-						$('.app-container.utama').html(data);
-					},
-					error: function (xhr, status, error) {
-						console.error(xhr.responseText);
-						alert("Gagal memuat halaman: " + xhr.status + " (" + error + ")");
-					}
+					$.ajax({
+						url: url,
+						type: 'GET',
+						cache: false,
+						success: function (data) {
+							reloadCompanyDropdown();
+							$('.app-container.utama').html(data);
+						},
+						error: function (xhr, status, error) {
+							console.error(xhr.responseText);
+							alert("Gagal memuat halaman: " + xhr.status + " (" + error + ")");
+						}
+					});
 				});
-			});
-		}
+			}
 		<?php endif; ?>
 
 		function showAlert(title, text, icon) {
@@ -334,25 +366,25 @@ $form = ActiveForm::begin(
 			}
 
 			<?php if (!$isajax): ?>
-			$('#kembali').on('click', function (e) {
-				e.preventDefault();
-				var url = $(this).attr('href');
+				$('#kembali').on('click', function (e) {
+					e.preventDefault();
+					var url = $(this).attr('href');
 
-				history.pushState(null, '', url);
+					history.pushState(null, '', url);
 
-				$.ajax({
-					url: url,
-					type: 'GET',
-					cache: false,
-					success: function (data) {
-						$('.app-container.utama').html(data);
-					},
-					error: function (xhr, status, error) {
-						console.error(xhr.responseText);
-						alert("Gagal memuat halaman: " + xhr.status + " (" + error + ")");
-					}
+					$.ajax({
+						url: url,
+						type: 'GET',
+						cache: false,
+						success: function (data) {
+							$('.app-container.utama').html(data);
+						},
+						error: function (xhr, status, error) {
+							console.error(xhr.responseText);
+							alert("Gagal memuat halaman: " + xhr.status + " (" + error + ")");
+						}
+					});
 				});
-			});
 			<?php endif; ?>
 		});
 	</script>

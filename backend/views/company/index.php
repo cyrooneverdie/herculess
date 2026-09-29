@@ -11,7 +11,8 @@ $this->title = Yii::$app->lang->t('extra', 'extra22');
 		<div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
 			<!--begin::Title-->
 			<h1 class="page-heading d-flex text-gray-900 fw-bold fs-3 flex-column justify-content-center my-0">
-				<?= Yii::$app->lang->t('extra', 'extra22') ?></h1>
+				<?= Yii::$app->lang->t('extra', 'extra22') ?>
+			</h1>
 			<!--end::Title-->
 			<!--begin::Breadcrumb-->
 			<ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
@@ -68,6 +69,7 @@ $this->title = Yii::$app->lang->t('extra', 'extra22');
 					<img alt="Logo"
 						src="<?= !empty($company['company_photo']) ? $company['company_photo'] : Yii::getAlias('@web') . "/assets/media/logos/rbg.png" ?>"
 						class="w-100px mx-auto d-block" />
+					
 					<h5 class="fw-bold"><?= Html::encode($company['nama_perusahaan']) ?></h5>
 					<div class="row gap-5 justify-content-center">
 						<?php if (count($data) > 1): ?>

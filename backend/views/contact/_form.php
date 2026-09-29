@@ -20,18 +20,11 @@ switch ($typeName) {
     case 'Customer':
         $this->title = Yii::$app->lang->t('extrasidebar', 'extrasidebar5');
         break;
-    case 'Vendor':
-        $this->title = Yii::$app->lang->t('extrasidebar', 'extrasidebar2007');
-        break;
+
     case 'Employee':
         $this->title = Yii::$app->lang->t('extrasidebar', 'extrasidebar110');
         break;
-    case 'Supplier':
-        $this->title = Yii::$app->lang->t('extrasidebar', 'extrasidebar116');
-        break;
-    case 'Payroll':
-        $this->title = Yii::$app->lang->t('extrasidebar', 'extrasidebar303');
-        break;
+
     default:
         $this->title = ucfirst($typeName);
         break;
@@ -67,7 +60,6 @@ $form = ActiveForm::begin([
 
         <div class="card-body py-5">
             <div class="row g-5">
-
                 <div
                     class="col-lg-3 col-md-4 d-flex flex-column align-items-center justify-content-start text-center border-end-lg pe-lg-5">
                     <label class="form-label fw-bold fs-7 mb-3">Foto Member</label>
@@ -83,7 +75,7 @@ $form = ActiveForm::begin([
                         </label>
                     </div>
 
-                    <span class="text-muted fs-8 mb-3">Format: JPG/PNG (Maks 2MB)</span>
+                    <span class="text-muted fs-8 mb-3">Format: JPG/PNG (Maks 1MB)</span>
 
                     <?= $form->field($model, 'npwpfiletemp')->fileInput([
                         'id' => 'formFile',
@@ -177,7 +169,6 @@ $form = ActiveForm::begin([
                 <i class="fas fa-file-alt text-primary fs-4 me-2"></i>
                 <h3 class="fw-bold text-gray-800 fs-6 mb-0">Tanggal & Pembayaran</h3>
             </div>
-
         </div>
         <div class="card-body py-5">
             <div class="row g-5 mb-5">
@@ -215,7 +206,7 @@ $form = ActiveForm::begin([
                     <div class="d-flex align-items-center justify-content-between mb-4">
                         <div class="nav-group nav-group-fluid w-100 d-flex gap-2">
 
-                            <input type="radio" class="btn-check" name="Payment[status]" value="belum"
+                            <input type="radio" class="btn-check" name="Contact[payment_status]" value="belum"
                                 id="pay_status_belum" <?= ($model->payment_status === 'belum' || empty($model->payment_status)) ? 'checked' : '' ?>>
                             <label
                                 class="btn btn-outline btn-active-dark rounded-4 px-3 py-2 text-start w-50 custom-payment-btn"
@@ -224,7 +215,7 @@ $form = ActiveForm::begin([
                                 <span class="d-block text-muted fs-7 fw-normal sub-text">Status menunggu</span>
                             </label>
 
-                            <input type="radio" class="btn-check" name="Payment[status]" value="sudah"
+                            <input type="radio" class="btn-check" name="Contact[payment_status]" value="sudah"
                                 id="pay_status_sudah" <?= ($model->payment_status === 'sudah') ? 'checked' : '' ?>>
                             <label
                                 class="btn btn-outline btn-active-dark rounded-4 px-3 py-2 text-start w-50 custom-payment-btn"
@@ -235,43 +226,10 @@ $form = ActiveForm::begin([
                         </div>
                     </div>
 
-                    <!-- Metode Pembayaran -->
                     <div class="metode-pembayaran-wrapper <?= ($model->payment_status === 'sudah') ? '' : 'd-none' ?>">
-                        <label class="fs-7 mb-2 fw-bold text-gray-700">Metode Pembayaran</label>
-                        <div class="d-flex align-items-center gap-2">
-
-                            <input type="radio" class="btn-check" name="Payment[method]" value="tunai"
-                                id="pay_method_tunai" <?= ($model->payment_method === 'tunai' || empty($model->payment_method)) ? 'checked' : '' ?>>
-                            <label
-                                class="btn btn-outline btn-active-dark rounded-pill px-3 py-2 fw-bold text-center flex-fill fs-7"
-                                for="pay_method_tunai">
-                                Tunai
-                            </label>
-
-                            <input type="radio" class="btn-check" name="Payment[method]" value="transfer"
-                                id="pay_method_transfer" <?= ($model->payment_method === 'transfer') ? 'checked' : '' ?>>
-                            <label
-                                class="btn btn-outline btn-active-dark rounded-pill px-3 py-2 fw-bold text-center flex-fill fs-7"
-                                for="pay_method_transfer">
-                                Transfer
-                            </label>
-
-                            <input type="radio" class="btn-check" name="Payment[method]" value="qris"
-                                id="pay_method_qris" <?= ($model->payment_method === 'qris') ? 'checked' : '' ?>>
-                            <label
-                                class="btn btn-outline btn-active-dark rounded-pill px-3 py-2 fw-bold text-center flex-fill fs-7"
-                                for="pay_method_qris">
-                                QRIS
-                            </label>
-
-                            <input type="radio" class="btn-check" name="Payment[method]" value="lainnya"
-                                id="pay_method_lainnya" <?= ($model->payment_method === 'lainnya') ? 'checked' : '' ?>>
-                            <label
-                                class="btn btn-outline btn-active-dark rounded-pill px-3 py-2 fw-bold text-center flex-fill fs-7"
-                                for="pay_method_lainnya">
-                                Lainnya
-                            </label>
-
+                        <label class="fs-7 mb-2 fw-bold text-gray-700">Pilih Akun Kas / Bank</label>
+                        <div id="container-coa-list" class="d-flex flex-wrap align-items-center gap-2 mb-4">
+                            <span class="text-muted fs-7">Memuat daftar akun...</span>
                         </div>
                     </div>
                 </div>
@@ -288,9 +246,7 @@ $form = ActiveForm::begin([
                     <h5 class="modal-titles">Add Data</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
-                <div class="modal-body">
-
-                </div>
+                <div class="modal-body"></div>
             </div>
         </div>
     </div>
@@ -313,33 +269,9 @@ $form = ActiveForm::begin([
 
     <?php ActiveForm::end(); ?>
 </div>
-<?php
-$script = <<<JS
-function toggleSection(buttonId, sectionId) {
-  $(buttonId).on('click', function() {
-    const section = $(sectionId);
-    const icon = $(this).find('i');
-    if (section.is(':visible')) {
-        section.slideUp();
-        icon.removeClass('fa-minus').addClass('fa-plus');
-    } else {
-        section.slideDown();
-        icon.removeClass('fa-plus').addClass('fa-minus');
-    }
-  });
-}
 
-toggleSection('#toggle-address', '#address-section');
-toggleSection('#toggle-details', '#details-section');
-toggleSection('#toggle-financial', '#financial-section');
-toggleSection('#toggle-emergency', '#emergency-section');
-toggleSection('#toggle-image', '#image-section');
-JS;
-$this->registerJs($script);
-?>
 <script>
     $(document).ready(function () {
-        initMasking();
 
         function initEnumSelect2(selector, enumtype, placeholder, refSelector = null) {
             $(selector).select2({
@@ -378,8 +310,7 @@ $this->registerJs($script);
                 dropdownParent: $('#form-contact'),
             }).on('select2:open', function () {
                 let $dropdown = $('.select2-dropdown');
-                $dropdown.find('.add-new-btn').remove();
-                $dropdown.append(`
+                $dropdown.find('.add-new-btn').remove(); $dropdown.append(`
                     <div class="add-new-btn" style="padding:6px;text-align:center;border-top:1px solid #ddd;background:#f8f9fa;">
                         <button type="button" class="btn btn-sm btn-primary add-enum-btn" >
                             <i class="fas fa-plus-circle me-1"></i> Tambah
@@ -394,12 +325,9 @@ $this->registerJs($script);
         initEnumSelect2('#person', 'contactperson', 'Package');
         calculateEndDate();
 
-        <?php
-        if ($isajax) {
-            ?>
+        <?php if ($isajax) { ?>
             $('#form-contact').on('submit', function (e) {
                 e.preventDefault();
-                $('#billstate, #billcity, #billdistrict').prop('disabled', false);
                 $('#btnsubmit').prop('disabled', true);
 
                 let formData = new FormData(this);
@@ -414,8 +342,7 @@ $this->registerJs($script);
                         $('#btnsubmit').prop('disabled', false);
                         if (data.success) {
                             $('#datatable').DataTable().ajax.reload(null, false);
-                            $('.addContactModal').modal('hide');
-                            $('#modal_form_contact').modal('hide');
+                            $('.addContactModal').modal('hide'); $('#modal_form_contact').modal('hide');
 
                             setTimeout(function () {
                                 Swal.fire({
@@ -444,8 +371,61 @@ $this->registerJs($script);
                 });
                 return false;
             });
-        <?php }
-        ?>
+        <?php } ?>
+
+        function loadCoaAccounts() {
+            $.ajax({
+                url: '<?= Url::to(['cash/akunlist']) ?>',
+                type: 'GET',
+                data: { payment_status: 'sudah' },
+                dataType: 'json',
+                success: function (response) {
+                    var container = $('#container-coa-list');
+                    container.empty();
+
+                    var currentMethod = '<?= $model->payment_method ?? '' ?>';
+
+                    if (response.data && response.data.length > 0) {
+                        $.each(response.data, function (index, item) {
+                            var isChecked = (currentMethod == item.coa_id || (currentMethod === '' && index === 0)) ? 'checked' : '';
+
+                            var html = `
+                            <input type="radio" class="btn-check" name="Contact[payment_method]" value="${item.coa_id}"
+                                id="pay_coa_${item.coa_id}" ${isChecked}>
+                            <label class="btn btn-outline btn-active-dark rounded-pill px-3 py-2 fw-bold text-center flex-fill fs-7"
+                                for="pay_coa_${item.coa_id}">
+                                ${item.text}
+                            </label>
+                        `;
+                            container.append(html);
+                        });
+                    } else {
+                        container.html('<span class="text-muted fs-7">Tidak ada akun Kas/Bank ditemukan.</span>');
+                    }
+                }
+            });
+        }
+
+        $(document).on('change', 'input[name="Contact[payment_status]"]', function () {
+            var status = $(this).val();
+
+            if (status === 'sudah') {
+                $('.metode-pembayaran-wrapper').removeClass('d-none');
+                loadCoaAccounts();
+            } else {
+                $('.metode-pembayaran-wrapper').addClass('d-none'); $('#container-coa-list').empty();
+            }
+        });
+
+        if ($('input[name="Contact[payment_status]"]:checked').val() === 'sudah') {
+            loadCoaAccounts();
+        }
+
+        $(document).on('click', '.add-new-btn button', function () {
+            $.get('/product/create', function (html) {
+                $('.addContactModal .modal-content').html(html); $('.addContactModal').modal('show');
+            });
+        });
 
     });
 
@@ -474,22 +454,6 @@ $this->registerJs($script);
 
     $(document).on('change changeDate input', '#jobstart', calculateEndDate);
 
-    $(document).on('change', 'input[name="Payment[status]"]', function () {
-        if ($(this).val() === 'sudah') {
-            $('.metode-pembayaran-wrapper').removeClass('d-none');
-        } else {
-            $('.metode-pembayaran-wrapper').addClass('d-none');
-        }
-    });
-
-    $(document).on('click', '.add-new-btn button', function () {
-
-        $.get('/product/create', function (html) {
-            $('.addContactModal .modal-content').html(html);
-            $('.addContactModal').modal('show');
-        });
-    });
-
     function previewNpwpFile(event) {
         const input = event.target;
         const preview = document.getElementById('npwpfiletemp');
@@ -508,6 +472,4 @@ $this->registerJs($script);
         let option = new Option(text, id, true, true);
         $(selector).append(option).trigger('change');
     }
-
-
 </script>

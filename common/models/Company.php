@@ -30,7 +30,7 @@ class Company extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['userid', 'companyid', 'email', 'nomor_telepon'], 'safe'],
+            [['userid', 'companyid', 'email', 'nomor_telepon', 'nama_lengkap'], 'safe'],
             [['kode_company', 'statuspaid'], 'string'],
             [['status', 'subs_status'], 'integer'],
             [['nama_perusahaan'], 'required', 'message' => 'This input is required'],
@@ -45,7 +45,7 @@ class Company extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'nama_lengkap' => 'Nama Cabang',
+            'nama_lengkap' => Yii::$app->lang->t('extrasidebar', 'extrasidebar38'),
             'nama_perusahaan' => Yii::$app->lang->t('front_home', 'form2'),
             'posisi_perusahaan' => Yii::$app->lang->t('kasform', 'kasform1'),
             'email' => Yii::$app->lang->t('front_home', 'form1'),

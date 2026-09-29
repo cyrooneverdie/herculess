@@ -4,169 +4,199 @@ use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\helpers\Json;
 use yii\widgets\ActiveForm;
+$this->title = Yii::$app->lang->t('extrasidebar', 'extrasidebar122');
 
 ?>
 <div class="row g-3" style="flex-wrap: wrap;">
-    <div class="col-lg-6 col-md-6 col-sm-12">
+    <div class="col-lg-4 col-md-4 col-sm-12">
         <?php
         $form = ActiveForm::begin([
             'id' => 'tran-form',
             'method' => 'post',
-            'options' => [
-                'enctype' => 'multipart/form-data',
-            ],
+            'options' => ['enctype' => 'multipart/form-data'],
             'validateOnSubmit' => false,
         ]);
-        $this->title = Yii::$app->lang->t('extrasidebar', 'extrasidebar122');
         ?>
 
-        <div class="card shadow-sm mb-2">
-            <div class="card-body py-4 px-4">
-                <div class="row">
-                    <!-- <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
-                        <?= $form->field($modelvariants, 'type')->dropDownList(
-                            [
-                                '1' => 'Stock In',
-                                '2' => 'Stock Out',
-                                '3' => 'Return Stock',
-                            ],
-                            [
-                                'class' => 'form-select type-select',
-                                'data-control' => 'select2',
-                                'prompt' => 'Pilih Tipe...',
-                            ]
-                        )->label(false); ?>
+        <div class="card card-flush shadow-sm mb-5" style="max-width: 450px;">
+            <div class="card-body p-6">
+
+                <div class="d-flex align-items-center justify-content-between mb-5">
+                    <span class="fw-bolder fs-6 text-uppercase text-gray-800">
+                        <i class="fa-solid fa-qrcode"></i> Scanner
+                    </span>
+                    <div class="bg-light p-1 rounded-pill d-flex gap-1">
+                        <button type="button" class="btn btn-sm btn-dark rounded-pill px-4" id="btn-mode-kamera">
+                            <i class="fas fa-camera me-1"></i> Kamera
+                        </button>
                     </div>
+                </div>
 
-                    <div class="col-lg-8 col-md-6 col-sm-12 mb-4">
-                        <?= $form->field($modelvariants, 'refid')->dropDownList(
-                            $modelvariants->refid && $modelvariants->ref ? [$modelvariants->ref->tranid => $modelvariants->ref->tranno] : [],
-                            [
-                                'class' => 'form-select refid-select',
-                                'data-control' => 'select2',
-                                'data-module' => ($modelvariants->type == '0') ? 'purchase' : 'sales',
-                                'data-type' => ($modelvariants->type == '0') ? 'delivery' : ($modelvariants->type == '1' ? 'order' : ($modelvariants->type == '2' ? 'return' : '')),
-                                'data-target' => ($modelvariants->type == '0') ? 'purchase/delivery' : ($modelvariants->type == '1' ? 'sales/delivery' : ($modelvariants->type == '2' ? 'sales/return' : '')),
-                            ]
-                        )->label(false); ?>
-                    </div> -->
+                <div class="border border-dashed border-gray-300 bg-light rounded-4 p-5 text-center d-flex flex-column align-items-center justify-content-center mb-5"
+                    style="min-height: 280px;">
 
-                    <div class="col-12 mb-4">
-                        <div class="d-flex flex-column flex-sm-row gap-2">
-                            <input type="text" class="form-control" id="barcode-scanner-input"
-                                placeholder="Scan barcode di sini atau ketik kode barcode..." autocomplete="off">
+                    <div id="reader" class="w-100 rounded-3 overflow-hidden" style="display: none;"></div>
 
-                            <div class="d-flex gap-2">
-                                <button class="btn btn-light-primary w-100 text-nowrap" type="button"
-                                    id="btn-scan-barcode">
-                                    <i class="fas fa-barcode"></i> Scan
-                                </button>
-                                <button class="btn btn-light-success w-100 text-nowrap" type="button"
-                                    id="btn-open-camera">
-                                    <i class="fas fa-camera"></i> Kamera
-                                </button>
+                    <div id="camera-placeholder" class="py-4">
+                        <h5 class="fw-bold text-gray-800 mb-1">Kamera Belum Aktif</h5>
+                        <p class="text-gray-500 fs-7 mb-4">Izinkan akses kamera saat diminta</p>
+
+                        <div class="btn btn-icon btn-white shadow-sm btn-circle mb-4"
+                            style="width: 60px; height: 60px;">
+                            <i class="fas fa-expand fs-2 text-gray-600"></i>
+                        </div>
+
+                        <div>
+                            <div class="bg-body border p-1 rounded-pill d-inline-flex gap-1">
+                                <button type="button" class="btn btn-sm btn-color-gray-600 rounded-pill px-4"
+                                    id="btn-scan-terus">Scan Terus</button>
+                                <button type="button" class="btn btn-sm btn-dark rounded-pill px-4"
+                                    id="btn-scan-sekali">Scan Sekali</button>
                             </div>
                         </div>
                     </div>
                 </div>
+
+                <button type="button" class="btn btn-danger btn-lg w-100 rounded-pill fw-bolder py-3 mb-5"
+                    id="btn-toggle-scan">
+                    <i class="fas fa-camera me-2"></i> Mulai Scan
+                </button>
+
+                <div class="text-center mb-2">
+                    <span class="text-gray-500 fs-7 fw-semibold">Atau Input Manual</span>
+                </div>
+                <div class="input-group bg-light rounded-pill p-1 border border-gray-300">
+                    <span class="input-group-text bg-transparent border-0 ps-4 text-gray-500">
+                        <i class="fas fa-search fs-5"></i>
+                    </span>
+                    <input type="text" class="form-control bg-transparent border-0 shadow-none ps-2"
+                        id="barcode-scanner-input" placeholder="Input No Kontak.." autocomplete="off">
+                    <button class="btn btn-white rounded-pill px-5 fw-bold shadow-sm text-gray-800" type="button"
+                        id="btn-scan-barcode">
+                        Scan
+                    </button>
+                </div>
+
             </div>
         </div>
         <?php ActiveForm::end(); ?>
     </div>
 
-    <div class="col-lg-6 col-md-6 col-sm-12">
+    <div class="col-lg-8 col-md-8 col-sm-12">
         <div class="card shadow-sm">
-            <div class="card-header border-0">
-                <div class="card-title">
-                    <div class="d-flex align-items-left position-relative my-2">
-                        <form method="get" action="index" id="search" class="w-100">
-                            <div class="position-relative">
-                                <span class="position-absolute top-50 start-0 translate-middle-y ms-3">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 512 512"
-                                        fill="#a1a5b7">
-                                        <path
-                                            d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z" />
-                                    </svg>
-                                </span>
-                                <input data-kt-docs-table-filter="search" type="text" name="search"
-                                    class="form-control form-control-solid w-250px ps-10" placeholder="Search" />
+            <div class="card-header border-0 py-5 d-flex flex-column align-items-stretch gap-4">
 
-                                <span class="position-absolute top-50 end-0 translate-middle-y me-3 d-none"
-                                    id="clear-search">
-                                    <i class="ki-duotone ki-cross fs-2 text-gray-500 cursor-pointer"
-                                        style="opacity: 0.5;"></i>
-                                </span>
+                <div class="d-flex align-items-center justify-content-between flex-wrap gap-3 w-100">
+                    <div class="d-flex align-items-center gap-3">
+                        <i class="fa-solid fa-user-clock me-2 fs-3"></i>
+                        <div>
+                            <h3 class="fw-bold m-0 text-gray-900">Kehadiran Hari Ini</h3>
+                            <span class="text-gray-500 fs-7"><?= date('l, d F Y') ?></span>
+                        </div>
+                    </div>
+
+                    <div>
+                        <button type="button" class="btn btn-light-primary" data-kt-menu-trigger="click"
+                            data-kt-menu-placement="bottom-end">
+                            <i class="ki-duotone ki-filter fs-2">
+                                <span class="path1"></span>
+                                <span class="path2"></span>
+                            </i>Filter
+                        </button>
+
+                        <div class="menu menu-sub menu-sub-dropdown w-sm-500px w-md-600px" data-kt-menu="true"
+                            data-kt-menu-id="filter-menu">
+                            <div class="px-7 py-5">
+                                <div class="fs-5 text-gray-900 fw-bold">
+                                    <?= Yii::$app->lang->t('extra', 'extra9') ?>
+                                </div>
                             </div>
-                        </form>
+                            <div class="separator border-gray-200"></div>
+                            <div class="px-7 py-5" data-kt-user-table-filter="form">
+                                <form id="filterForm" method="get" action="index">
+                                    <div class="row">
+                                        <div class="mb-3">
+                                            <div class="btn-group mb-2" role="group" aria-label="Quick Date Filters">
+                                                <button type="button" class="btn btn-sm btn-light-primary"
+                                                    id="btnThisYear"><?= Yii::$app->lang->t('extra', 'extra96') ?></button>
+                                                <button type="button" class="btn btn-sm btn-light-primary"
+                                                    id="btnThisMonth"><?= Yii::$app->lang->t('extra', 'extra97') ?></button>
+                                                <button type="button" class="btn btn-sm btn-light-primary"
+                                                    id="btnThisWeek"><?= Yii::$app->lang->t('extra', 'extra98') ?></button>
+                                                <button type="button" class="btn btn-sm btn-light-primary"
+                                                    id="btnLastYear"><?= Yii::$app->lang->t('extra', 'extra99') ?></button>
+                                                <button type="button" class="btn btn-sm btn-light-primary"
+                                                    id="btnLastMonth"><?= Yii::$app->lang->t('extra', 'extra100') ?></button>
+                                                <button type="button" class="btn btn-sm btn-light-primary"
+                                                    id="btnLastWeek"><?= Yii::$app->lang->t('extra', 'extra101') ?></button>
+                                            </div>
+                                        </div>
+                                        <div class="md-10 mb-2">
+                                            <label class="fw-semibold fs-6 mb-2 mt-3" for="datefilter">
+                                                <?= Yii::$app->lang->t('tran', 'tran_date') ?>
+                                            </label>
+                                            <input name="datefilter" class="form-control form-control-solid"
+                                                style="cursor:pointer;" id="datefilter"
+                                                placeholder="<?= Yii::$app->lang->t('extra', 'extra58') ?>"
+                                                autocomplete="off">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group text-end mt-5">
+                                        <button type="submit" id="filterButton" class="btn btn-lg btn-primary">
+                                            <i class="fa-sharp fa-solid fa-filter"></i>
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="card-toolbar d-flex gap-5">
-                    <button type="button" class="btn btn-light-primary me-3" data-kt-menu-trigger="click"
-                        data-kt-menu-placement="left-start">
-                        <i class="ki-duotone ki-filter fs-2">
-                            <span class="path1"></span>
-                            <span class="path2"></span>
-                        </i>Filter
-                    </button>
+                <div class="d-flex align-items-center justify-content-between flex-wrap gap-3 w-100">
+                    <form method="get" action="index" id="search" onsubmit="return false;">
+                        <div class="position-relative">
+                            <span class="position-absolute top-50 start-0 translate-middle-y ms-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 512 512"
+                                    fill="#a1a5b7">
+                                    <path
+                                        d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z" />
+                                </svg>
+                            </span>
+                            <input data-kt-docs-table-filter="search" type="text" name="search"
+                                class="form-control form-control-solid w-200px ps-10" placeholder="Search" />
 
-                    <div class="menu menu-sub menu-sub-dropdown w-sm-500px w-md-600px" data-kt-menu="true"
-                        data-kt-menu-id="filter-menu">
-                        <div class="px-7 py-5">
-                            <div class="fs-5 text-gray-900 fw-bold">
-                                <?= Yii::$app->lang->t('extra', 'extra9') ?>
-                            </div>
+                            <span class="position-absolute top-50 end-0 translate-middle-y me-3 d-none"
+                                id="clear-search">
+                                <i class="ki-duotone ki-cross fs-2 text-gray-500 cursor-pointer"
+                                    style="opacity: 0.5;"></i>
+                            </span>
                         </div>
-                        <div class="separator border-gray-200"></div>
-                        <div class="px-7 py-5" data-kt-user-table-filter="form">
-                            <form id="filterForm" method="get" action="index">
-                                <div class="row">
-                                    <div class="mb-3">
-                                        <div class="btn-group mb-2" role="group" aria-label="Quick Date Filters">
-                                            <button type="button" class="btn btn-sm btn-light-primary" id="btnThisYear">
-                                                <?= Yii::$app->lang->t('extra', 'extra96') ?>
-                                            </button>
-                                            <button type="button" class="btn btn-sm btn-light-primary"
-                                                id="btnThisMonth">
-                                                <?= Yii::$app->lang->t('extra', 'extra97') ?>
-                                            </button>
-                                            <button type="button" class="btn btn-sm btn-light-primary" id="btnThisWeek">
-                                                <?= Yii::$app->lang->t('extra', 'extra98') ?>
-                                            </button>
-                                            <button type="button" class="btn btn-sm btn-light-primary" id="btnLastYear">
-                                                <?= Yii::$app->lang->t('extra', 'extra99') ?>
-                                            </button>
-                                            <button type="button" class="btn btn-sm btn-light-primary"
-                                                id="btnLastMonth">
-                                                <?= Yii::$app->lang->t('extra', 'extra100') ?>
-                                            </button>
-                                            <button type="button" class="btn btn-sm btn-light-primary" id="btnLastWeek">
-                                                <?= Yii::$app->lang->t('extra', 'extra101') ?>
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div class="md-10 mb-2">
-                                        <label class="fw-semibold fs-6 mb-2 mt-3" for="dateFilter">
-                                            <?= Yii::$app->lang->t('tran', 'tran_date') ?>
-                                        </label>
-                                        <input name="datefilter" class="form-control form-control-solid"
-                                            style="cursor:pointer;" id="datefilter"
-                                            placeholder="<?= Yii::$app->lang->t('extra', 'extra58') ?>"
-                                            autocomplete="off">
-                                    </div>
-                                </div>
+                    </form>
 
-                                <div class="form-group text-end mt-5">
-                                    <button type="submit" id="filterButton" class="btn btn-lg btn-primary"><i
-                                            class="fa-sharp fa-solid fa-filter"></i></button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
+                    <ul class="nav nav-pills gap-2" role="tablist" id="contact-type-tabs">
+                        <li class="nav-item">
+                            <button class="nav-link active btn btn-sm bg-black text-white fw-bold px-4 rounded-pill"
+                                data-contacttype="customer" type="button">
+                                Member <span class="badge badge-sm badge-circle bg-white text-dark ms-2"
+                                    id="count-member">0</span>
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                            <button
+                                class="nav-link btn btn-sm btn-outline btn-outline-secondary text-gray-700 fw-bold px-4 rounded-pill"
+                                data-contacttype="employee" type="button">
+                                Coach <span class="badge badge-sm badge-circle bg-light-dark text-dark ms-2"
+                                    id="count-coach">0</span>
+                            </button>
+                        </li>
+                    </ul>
+
+                    <input type="hidden" id="filter-contacttype" value="customer">
                 </div>
             </div>
 
-            <div class="card-body pt-5">
+            <div class="card-body pt-0">
                 <div id="liveAlertPlaceholder"></div>
 
                 <div class="btn-group mb-3" id="mass-action-buttons" style="display: none;">
@@ -184,35 +214,63 @@ use yii\widgets\ActiveForm;
                                     <input class="form-check-input" type="checkbox" id="select-all">
                                 </div>
                             </th>
-
-                            <th class="text-start min-w-100px">
-                                <?= Yii::$app->lang->t('cashbackend', 'cashbackend16') ?>
+                            <th class="text-start min-w-150px">Nama</th>
+                            <th class="text-start min-w-100px">Jam
                             </th>
-                            <th class="text-start min-w-150px">
-                                <?= Yii::$app->lang->t('variant_table', 'barcode') ?>
-                            </th>
-                            <th class="text-start min-w-150px">
-                                <?= Yii::$app->lang->t('extrasidebar', 'extrasidebar2') ?>
-                            </th>
+                            <th class="text-start min-w-100px">Berlaku s/d</th>
+                            <th class="text-start min-w-150px">Kunjungan</th>
                         </tr>
                     </thead>
-                    <tbody class="text-gray-800 fw-semibold text-start">
-                    </tbody>
+                    <tbody class="text-gray-800 fw-semibold text-start"></tbody>
                 </table>
             </div>
         </div>
     </div>
+
 </div>
 
-<div class="modal fade" id="cameraModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Scan Barcode/QR</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" id="btn-close-camera"></button>
+<div class="modal fade" id="modalCheckinUlang" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered max-w-400px">
+        <div class="modal-content rounded-4 border-0 shadow-lg">
+            <div class="modal-header border-0 pb-0">
+                <h5 class="modal-title fw-bolder text-gray-800">Konfirmasi Check-in Ulang</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body text-center">
-                <div id="reader" style="width: 100%;"></div>
+            <div class="modal-body py-4">
+                <div class="d-flex align-items-center bg-light rounded-4 p-4 mb-4">
+                    <div class="symbol symbol-50px me-3">
+                        <span class="symbol-label bg-light-success text-success fw-bolder fs-2"
+                            id="checkin-avatar">-</span>
+                    </div>
+                    <div>
+                        <h6 class="fw-bolder text-gray-800 mb-0" id="checkin-member-name">-</h6>
+                        <span class="text-gray-500 fs-7" id="checkin-member-info">-</span><br>
+                        <span class="text-gray-500 fs-7" id="checkin-member-expired">-</span>
+                    </div>
+                </div>
+
+                <div class="d-flex align-items-center text-warning fw-bold fs-7 mb-4">
+                    <i class="fas fa-exclamation-triangle text-warning me-2 fs-6"></i>
+                    <span>Status: <strong class="ms-2" id="checkin-status-text">Member sudah check-in hari
+                            ini</strong></span>
+                </div>
+
+                <div class="d-flex justify-content-between gap-2 mt-5">
+                    <button type="button"
+                        class="btn btn-sm btn-outline btn-outline-gray-400 text-gray-700 rounded-pill px-3 py-2 flex-grow-1"
+                        data-action="abaikan" id="btn-checkin-abaikan">
+                        Abaikan
+                    </button>
+                    <button type="button"
+                        class="btn btn-sm btn-outline btn-outline-gray-400 text-gray-700 rounded-pill px-3 py-2 flex-grow-1"
+                        data-action="no_deduct" id="btn-checkin-jangan-kurangi">
+                        Jangan Kurangi
+                    </button>
+                    <button type="button" class="btn btn-sm btn-dark rounded-pill px-3 py-2 flex-grow-1"
+                        data-action="deduct" id="btn-checkin-kurangi">
+                        Kurangi Kuota
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -222,212 +280,105 @@ use yii\widgets\ActiveForm;
 
 <script type="text/javascript">
     let html5QrCode = null;
+    let isScanning = false;
+    let scanMode = 'sekali';
 
     function startCameraScanner() {
-        html5QrCode = new Html5Qrcode("reader");
+        if (!html5QrCode) {
+            html5QrCode = new Html5Qrcode("reader");
+        }
 
         const config = {
             fps: 10,
-            qrbox: { width: 250, height: 250 }
+            qrbox: { width: 220, height: 220 }
         };
+
+        $('#camera-placeholder').hide();
+        $('#reader').show();
 
         html5QrCode.start(
             { facingMode: "environment" },
             config,
             onScanSuccess
-        ).catch(err => {
+        ).then(() => {
+            isScanning = true;
+            $('#btn-toggle-scan')
+                .removeClass('btn-danger')
+                .addClass('btn-secondary text-gray-800')
+                .html('<i class="fas fa-stop me-2"></i> Stop Scan');
+        }).catch(err => {
+            stopCameraScanner();
             Swal.fire({
                 icon: 'error',
                 title: 'Kamera Gagal Dibuka',
                 text: 'Izin kamera ditolak atau perangkat tidak mendukung HTTPS/Kamera.'
             });
-            $('#cameraModal').modal('hide');
         });
     }
 
     function stopCameraScanner() {
-        if (html5QrCode && html5QrCode.isScanning) {
+        if (html5QrCode && isScanning) {
             html5QrCode.stop().then(() => {
                 html5QrCode.clear();
+                resetScanUI();
             }).catch(err => console.error(err));
+        } else {
+            resetScanUI();
         }
     }
 
-    function onScanSuccess(decodedText, decodedResult) {
-        let type = $("select[name='Tranvariants[type]']").val();
-        let reftype2 = $('.refid-select').attr('data-reftype2') || '';
+    function resetScanUI() {
+        isScanning = false;
+        $('#reader').hide();
+        $('#camera-placeholder').show();
+        $('#btn-toggle-scan')
+            .removeClass('btn-secondary text-gray-800')
+            .addClass('btn-danger')
+            .html('<i class="fas fa-camera me-2"></i> Mulai Scan');
+    }
 
-        stopCameraScanner();
-        $('#cameraModal').modal('hide');
+    function onScanSuccess(decodedText, decodedResult) {
+
         $('#barcode-scanner-input').val(decodedText);
 
-        if (type === '1' && reftype2 === 'purchase/request') {
-            searchBarcodeIn(decodedText);
-        } else {
-            searchProductByBarcode(decodedText);
+        if (scanMode === 'sekali') {
+            stopCameraScanner();
         }
+
+        searchProductByBarcode(decodedText);
     }
 
     $(document).ready(function () {
         setForm();
         setupBarcodeScanner();
-        $('.repeat-parent-btn').hide();
 
-        $('#btn-open-camera').on('click', function () {
-            $('#cameraModal').modal('show');
-            startCameraScanner();
+        $('#btn-toggle-scan').on('click', function () {
+            if (isScanning) {
+                stopCameraScanner();
+            } else {
+                startCameraScanner();
+            }
         });
 
-        $('#cameraModal').on('hidden.bs.modal', function () {
-            stopCameraScanner();
+        $('#btn-scan-sekali').on('click', function () {
+            scanMode = 'sekali';
+            $(this).removeClass('btn-color-gray-600').addClass('btn-dark');
+            $('#btn-scan-terus').removeClass('btn-dark').addClass('btn-color-gray-600');
+        });
+
+        $('#btn-scan-terus').on('click', function () {
+            scanMode = 'terus';
+            $(this).removeClass('btn-color-gray-600').addClass('btn-dark');
+            $('#btn-scan-sekali').removeClass('btn-dark').addClass('btn-color-gray-600');
         });
 
         const params = new URLSearchParams(window.location.search);
         const search = params.get('search');
         const datefilter = params.get('datefilter');
-        const status = params.get('status');
 
         if (search !== null) $('input[name="search"]').val(search);
         if (datefilter !== null) $('input[name="datefilter"]').val(datefilter);
-        if (status !== null) $('select[name="status"]').val(status).trigger('change');
 
-        $('.refid-select').select2({
-            ajax: {
-                url: "<?= Url::to(['tran/select']) ?>",
-                type: "POST",
-                dataType: "json",
-                data: function (params) {
-                    const el = $('.refid-select');
-                    const selectedType = $('.type-select').val();
-
-                    return {
-                        search: params.term || '',
-                        q: params.term,
-                        page: params.page,
-                        module: (selectedType == '2') ? 'sales' : 'stock',
-                        type: (selectedType == '1') ? 'in' : (selectedType == '2' ? 'item' : (selectedType == '3' ? 'return' : '')),
-                        target: (selectedType == '1') ? 'stock/in' : (selectedType == '2' ? 'sales/item' : (selectedType == '3' ? 'stock/return' : ''))
-                    };
-                },
-                processResults: function (data, params) {
-                    params.page = params.page || 1;
-                    const currentType = $('.type-select').val();
-
-                    const items = data.items.map(function (item) {
-                        item.active_type = currentType;
-                        return item;
-                    })
-                    return {
-                        results: items,
-                        pagination: {
-                            more: (params.page * 100) < data.totalcount
-                        }
-                    };
-                },
-                cache: false
-            },
-            escapeMarkup: function (markup) {
-                return markup;
-            },
-            templateSelection: function (param) {
-                return param.text || "Choose Reference";
-            },
-            templateResult: function (param) {
-                if (!param.id) {
-                    return param.text;
-                }
-                if (param.loading) return param.text;
-
-                const selectedType = param.active_type;
-                const displayName = (selectedType == '1' && param.reftype2 == 'purchase/request') ? param.contactpd : param.ref_name;
-                const displayCompany = (selectedType == '1' && param.reftype2 == 'purchase/request') ? param.companypd : param.ref_company;
-                const displayReftype = (selectedType == '1' && param.reftype2 == 'purchase/request') ? 'Stock In PO' : 'Stock In Penarikan';
-
-                let displayReftypeBadge = '';
-
-                if (selectedType == '1') {
-                    displayReftypeBadge = `
-                        <span class="badge rounded-pill bg-warning bg-opacity-10 text-warning" style="font-size:11px;">
-                            <i class="fa fa-tag me-1 text-warning"></i>${displayReftype}
-                            </span>
-                        `;
-                }
-
-                const $container = $(`
-                    <div class="d-flex flex-column flex-grow-1 overflow-hidden">
-                        <span class="fw-semibold text-dark text-truncate" style="font-size:13px;">${param.text}</span>
-                        <div class="d-flex flex-wrap gap-1 mt-1">
-                          ${displayReftype ? `
-                           ${displayReftypeBadge}
-                        ` : ''}
-                            ${displayName ? `
-                            <span class="badge rounded-pill bg-info bg-opacity-10 text-info" style="font-size:11px;">
-                                <i class="fa fa-user me-1 text-info"></i>${displayName}
-                            </span>
-                        ` : ''}
-                            ${displayCompany ? `
-                            <span class="badge rounded-pill bg-primary bg-opacity-10 text-primary" style="font-size:11px;">
-                                <i class="fa fa-building me-1 text-primary"></i>${displayCompany}
-                            </span>
-                        ` : ''}
-                          
-                        ${param.trandate ? `
-                            <span class="badge rounded-pill bg-success bg-opacity-10 text-success" style="font-size:11px;">
-                                <i class="fa fa-calendar me-1 text-success"></i>${param.trandate}
-                            </span>
-                        ` : ''}
-                        </div>
-                    </div>
-                `);
-
-                return $container;
-            },
-            placeholder: "Choose Reference",
-            allowClear: true,
-            width: '100%'
-        }).on('select2:select', function (e) {
-            const data = e.params.data;
-            const reftype2 = data.reftype2 || '';
-            $(this).attr('data-reftype2', reftype2);
-
-            generateDeli();
-            $('#datatable').DataTable().ajax.reload();
-            $('#barcode-scanner-input').val('').focus();
-
-        }).on('select2:clear', function (e) {
-            $(this).attr('data-reftype2', '');
-
-            $('#datatable').DataTable().ajax.reload();
-            $('.detail-rows').empty();
-            $('.type-select').val(null).trigger('change');
-        });
-
-        $(document).on('change', "select.refid-select", function (e) {
-            const refid = $(this).val();
-            if (refid) {
-                $('#datatable').DataTable().ajax.reload();
-                $('.detail-rows').empty();
-            }
-        });
-
-        $(document).on('change', "select.type-select", function (e) {
-            const type = $(this).val();
-            if (type) {
-                $('#datatable').DataTable().ajax.reload();
-                $('.detail-rows').empty();
-                $('.refid-select').val(null).trigger('change');
-
-                if (type === '2') {
-                    $('.btn-cek-container').removeClass('d-none').show();
-                    $('.th-peak-container').removeClass('d-none').show();
-                    $('.btn-peak-container').removeClass('d-none').show();
-                } else {
-                    $('.btn-cek-container').addClass('d-none').hide();
-                    $('.th-peak-container').addClass('d-none').hide();
-                    $('.btn-peak-container').addClass('d-none').hide();
-                }
-            }
-        });
 
         var translate = <?= json_encode(Yii::$app->lang->t('extra', 'extra11')) ?>;
         var translate1 = <?= json_encode(Yii::$app->lang->t('extra', 'extra12')) ?>;
@@ -474,32 +425,14 @@ use yii\widgets\ActiveForm;
                 dataSrc: "data",
                 url: "<?= Url::to(['tran/listbarcode']) ?>",
                 data: function (d) {
-                    const search = $('input[name="search"]').val();
-                    const datefilter = $('input[name="datefilter"]').val();
-                    const refid = $('.refid-select').val();
-                    const selectedType = $('.type-select').val();
-                    const reftype2 = $('.refid-select').attr('data-reftype2') || '';
-
-                    d.search = search;
-                    d.datefilter = datefilter;
-                    d.id = refid;
-                    d.reftype2 = reftype2;
-                    d.module = (selectedType == '2') ? 'sales' : 'stock';
-                    d.type = (selectedType == '1') ? 'in' : (selectedType == '2' ? 'item' : (selectedType == '3' ? 'return' : ''));
-                    d.target = (selectedType == '1') ? 'stock/in' : (selectedType == '2' ? 'sales/item' : (selectedType == '3' ? 'stock/return' : ''));
-
-                    const params = new URLSearchParams();
-                    if (search) params.set('search', search);
-                    if (datefilter) params.set('datefilter', datefilter);
-
-                    const newUrl = window.location.pathname + '?' + params.toString();
+                    d.search = $('input[name="search"]').val();
+                    d.datefilter = $('input[name="datefilter"]').val(); // Tambahkan ini
+                    d.contacttype = $('#filter-contacttype').val();
                 },
                 dataSrc: function (json) {
-                    const refid = $('.refid-select').val();
-                    if (!refid) {
-                        return [];
-                    }
-                    return json.data;
+                    $('#count-member').text(json.count_member || 0);
+                    $('#count-coach').text(json.count_coach || 0);
+                    return json.data || [];
                 },
                 complete: function () {
                     $('.table-loading-overlay').remove();
@@ -522,29 +455,43 @@ use yii\widgets\ActiveForm;
                 }
             },
             {
+                data: "contact_name",
+                className: "text-start",
+                render: function (data, type, row) {
+                    const name = data || '-';
+                    const no = row.contact_no ? `<br><small class="text-muted">${row.contact_no}</small>` : '';
+                    return `<div><span class="fw-bold">${name}</span>${no}</div>`;
+                }
+            },
+            {
                 data: "trandate",
                 className: "text-start",
                 render: function (data) {
                     if (!data) return '-';
                     const date = new Date(data);
-                    const day = String(date.getDate()).padStart(2, '0');
-                    const month = String(date.getMonth() + 1).padStart(2, '0');
-                    const year = date.getFullYear();
                     const hours = String(date.getHours()).padStart(2, '0');
                     const minutes = String(date.getMinutes()).padStart(2, '0');
-                    return `${day}-${month}-${year} ${hours}:${minutes}`;
+                    return `${hours}.${minutes} WIB`;
                 }
             },
             {
-                data: "barcode",
+                data: "jobend",
                 className: "text-start",
                 render: function (data) {
-                    return `<span class="text text-start">${data || '-'}</span>`;
+                    if (!data) return '-';
+                    const date = new Date(data);
+                    const day = String(date.getDate()).padStart(2, '0');
+                    const monthShort = date.toLocaleString('id-ID', { month: 'short' });
+                    const year = date.getFullYear();
+                    return `${day} ${monthShort} ${year}`;
                 }
             },
             {
-                data: "productname",
-                className: "text-start",
+                data: "total",
+                className: "text-center",
+                render: function (data) {
+                    return `<span class="fw-bold text-gray-600">${data || 0}x</span>`;
+                }
             },
             ],
             initComplete: function () {
@@ -564,6 +511,25 @@ use yii\widgets\ActiveForm;
                 });
             }
         });
+
+        $('#contact-type-tabs button').on('click', function () {
+            const type = $(this).data('contacttype');
+
+            $('#filter-contacttype').val(type);
+            activateTab(type);
+
+            $("#datatable").DataTable().ajax.reload();
+        });
+
+        function activateTab(type) {
+            $('#contact-type-tabs button').each(function () {
+                if ($(this).data('contacttype') === type) {
+                    $(this).addClass('active bg-black text-white').removeClass('btn-outline btn-outline-secondary text-gray-700'); $(this).find('.badge').addClass('bg-white text-dark').removeClass('bg-light-dark text-dark');
+                } else {
+                    $(this).removeClass('active bg-black text-white').addClass('btn-outline btn-outline-secondary text-gray-700'); $(this).find('.badge').removeClass('bg-white text-dark').addClass('bg-light-dark text-dark');
+                }
+            });
+        }
 
         function formatRange(start, end) {
             return start.format('DD-MM-YYYY') + ' - ' + end.format('DD-MM-YYYY');
@@ -656,269 +622,7 @@ use yii\widgets\ActiveForm;
                 KTMenu.getInstance(filterMenu).hide();
             }
         });
-
-        $(document).on('click', '.btn-cek', function () {
-            const refid = $("select[name='Tranvariants[refid]']").val();
-
-            if (!refid) {
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'Pilih Delivery',
-                    text: 'Silakan pilih nomor delivery terlebih dahulu.'
-                });
-                return;
-            }
-
-            $.ajax({
-                url: "<?= Url::to(['tran/cekscan']) ?>",
-                type: "GET",
-                data: { refid: refid },
-                success: function (response) {
-                    if (!response.success) {
-                        Swal.fire({ icon: 'error', title: 'Error', text: response.pesan });
-                        return;
-                    }
-
-                    if (response.finished) {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Semua Sudah Di-Scan',
-                            html: '<span class="text-success fw-bold">Seluruh item pada delivery ini telah discan.</span>'
-                                + '<br><br>' + '<span class="text-muted">Jika Barang Sudah Kembali, Silahkan Input Barang Kembali Pada Menu Return Stock</span></div>'
-                        });
-                        return;
-                    }
-
-                    const rows = response.items.map(item => `
-                        <tr>
-                            <td class="text-start">${item.productname}</td>
-                            <td class="text-center">${item.total_qty}</td>
-                            <td class="text-center text-success">${item.total_scan}</td>
-                            <td class="text-center text-danger fw-bold">${item.sisa}</td>
-                        </tr>
-                    `).join('');
-
-                    Swal.fire({
-                        icon: 'warning',
-                        title: 'Item Belum Di Scan',
-                        html: `
-                        <div class="table-responsive">
-                            <table class="table table-sm table-bordered mt-2">
-                                <thead class="table-light">
-                                    <tr>
-                                        <th class="text-start">Produk</th>
-                                        <th>Qty</th>
-                                        <th>Sudah Scan</th>
-                                        <th>Sisa</th>
-                                    </tr>
-                                </thead>
-                                <tbody>${rows}</tbody>
-                            </table>
-                        </div>
-                    `,
-                        width: 600,
-                        confirmButtonText: 'Tutup'
-                    });
-                },
-                error: function () {
-                    Swal.fire({ icon: 'error', title: 'Kesalahan Server', text: 'Gagal mengambil data scan.' });
-                }
-            });
-        });
-
-        $(document).on('click', '.btn-peak', function () {
-            const $row = $(this).closest('tr');
-            const productid = $row.find('.product-productid').val();
-            // console.log("Selected Product ID:", productid); // Debug log to check the selected product ID
-
-            if (!productid) {
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'Produk Belum Dipilih',
-                    text: 'Silakan pilih produk terlebih dahulu.'
-                });
-                return;
-            }
-
-            $.ajax({
-                url: "<?= Url::to(['tran/cekbarcode']) ?>",
-                type: "GET",
-                data: { productid: productid },
-                success: function (response) {
-                    if (!response.success) {
-                        Swal.fire({ icon: 'error', title: 'Error', text: response.pesan });
-                        return;
-                    }
-
-                    if (!response.items || response.items.length === 0) {
-                        Swal.fire({ icon: 'info', title: 'Kosong', text: 'Tidak ada detail varian untuk produk ini.' });
-                        return;
-                    }
-
-                    const rows = response.items.map(item => `
-                        <tr>
-                            <td class="text-start">${item.asetno}</td>
-                            <td class="text-start">${item.barcode}</td>
-                            <td class="text-start">${item.locationid}</td>
-                            <td class="text-start">${item.condition}</td>
-                        </tr>
-                    `).join('');
-
-                    const titleProduk = response.items[0].productname;
-
-                    Swal.fire({
-                        title: `${titleProduk}`,
-                        html: `
-                        <div class="table-responsive">
-                            <table class="table table-xl table-bordered mt-2">
-                                <thead class="table-light">
-                                    <tr>
-                                        <th class="text-start">No Aset</th>
-                                        <th class="text-start"><?= Yii::$app->lang->t('variant_table', 'barcode') ?></th>
-                                        <th class="text-start"><?= Yii::$app->lang->t('variant_table', 'lokasi') ?></th>
-                                        <th class="text-start"><?= Yii::$app->lang->t('variant_table', 'kondisi') ?></th>
-                                    </tr>
-                                </thead>
-                                <tbody>${rows}</tbody>
-                            </table>
-                        </div>
-                    `,
-                        width: 600,
-                        confirmButtonText: 'Tutup'
-                    });
-                },
-                error: function () {
-                    Swal.fire({ icon: 'error', title: 'Kesalahan Server', text: 'Gagal mengambil data item.' });
-                }
-            });
-        });
     });
-
-    function setFunction() {
-        $(".product-select").select2({
-            ajax: {
-                url: "<?= Url::to(['product/search']) ?>",
-                type: "GET",
-                dataType: "json",
-                data: function (params) {
-                    let limit = 10;
-                    let page = params.page || 1;
-
-                    return {
-                        q: params.term,
-                        page: page,
-                        limit: limit,
-                        offset: (page - 1) * limit,
-                        module: "<?= $module ?? 'purchase' ?>"
-                    };
-                },
-                processResults: function (data, params) {
-                    params.page = params.page || 1;
-                    return {
-                        results: data.data.map(function (item) {
-                            return {
-                                id: item.value,
-                                text: item.productname,
-                                productname: item.productname,
-                                productcode: item.productcode,
-                                productpict: item.productpict
-                            };
-                        }),
-                        pagination: {
-                            more: data.hasMore
-                        }
-                    };
-                },
-                cache: false
-            },
-            escapeMarkup: function (markup) {
-                return markup;
-            },
-            templateSelection: function (param) {
-                if (!param.id) {
-                    return "Choose Product";
-                }
-                return param.text;
-            },
-            templateResult: function (param) {
-                if (!param.id) return param.text;
-                if (param.loading) return param.text;
-
-                let img = param.productpict ?
-                    `/uploads/produk/${param.productpict}` :
-                    `/uploads/produk/default.png`;
-
-                return $(`
-                <div class="d-flex align-items-center">
-                    <img class="w-50px me-2"
-                         src="${img}"
-                         onerror="this.style.display='none'">
-
-                    <div class="d-flex flex-column">
-                        <strong>${param.text}</strong>
-                        <span class="text-muted">${param.productcode}</span>
-                    </div>
-                </div>
-            `);
-            },
-            placeholder: "Choose",
-            allowClear: true,
-            width: '100%'
-        })
-            .on('select2:open', function () {
-                let $dropdown = $('.select2-dropdown');
-                $dropdown.find('.add-new-prd-btn').remove();
-            }).on('select2:unselect', function (e) {
-                let row = $(this).closest('tr');
-                row.find(".product-buttons").hide();
-                row.find('.product-quantity').val(0);
-            }).on('change', function (e) {
-                const productId = $(this).val();
-                const row = $(this).closest('tr');
-
-                if (productId) {
-                    row.attr('data-product-id', productId);
-                    row.find(".product-buttons").show();
-                } else {
-                    row.removeAttr('data-product-id');
-                    row.find(".product-buttons").hide();
-                }
-
-                row.find('.product-quantity').val(0);
-                row.find('.product-sent').val(0);
-                row.find('.product-remain').val(0);
-                row.find('.product-receive').val(0);
-                row.find('.product-treceived').val(0);
-                row.find('.product-send').val(0);
-            }).on('select2:unselect', function (e) {
-            });
-    }
-
-    function repeatNested(selection, inner) {
-        $(selection).repeater({
-            initEmpty: true,
-            repeaters: [{
-                selector: inner,
-                show: function () {
-                    $(this).slideDown();
-                    setFunction();
-                },
-
-                hide: function (deleteElement) {
-                    $(this).slideUp(deleteElement);
-                }
-            }],
-
-            show: function () {
-                $(this).slideDown();
-                setFunction();
-            },
-
-            hide: function (deleteElement) {
-                $(this).slideUp(deleteElement);
-            }
-        });
-    }
 
     function setForm() {
         var form = $('#tran-form');
@@ -962,25 +666,14 @@ use yii\widgets\ActiveForm;
             });
         });
 
-        repeatNested('#trandetail_repeater', '.inner-repeater');
-        setFunction();
-        initMasking();
     }
 
     function setupBarcodeScanner() {
         const barcodeInput = $('#barcode-scanner-input');
 
         function prosesScanBarcode(barcodeValue) {
-            let type = $("select[name='Tranvariants[type]']").val();
-            let reftype2 = $('.refid-select').attr('data-reftype2') || '';
 
-            if (type === '1' && reftype2 === 'sales/order') {
-                searchProductByBarcode(barcodeValue);
-            } else if (type === '1' && reftype2 === 'purchase/request') {
-                searchBarcodeIn(barcodeValue);
-            } else {
-                searchProductByBarcode(barcodeValue);
-            }
+            searchProductByBarcode(barcodeValue);
         }
 
         $('#btn-scan-barcode').on('click', function () {
@@ -1008,176 +701,62 @@ use yii\widgets\ActiveForm;
     }
 
     function searchProductByBarcode(barcode) {
-        let type = $("select[name='Tranvariants[type]']").val();
-        if (!barcode || barcode.trim() === '') {
+        barcode = (barcode || '').trim();
+
+        if (!barcode) {
             Swal.fire({
                 icon: 'warning',
                 title: 'Barcode Kosong',
-                text: 'Silakan masukkan kode barcode'
+                text: 'Silakan masukkan nomor kontak / barcode'
             });
             $('#barcode-scanner-input').focus().select();
             return;
         }
 
-        setBarcodeInputState(false);
+        if (typeof setBarcodeInputState === "function") setBarcodeInputState(false);
 
         $.ajax({
             url: "<?= Url::to(['tran/searchproductbybarcode']) ?>",
-            type: "GET",
-            data: { barcode: barcode, type: type },
-            timeout: 10000,
-            success: function (response) {
-                if (response.success) {
-                    $('#barcode-scanner-input').val('');
-                    const product = response.product;
-                    const variant = response.variant;
-                    let existingRow = findProductRow(product.productid);
-
-                    if (existingRow) {
-                        let remain = parseInt(existingRow.find('.product-remain').val() || 0);
-
-                        if (remain <= 0) {
-                            setBarcodeInputState(true);
-                            Swal.fire({
-                                icon: 'info',
-                                title: 'Produk Sudah Di-Scan Semua',
-                                text: 'Tidak ada sisa produk untuk di scan lagi.'
-                            });
-                            $('#barcode-scanner-input').val('').focus();
-                            return;
-                        }
-
-                        var trandetailid = existingRow.find('.tran-trandetailid').val();
-                        fillRowWithProductForEject(existingRow, product, variant);
-
-                        Swal.fire({
-                            title: 'Menyimpan...',
-                            text: 'Sedang memproses barcode ' + barcode,
-                            allowOutsideClick: false,
-                            allowEscapeKey: false,
-                            didOpen: function () {
-                                Swal.showLoading();
-                            }
-                        });
-
-                        submitForm(trandetailid, function () {
-                            setBarcodeInputState(true);
-                        });
-
-                    } else {
-                        setBarcodeInputState(true);
-                        Swal.fire({
-                            icon: 'info',
-                            title: 'Produk Tidak Ada di Tabel',
-                            text: 'Produk ditemukan, tetapi tidak terdaftar dalam daftar item referensi ini.'
-                        });
-                        $('#barcode-scanner-input').val('').focus();
-                    }
-                } else {
-                    setBarcodeInputState(true);
-                    $('#barcode-scanner-input').focus().select();
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Produk Tidak Ditemukan',
-                        text: 'Barcode ' + barcode + ' tidak ditemukan di Gudang atau tidak dalam kondisi baik'
-                    });
-                }
-            },
-            error: function (xhr, status, error) {
-                setBarcodeInputState(true);
-                $('#barcode-scanner-input').focus().select();
-
-                let msg = 'Terjadi kesalahan saat mencari produk';
-                if (status === 'timeout') {
-                    msg = 'Request timeout. Periksa koneksi jaringan.';
-                }
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Kesalahan',
-                    text: msg
-                });
-            }
-        });
-    }
-
-    function searchBarcodeIn(barcode) {
-        if (!barcode || barcode.trim() === '') {
-            Swal.fire({
-                icon: 'warning',
-                title: 'Barcode Kosong',
-                text: 'Silakan masukkan kode barcode'
-            });
-            $('#barcode-scanner-input').focus().select();
-            return;
-        }
-
-        setBarcodeInputState(false);
-
-        $.ajax({
-            url: "<?= Url::to(['tran/searchbarcodein']) ?>",
             type: "GET",
             data: { barcode: barcode },
             timeout: 10000,
             success: function (response) {
                 if (response.success) {
                     $('#barcode-scanner-input').val('');
+                    const contact = response.product; // Objek data kontak dari server
 
-                    let targetRow = null;
-                    $('.detail-rows tr[data-repeater-item]').each(function () {
-                        let remain = parseInt($(this).find('.product-remain').val() || 0);
-                        if (remain > 0) {
-                            targetRow = $(this);
-                            return false;
-                        }
-                    });
+                    fillContactToForm(contact, barcode);
 
-                    if (targetRow) {
-                        let rowProductId = targetRow.find('.product-productid').val();
-                        if (!response.product.productid) {
-                            response.product.productid = rowProductId;
-                        }
-
-                        fillRowWithProductForEject(targetRow, response.product, response.variant);
-                        let trandetailid = targetRow.find('.tran-trandetailid').val();
-
+                    if (typeof scanMode !== 'undefined' && scanMode === 'sekali') {
                         Swal.fire({
                             title: 'Menyimpan...',
-                            text: 'Sedang memproses barcode ' + barcode,
+                            text: 'Sedang memproses ' + barcode,
                             allowOutsideClick: false,
                             allowEscapeKey: false,
                             didOpen: function () {
                                 Swal.showLoading();
                             }
                         });
-
-                        submitForm(trandetailid, function () {
-                            setBarcodeInputState(true);
-                        });
-
-                    } else {
-                        setBarcodeInputState(true);
-                        Swal.fire({
-                            icon: 'info',
-                            title: 'Produk Sudah Di-Scan Semua',
-                            text: 'Tidak ada sisa produk untuk di scan lagi.'
-                        });
                     }
 
+                    submitForm(function () {
+                        if (typeof setBarcodeInputState === "function") setBarcodeInputState(true);
+                    });
                 } else {
-                    setBarcodeInputState(true);
+                    if (typeof setBarcodeInputState === "function") setBarcodeInputState(true);
                     $('#barcode-scanner-input').focus().select();
                     Swal.fire({
                         icon: 'error',
-                        title: 'Barcode Sudah Ada atau Tidak Ditemukan',
-                        text: 'Barcode ' + barcode + ' sudah ada di database'
+                        title: 'Kontak Tidak Ditemukan',
+                        text: response.message || ('Nomor / Barcode ' + barcode + ' tidak ditemukan')
                     });
                 }
             },
             error: function (xhr, status, error) {
-                setBarcodeInputState(true);
+                if (typeof setBarcodeInputState === "function") setBarcodeInputState(true);
                 $('#barcode-scanner-input').focus().select();
 
-                let msg = 'Terjadi kesalahan saat mencari produk';
+                let msg = 'Terjadi kesalahan saat mencari kontak';
                 if (status === 'timeout') {
                     msg = 'Request timeout. Periksa koneksi jaringan.';
                 }
@@ -1190,68 +769,83 @@ use yii\widgets\ActiveForm;
         });
     }
 
-    function findProductRow(productid) {
-        let foundRow = null;
-        if (!productid) return null;
+    function fillContactToForm(contact, barcode) {
+        if ($('#tran-form input[name="Tran[contact_id]"]').length === 0) {
+            $('#tran-form').append('<input type="hidden" name="Tran[contact_id]" value="' + (contact.contact_id || '') + '">');
+        } else {
+            $('#tran-form input[name="Tran[contact_id]"]').val(contact.contact_id || '');
+        }
 
-        $('.detail-rows tr[data-repeater-item]').each(function () {
-            let $row = $(this);
-            let currentProductId = $row.find('.product-productid').val();
-            if (currentProductId && currentProductId === productid.toString()) {
-                foundRow = $row;
-                return false;
-            }
-        });
-
-        return foundRow;
+        if ($('#tran-form input[name="Tran[barcode]"]').length === 0) {
+            $('#tran-form').append('<input type="hidden" name="Tran[barcode]" value="' + barcode + '">');
+        } else {
+            $('#tran-form input[name="Tran[barcode]"]').val(barcode);
+        }
     }
 
-    function fillRowWithProductForEject(row, product, variant) {
-        row.find('.product-productid').val(product.productid);
-        row.find('.product-name').val(product.productname);
-        row.find('.variant-id-input').val(variant.variantid);
-        row.find('.variant-barcode-input').val(variant.barcode);
-        // console.log("Isi ProductID ke Row:", product.productid);
-    }
+    function submitForm(onComplete, forceOption = null) {
+        let formData = $('#tran-form').serializeArray();
 
-    function submitForm(trandetailid, onComplete) {
-        let type = $("select[name='Tranvariants[type]']").val();
-        let reftype2 = $('.refid-select').attr('data-reftype2') || '';
+        if (forceOption) {
+            formData.push({ name: 'force_option', value: forceOption });
+        }
 
         $.ajax({
-            url: type == '1' && reftype2 == 'purchase/request'
-                ? "<?= Url::to(['tran/createvariants']) ?>"
-                : "<?= Url::to(['tran/createitem']) ?>",
+            url: "<?= Url::to(['tran/createitem']) ?>",
             type: "POST",
-            data: $('#tran-form').serialize() + '&trandetailid=' + trandetailid,
+            data: $.param(formData),
             timeout: 15000,
             success: function (response) {
                 Swal.close();
 
+                if (!response.success && response.already_checked_in) {
+                    const c = response.contact;
+
+                    $('#checkin-avatar').text((c.contact_name || 'M').charAt(0).toUpperCase());
+                    $('#checkin-member-name').text(c.contact_name || '-');
+                    $('#checkin-member-info').text(`${c.contact_no || '-'} · ${c.package_info || '-'}`);
+                    $('#checkin-member-expired').text(c.expired_info || '-');
+
+                    $('#modalCheckinUlang').modal('show');
+
+                    $('#btn-checkin-abaikan').off('click').on('click', function () {
+                        $('#modalCheckinUlang').modal('hide');
+                        if (typeof onComplete === 'function') onComplete();
+                    });
+
+                    $('#btn-checkin-jangan-kurangi').off('click').on('click', function () {
+                        $('#modalCheckinUlang').modal('hide');
+                        submitForm(onComplete, 'no_deduct');
+                    });
+
+                    $('#btn-checkin-kurangi').off('click').on('click', function () {
+                        $('#modalCheckinUlang').modal('hide');
+                        submitForm(onComplete, 'deduct');
+                    });
+
+                    return;
+                }
+
                 if (response.success) {
+                    let timerTime = (typeof scanMode !== 'undefined' && scanMode === 'terus') ? 1200 : 1500;
+
                     Swal.fire({
                         icon: 'success',
                         title: 'Berhasil',
                         html: response.pesan,
-                        showConfirmButton: response.finished,
-                        timer: response.finished ? null : 1500
+                        showConfirmButton: (typeof scanMode !== 'undefined' && scanMode === 'sekali'),
+                        timer: timerTime
                     });
 
-                    let now = new Date();
-                    let trandateInput = document.querySelector("input.picktime");
-                    if (trandateInput && trandateInput._flatpickr) {
-                        trandateInput._flatpickr.setDate(now, true);
-                    } else {
-                        $(".picktime").val(DatetoStringTime(now));
+                    if ($.fn.DataTable.isDataTable('#datatable')) {
+                        $('#datatable').DataTable().ajax.reload(null, false);
                     }
 
-                    $('#datatable').DataTable().ajax.reload();
-                    generateDeli();
-                    $('#barcode-scanner-input').focus().select();
+                    $('#barcode-scanner-input').val('').focus();
                 } else {
                     Swal.fire({
                         icon: 'error',
-                        title: 'Gagal',
+                        title: 'Gagal Menyimpan',
                         text: response.pesan
                     });
                     $('#barcode-scanner-input').focus().select();
@@ -1261,118 +855,12 @@ use yii\widgets\ActiveForm;
             },
             error: function (xhr, status, error) {
                 Swal.close();
-
-                let msg = 'Terjadi kesalahan saat menyimpan data.';
-                if (status === 'timeout') {
-                    msg = 'Request timeout. Data mungkin tidak tersimpan. Cek koneksi dan coba lagi.';
-                }
-
                 Swal.fire({
                     icon: 'error',
                     title: 'Kesalahan Server',
-                    text: msg
+                    text: 'Terjadi kesalahan saat menyimpan data.'
                 });
-
-                $('#barcode-scanner-input').focus().select();
                 if (typeof onComplete === 'function') onComplete();
-            }
-        });
-    }
-
-    function generateDeli() {
-        let refid = $("select[name='Tranvariants[refid]']").val();
-        let type = $("select[name='Tranvariants[type]']").val();
-        let reftype2 = $('.refid-select').attr('data-reftype2') || '';
-        if (!refid) return;
-
-        $.ajax({
-            url: "<?= Url::to(['tran/loadscan']) ?>",
-            type: "GET",
-            dataType: 'json',
-            data: {
-                id: refid,
-                type: type,
-                reftype2: reftype2
-            },
-            success: function (response) {
-                $('.detail-rows').empty();
-                $('.unreturn-info').empty();
-                $('.btn-cek-container').addClass('d-none').hide();
-                $('.btn-peak-container').addClass('d-none').hide();
-
-                let hasUnreturn = false;
-                let unreturnItems = [];
-                let soTranno = '';
-
-                response.data.forEach(function (item, index) {
-                    $('#trandetail_repeater [data-repeater-create]').trigger('click');
-                    let $row = $('.detail-rows tr[data-repeater-item]').last();
-
-                    $row.find(".tran-trandetailid").val(item.trandetailid);
-                    $row.find(".tran-refid").val(item.refid);
-                    $row.find(".product-quantity").val(item.senttotal);
-                    $row.find(".product-quantity-stockin").val(item.sent_milik);
-                    $row.find(".product-name").val(item.productname);
-                    $row.find(".product-productid").val(item.productid);
-                    $row.find(".variant-id-input").val(item.variantid);
-                    $row.find(".product-sent").val(item.total_variant);
-                    $row.find(".product-remain").val(item.senttotal - item.total_variant);
-
-                    if (item.pending_barcodes || item.product_unreturn) {
-                        hasUnreturn = true;
-                        soTranno = item.so_tranno ?? '';
-                        unreturnItems.push({
-                            product: item.product_unreturn ?? '-',
-                            barcodes: item.pending_barcodes ?? '-'
-                        });
-                    }
-                });
-
-                if (hasUnreturn && (type === '3' || (type === '1' && reftype2 === 'sales/order'))) {
-                    let itemsHtml = unreturnItems.map(item => `
-                    <div class="d-flex align-items-start gap-2 mb-2">
-                        <div class="flex-shrink-0">
-                            <div class="text-dark small mb-1">
-                                <i class="fas fa-tag me-1 text-muted"></i>${item.product}
-                            </div>
-                            <div class="text-muted small font-monospace">
-                                <i class="fas fa-barcode me-1"></i>${item.barcodes}
-                            </div>
-                        </div>
-                    </div>
-                `).join('');
-
-                    $('.unreturn-info').html(`
-                    <div class="d-flex align-items-center gap-2 mb-3 pb-2" style="border-bottom: 2px solid #f6c000;">
-                        <span class="text-warning p-2 fw-bold">
-                            <i class="fas fa-exclamation-triangle me-2 text-warning fw-bold"></i>
-                            Barang yang Belum Dikembalikan
-                        </span>
-                    </div>
-                    <div class="rounded-2 overflow-hidden" style="border-left: 4px solid #f6c000;">
-                        <div class="px-3 py-2" style="background:#fff3e0;">
-                            <strong class="text-dark">
-                                <i class="fas fa-file-alt me-2 text-black"></i>No Project: ${soTranno}
-                            </strong>
-                        </div>
-                        <div class="px-3 py-2" style="background:#fff8e1;">
-                            ${itemsHtml}
-                        </div>
-                    </div>
-                `);
-                }
-
-                if (type === '2') {
-                    $('.btn-cek-container').removeClass('d-none').show();
-                    $('.btn-peak-container').removeClass('d-none').show();
-                } else {
-                    $('.btn-cek-container').addClass('d-none').hide();
-                    $('.btn-peak-container').addClass('d-none').hide();
-                }
-
-            },
-            error: function () {
-                console.warn('Error get crew');
             }
         });
     }
@@ -1458,9 +946,6 @@ use yii\widgets\ActiveForm;
     var deletemessage7 = "<?= Yii::$app->lang->t('extra', 'extra66') ?>";
 
     function performMassAction(action, statusCode) {
-        let type = $("select[name='Tranvariants[type]']").val();
-        let reftype2 = $('.refid-select').attr('data-reftype2') || '';
-
         let selectedIds = $(".select-checkbox:checked").map(function () {
             return $(this).val();
         }).get();
@@ -1505,8 +990,6 @@ use yii\widgets\ActiveForm;
                         ids: selectedIds,
                         action: action,
                         status: statusCode,
-                        type: (type == '1') ? 'stock/in' : (type == '2' ? 'sales/item' : (type == '3' ? 'stock/return' : '')),
-                        reftype2: reftype2,
                         _csrf: "<?= Yii::$app->request->getCsrfToken() ?>"
                     },
                     headers: {
@@ -1514,7 +997,6 @@ use yii\widgets\ActiveForm;
                     },
                     success: function (response) {
                         $("#datatable").DataTable().ajax.reload();
-                        generateDeli();
 
                         $("#mass-action-buttons").hide();
                         $("#select-all").prop("checked", false);

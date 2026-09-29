@@ -85,13 +85,13 @@ $form = ActiveForm::begin([
         <div class="row g-3 mb-4">
             <?php
             $options = [
-                '1_day' => '1 Hari',
                 '1_week' => '1 Minggu',
                 '2_weeks' => '2 Minggu',
                 '1_month' => '1 Bulan',
                 '3_months' => '3 Bulan',
                 '6_months' => '6 Bulan',
                 '1_year' => '1 Tahun',
+                '2_years' => '2 Tahun',
                 'custom' => '<i class="bi bi-pencil me-1"></i> Kustom',
             ];
 
@@ -548,13 +548,13 @@ $form = ActiveForm::begin([
                 $customContainer.addClass('d-none');
 
                 const presetMap = {
-                    '1_day': 1,
                     '1_week': 7,
                     '2_weeks': 14,
                     '1_month': 30,
                     '3_months': 90,
                     '6_months': 180,
-                    '1_year': 365
+                    '1_year': 365,
+                    '2_years': 730,
                 };
                 totalDays = presetMap[selectedOption] || 0;
             }
