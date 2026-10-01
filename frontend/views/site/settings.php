@@ -9,11 +9,14 @@ $displayName = $currentUser ? Html::encode($currentUser->name) : 'Guest';
 $displayUsername = $currentUser ? Html::encode($currentUser->username) : 'guest';
 $displayEmail = $currentUser ? Html::encode($currentUser->email) : 'guest@email.com';
 $contactId = $currentUser && $currentUser->contact_id ? Html::encode($currentUser->contact_id) : '';
+$contactRecord = $contactId ? \common\models\Contact::findOne(['contact_id' => $currentUser->contact_id]) : null;
+$contactNo = $contactRecord ? Html::encode($contactRecord->contact_no) : 'MBR-XXXX';
+
 $isActive = $currentUser && $currentUser->status == \common\models\User::STATUS_ACTIVE;
 $avatar = $currentUser && $currentUser->avatar ? $currentUser->avatar : '';
 
 // Mock untuk tipe paket (bisa 'VIP' atau 'STANDARD'), nanti dihubungkan ke field tabel
-$membershipType = 'VIP'; 
+$membershipType = 'Basic Monthly'; 
 ?>
 
 <div class="min-h-screen bg-[#121212] pt-24 pb-12 relative overflow-hidden">
@@ -110,7 +113,7 @@ $membershipType = 'VIP';
                             
                             <div>
                                 <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Nomor HP / WA</label>
-                                <input type="text" name="contact_id" value="<?= $contactId ?>" placeholder="+62 812 3456 7890" class="w-full bg-transparent border-0 border-b border-slate-700 px-0 py-2 text-slate-300 placeholder-slate-600 text-sm focus:outline-none focus:ring-0 focus:border-brand-gold transition-colors">
+                                <input type="text" name="whatsapp_no" value="<?= $contactRecord ? Html::encode($contactRecord->contact_phone1) : '' ?>" placeholder="+62 812 3456 7890" class="w-full bg-transparent border-0 border-b border-slate-700 px-0 py-2 text-slate-300 placeholder-slate-600 text-sm focus:outline-none focus:ring-0 focus:border-brand-gold transition-colors">
                             </div>
 
                             <div class="md:col-span-2">
@@ -134,35 +137,61 @@ $membershipType = 'VIP';
                         <div class="absolute top-0 right-0 p-8 opacity-10">
                             <i class="fa-solid fa-crown text-8xl text-brand-gold"></i>
                         </div>
-                        <div class="relative z-10">
-                            <div class="flex items-center justify-between mb-2">
-                                <h2 class="text-brand-gold font-bold uppercase tracking-widest text-xs">Status Membership</h2>
-                                <span class="inline-flex items-center gap-1.5 px-2 py-1 rounded bg-green-500/20 text-green-400 text-[10px] font-bold tracking-widest border border-green-500/30">
-                                    <div class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></div>
-                                    AKTIF
-                                </span>
-                            </div>
-                            <h3 class="text-2xl font-extrabold text-white"><?= $membershipType ?> All-Access</h3>
-                            <p class="text-slate-400 text-sm mt-1">Berlaku di seluruh cabang Hercules Fitness</p>
-                            
-                            <div class="mt-8 pt-6 border-t border-white/10 flex flex-wrap gap-x-12 gap-y-4">
-                                <div>
-                                    <p class="text-[10px] text-slate-500 font-bold uppercase tracking-wider mb-1">Masa Berlaku s/d</p>
-                                    <p class="text-white font-semibold">21 Sep 2027</p>
+                        <div class="relative z-10 flex flex-col md:flex-row gap-8 items-start">
+                            <!-- Left: Status Info -->
+                            <div class="flex-1">
+                                <div class="flex items-center justify-between mb-2">
+                                    <h2 class="text-brand-gold font-bold uppercase tracking-widest text-xs">Status Membership</h2>
+                                    <span class="inline-flex items-center gap-1.5 px-2 py-1 rounded bg-green-500/20 text-green-400 text-[10px] font-bold tracking-widest border border-green-500/30">
+                                        <div class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></div>
+                                        AKTIF
+                                    </span>
                                 </div>
-                                <div>
-                                    <p class="text-[10px] text-slate-500 font-bold uppercase tracking-wider mb-1">Cabang Pendaftaran</p>
-                                    <p class="text-white font-semibold">Batam (MTC)</p>
+                                <h3 class="text-2xl font-extrabold text-white"><?= $membershipType ?> All-Access</h3>
+                                <p class="text-slate-400 text-sm mt-1">Berlaku di seluruh cabang Hercules Fitness</p>
+                                
+                                <div class="mt-8 pt-6 border-t border-white/10 flex flex-wrap gap-x-12 gap-y-4">
+                                    <div>
+                                        <p class="text-[10px] text-slate-500 font-bold uppercase tracking-wider mb-1">Masa Berlaku s/d</p>
+                                        <p class="text-white font-semibold">21 Sep 2027</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-[10px] text-slate-500 font-bold uppercase tracking-wider mb-1">Cabang Pendaftaran</p>
+                                        <p class="text-white font-semibold">Batam (MTC)</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="mt-8 flex gap-3">
+                                    <button class="px-5 py-2.5 rounded-xl bg-white text-slate-900 font-extrabold text-xs uppercase tracking-widest hover:bg-slate-100 transition-colors">
+                                        Perpanjang
+                                    </button>
+                                    <button class="px-5 py-2.5 rounded-xl border border-slate-700 text-white font-extrabold text-xs uppercase tracking-widest hover:bg-slate-800 transition-colors">
+                                        Lihat Tagihan
+                                    </button>
                                 </div>
                             </div>
-                            
-                            <div class="mt-8 flex gap-3">
-                                <button class="px-5 py-2.5 rounded-xl bg-white text-slate-900 font-extrabold text-xs uppercase tracking-widest hover:bg-slate-100 transition-colors">
-                                    Perpanjang
-                                </button>
-                                <button class="px-5 py-2.5 rounded-xl border border-slate-700 text-white font-extrabold text-xs uppercase tracking-widest hover:bg-slate-800 transition-colors">
-                                    Lihat Tagihan
-                                </button>
+
+                            <!-- Right: Digital Card -->
+                            <div class="w-full md:w-auto flex justify-center">
+                                <div class="bg-[#1a1c23] rounded-2xl p-6 w-72 shadow-2xl border border-slate-700/50 flex flex-col items-center">
+                                    <div class="w-full text-left mb-4">
+                                        <h4 class="text-white font-bold text-lg leading-tight truncate"><?= $displayName ?></h4>
+                                        <p class="text-brand-gold text-xs font-semibold"><?= $membershipType ?></p>
+                                    </div>
+                                    
+                                    <div class="px-5 py-1.5 rounded-full border border-slate-500 text-slate-300 text-xs font-bold tracking-wider mb-6">
+                                        <?= $contactNo ?>
+                                    </div>
+                                    
+                                    <div class="bg-white p-3 rounded-xl w-full aspect-square flex items-center justify-center mb-6">
+                                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=<?= urlencode($contactNo) ?>" alt="QR Code" class="w-full h-full object-contain">
+                                    </div>
+                                    
+                                    <div class="flex items-center gap-3 mt-auto">
+                                        <img src="/img/hercules.jpeg" alt="Logo" class="w-6 h-6 rounded-full object-cover">
+                                        <span class="text-white text-sm font-bold tracking-wide">Herculesfitness</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     <?php else: ?>

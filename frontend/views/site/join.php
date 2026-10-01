@@ -114,6 +114,13 @@ $this->registerCss("
             </div>
           </div>
 
+          <!-- Alamat -->
+          <div>
+            <label for="address" class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Alamat Lengkap <span class="text-brand-gold">*</span></label>
+            <textarea id="address" name="address" placeholder="Masukkan alamat lengkap (Jalan, RT/RW, Kelurahan)" required rows="2"
+                   class="w-full !bg-none bg-[#1c1c1c] border border-slate-700 rounded-lg px-4 py-3 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-brand-gold focus:ring-1 focus:ring-brand-gold transition-colors"></textarea>
+          </div>
+
           <!-- Email -->
           <div>
             <label for="email" class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Email <span class="text-brand-gold">*</span></label>
@@ -169,13 +176,13 @@ $this->registerCss("
         <!-- Agreement -->
         <div class="mt-6">
           <label class="flex items-start gap-3 text-sm text-slate-400 cursor-pointer">
-            <input type="checkbox" required name="agreement" class="mt-1 w-4 h-4 rounded border-slate-700 bg-[#1c1c1c] text-brand-gold focus:ring-brand-gold transition-colors accent-brand-gold">
+            <input type="checkbox" id="agreement-checkbox" onchange="toggleSubmitButton()" required name="agreement" class="mt-1 w-4 h-4 rounded border-slate-700 bg-[#1c1c1c] text-brand-gold focus:ring-brand-gold transition-colors accent-brand-gold">
             <span>Saya menyetujui <a href="#" class="text-brand-gold font-semibold hover:underline">Syarat & Ketentuan</a> serta <a href="#" class="text-brand-gold font-semibold hover:underline">Kebijakan Privasi</a> dari Hercules Fitness.</span>
           </label>
         </div>
 
         <!-- Submit -->
-        <button type="submit" id="submit-btn" class="w-full py-4 mt-4 rounded-xl bg-brand-gold hover:bg-brand-gold-hover text-white font-extrabold text-sm uppercase tracking-widest transition-all shadow-lg shadow-brand-gold/30 hover:-translate-y-0.5">
+        <button type="submit" id="submit-btn" disabled class="w-full py-4 mt-4 rounded-xl bg-brand-gold hover:bg-brand-gold-hover text-white font-extrabold text-sm uppercase tracking-widest transition-all shadow-lg shadow-brand-gold/30 hover:-translate-y-0.5 opacity-50 cursor-not-allowed">
           Daftar Sekarang
         </button>
         
@@ -259,6 +266,18 @@ function togglePassword() {
   }
 }
 
+// === AGREEMENT TOGGLE ===
+function toggleSubmitButton() {
+  const checkbox = document.getElementById('agreement-checkbox');
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = !checkbox.checked;
+  if (checkbox.checked) {
+    btn.classList.remove('opacity-50', 'cursor-not-allowed');
+  } else {
+    btn.classList.add('opacity-50', 'cursor-not-allowed');
+  }
+}
+
 // === FORM SUBMIT ===
 function handleFormSubmit(e) {
   e.preventDefault();
@@ -266,11 +285,12 @@ function handleFormSubmit(e) {
   const name = document.getElementById('name').value.trim();
   const phone = document.getElementById('whatsapp_no').value.trim();
   const email = document.getElementById('email').value.trim();
+  const address = document.getElementById('address').value.trim();
   const password = document.getElementById('password').value.trim();
   const gender = document.getElementById('gender').value;
   
 
-  if (!username || !name || !phone || !email || !password || !gender) { alert('Mohon lengkapi semua field yang diwajibkan.'); return; }
+  if (!username || !name || !phone || !email || !address || !password || !gender) { alert('Mohon lengkapi semua field yang diwajibkan.'); return; }
   if (phone.length < 8 || phone.length > 14) { alert('Nomor WhatsApp tidak valid.'); return; }
   if (password.length < 6) { alert('Password minimal 6 karakter.'); return; }
 

@@ -1,8 +1,79 @@
 <?php
 /** @var yii\web\View $this */
 use yii\helpers\Url;
+use common\models\Product;
 
 $this->title = 'Membership - Hercules Fitness Centre';
+
+$allProducts = Product::find()->where(['not', ['sellprice' => null]])->all();
+$stdPackages = [];
+$vipPackages = [];
+
+foreach($allProducts as $p) {
+    // Filter out Personal Trainer packages (where coaching_mode is enabled)
+    if (!empty($p->coaching_mode) && !in_array(strtolower($p->coaching_mode), ['tidak ada', 'none', '0'])) {
+        continue;
+    }
+
+    $name = strtolower($p->productname);
+    if (strpos($name, 'drop-in') !== false) continue;
+    
+    $label = trim(str_ireplace(['paket', 'vip', 'standard', 'all-access', 'all access'], '', $p->productname));
+    if ($label == '') {
+        $label = $p->duration_days ? round($p->duration_days/30) . ' Bln' : '1 Bln';
+    } else {
+        $label = str_ireplace(['bulan', 'tahun', 'minggu'], ['Bln', 'Thn', 'Mgg'], $label);
+    }
+    
+    $basePrice = (float)$p->sellprice;
+    preg_match('/(\d+)/', $label, $matches);
+    $months = !empty($matches[1]) ? (int)$matches[1] : 1;
+    
+    $total = $basePrice * $months;
+    $strike = $total / 0.68;
+    
+    $pkg = [
+        'id' => $p->productid,
+        'label' => $label,
+        'price' => 'Rp ' . number_format($basePrice, 0, ',', '.'),
+        'strike' => 'Rp ' . number_format($strike, 0, ',', '.'),
+        'total' => 'Rp ' . number_format($total, 0, ',', '.'),
+        'discount' => 'Diskon 32%',
+        'rawPrice' => $basePrice
+    ];
+
+    if (strpos($name, 'vip') !== false) {
+        $vipPackages[] = $pkg;
+    } else {
+        $stdPackages[] = $pkg;
+    }
+}
+
+usort($stdPackages, fn($a, $b) => $a['rawPrice'] <=> $b['rawPrice']);
+usort($vipPackages, fn($a, $b) => $a['rawPrice'] <=> $b['rawPrice']);
+
+if (empty($stdPackages)) {
+    $stdPackages = [
+        ['label'=>'6 Bln', 'price'=>'Rp 225.000', 'strike'=>'Rp 3.970.588', 'total'=>'Rp 2.700.000', 'discount'=>'Diskon 32%'],
+        ['label'=>'12 Bln', 'price'=>'Rp 210.000', 'strike'=>'Rp 3.705.882', 'total'=>'Rp 2.520.000', 'discount'=>'Diskon 32%'],
+        ['label'=>'18 Bln', 'price'=>'Rp 185.000', 'strike'=>'Rp 5.370.968', 'total'=>'Rp 3.330.000', 'discount'=>'Diskon 38%']
+    ];
+}
+if (empty($vipPackages)) {
+    $vipPackages = [
+        ['label'=>'6 Bln', 'price'=>'Rp 275.000', 'strike'=>'Rp 4.852.941', 'total'=>'Rp 3.300.000', 'discount'=>'Diskon 32%'],
+        ['label'=>'12 Bln', 'price'=>'Rp 260.000', 'strike'=>'Rp 4.588.235', 'total'=>'Rp 3.120.000', 'discount'=>'Diskon 32%'],
+        ['label'=>'18 Bln', 'price'=>'Rp 235.000', 'strike'=>'Rp 6.822.581', 'total'=>'Rp 4.230.000', 'discount'=>'Diskon 38%']
+    ];
+}
+
+$dynamicPricing = [
+    'batu-ampar' => ['label' => 'Batu Ampar', 'std' => $stdPackages, 'vip' => $vipPackages],
+    'batu-besar' => ['label' => 'Batu Besar', 'std' => $stdPackages, 'vip' => $vipPackages],
+    'mtc' => ['label' => 'MTC Batam', 'std' => $stdPackages, 'vip' => $vipPackages],
+    'canggu' => ['label' => 'Canggu', 'std' => $stdPackages, 'vip' => $vipPackages],
+    'kuta' => ['label' => 'Kuta', 'std' => $stdPackages, 'vip' => $vipPackages],
+];
 ?>
 
 <style>
@@ -65,10 +136,10 @@ $this->title = 'Membership - Hercules Fitness Centre';
                 <div class="mb-8">
                     <p class="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-3">Pilih Durasi:</p>
                     <div class="relative flex items-center bg-[#1a1c23] p-1 rounded-lg border border-white/10" id="std-selector-container">
-                        <div id="slider-std" class="absolute top-1 bottom-1 w-[calc(33.333%-2px)] bg-white rounded-md transition-transform duration-300 ease-out z-0 shadow-md" style="left: 4px; transform: translateX(100%);"></div>
-                        <button class="dur-btn flex-1 py-2 text-xs font-bold rounded-md transition-colors duration-300 text-slate-400 hover:text-white relative z-10" data-target="std" data-index="0">6 Bln</button>
-                        <button class="dur-btn flex-1 py-2 text-xs font-bold rounded-md transition-colors duration-300 text-slate-900 relative z-10 active-pill" data-target="std" data-index="1">12 Bln</button>
-                        <button class="dur-btn flex-1 py-2 text-xs font-bold rounded-md transition-colors duration-300 text-slate-400 hover:text-white relative z-10" data-target="std" data-index="2">18 Bln</button>
+                        <div id="slider-std" class="absolute top-1 bottom-1 w-[calc(<?= 100/count($stdPackages) ?>%-2px)] bg-white rounded-md transition-transform duration-300 ease-out z-0 shadow-md" style="left: 4px; transform: translateX(0%);"></div>
+                        <?php foreach ($stdPackages as $index => $pkg): ?>
+                            <button class="dur-btn flex-1 py-2 text-xs font-bold rounded-md transition-colors duration-300 <?= $index === 0 ? 'text-slate-900 active-pill' : 'text-slate-400 hover:text-white' ?> relative z-10" data-target="std" data-index="<?= $index ?>"><?= $pkg['label'] ?></button>
+                        <?php endforeach; ?>
                     </div>
                 </div>
 
@@ -116,10 +187,10 @@ $this->title = 'Membership - Hercules Fitness Centre';
                 <div class="mb-8">
                     <p class="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-3">Pilih Durasi:</p>
                     <div class="relative flex items-center bg-[#1a1c23] p-1 rounded-lg border border-white/10" id="vip-selector-container">
-                        <div id="slider-vip" class="absolute top-1 bottom-1 w-[calc(33.333%-2px)] bg-brand-gold rounded-md transition-transform duration-300 ease-out z-0 shadow-md" style="left: 4px; transform: translateX(100%);"></div>
-                        <button class="dur-btn flex-1 py-2 text-xs font-bold rounded-md transition-colors duration-300 text-slate-400 hover:text-white relative z-10" data-target="vip" data-index="0">6 Bln</button>
-                        <button class="dur-btn flex-1 py-2 text-xs font-bold rounded-md transition-colors duration-300 text-slate-900 relative z-10 active-pill" data-target="vip" data-index="1">12 Bln</button>
-                        <button class="dur-btn flex-1 py-2 text-xs font-bold rounded-md transition-colors duration-300 text-slate-400 hover:text-white relative z-10" data-target="vip" data-index="2">18 Bln</button>
+                        <div id="slider-vip" class="absolute top-1 bottom-1 w-[calc(<?= 100/count($vipPackages) ?>%-2px)] bg-brand-gold rounded-md transition-transform duration-300 ease-out z-0 shadow-md" style="left: 4px; transform: translateX(0%);"></div>
+                        <?php foreach ($vipPackages as $index => $pkg): ?>
+                            <button class="dur-btn flex-1 py-2 text-xs font-bold rounded-md transition-colors duration-300 <?= $index === 0 ? 'text-slate-900 active-pill' : 'text-slate-400 hover:text-white' ?> relative z-10" data-target="vip" data-index="<?= $index ?>"><?= $pkg['label'] ?></button>
+                        <?php endforeach; ?>
                     </div>
                 </div>
 
@@ -159,77 +230,10 @@ $this->title = 'Membership - Hercules Fitness Centre';
         
         <script>
         (function() {
-            var PRICING = {
-                'batu-ampar': {
-                    label: 'Batu Ampar',
-                    std: [
-                        { price: 'Rp 325.000', strike: 'Rp 2.437.500', total: 'Rp 1.950.000', discount: 'Diskon 20%' },
-                        { price: 'Rp 225.000', strike: 'Rp 3.970.588', total: 'Rp 2.700.000', discount: 'Diskon 32%' },
-                        { price: 'Rp 199.000', strike: 'Rp 5.777.419', total: 'Rp 3.582.000', discount: 'Diskon 38%' }
-                    ],
-                    vip: [
-                        { price: 'Rp 399.000', strike: 'Rp 2.992.500', total: 'Rp 2.394.000', discount: 'Diskon 20%' },
-                        { price: 'Rp 275.000', strike: 'Rp 4.852.941', total: 'Rp 3.300.000', discount: 'Diskon 32%' },
-                        { price: 'Rp 249.000', strike: 'Rp 7.229.032', total: 'Rp 4.482.000', discount: 'Diskon 38%' }
-                    ]
-                },
-                'batu-besar': {
-                    label: 'Batu Besar',
-                    std: [
-                        { price: 'Rp 300.000', strike: 'Rp 2.250.000', total: 'Rp 1.800.000', discount: 'Diskon 20%' },
-                        { price: 'Rp 210.000', strike: 'Rp 3.705.882', total: 'Rp 2.520.000', discount: 'Diskon 32%' },
-                        { price: 'Rp 185.000', strike: 'Rp 5.370.968', total: 'Rp 3.330.000', discount: 'Diskon 38%' }
-                    ],
-                    vip: [
-                        { price: 'Rp 375.000', strike: 'Rp 2.812.500', total: 'Rp 2.250.000', discount: 'Diskon 20%' },
-                        { price: 'Rp 260.000', strike: 'Rp 4.588.235', total: 'Rp 3.120.000', discount: 'Diskon 32%' },
-                        { price: 'Rp 235.000', strike: 'Rp 6.822.581', total: 'Rp 4.230.000', discount: 'Diskon 38%' }
-                    ]
-                },
-                'mtc': {
-                    label: 'MTC Batam',
-                    std: [
-                        { price: 'Rp 350.000', strike: 'Rp 2.625.000', total: 'Rp 2.100.000', discount: 'Diskon 20%' },
-                        { price: 'Rp 240.000', strike: 'Rp 4.235.294', total: 'Rp 2.880.000', discount: 'Diskon 32%' },
-                        { price: 'Rp 215.000', strike: 'Rp 6.241.935', total: 'Rp 3.870.000', discount: 'Diskon 38%' }
-                    ],
-                    vip: [
-                        { price: 'Rp 425.000', strike: 'Rp 3.187.500', total: 'Rp 2.550.000', discount: 'Diskon 20%' },
-                        { price: 'Rp 295.000', strike: 'Rp 5.205.882', total: 'Rp 3.540.000', discount: 'Diskon 32%' },
-                        { price: 'Rp 265.000', strike: 'Rp 7.693.548', total: 'Rp 4.770.000', discount: 'Diskon 38%' }
-                    ]
-                },
-                'canggu': {
-                    label: 'Canggu',
-                    std: [
-                        { price: 'Rp 375.000', strike: 'Rp 2.812.500', total: 'Rp 2.250.000', discount: 'Diskon 20%' },
-                        { price: 'Rp 260.000', strike: 'Rp 4.588.235', total: 'Rp 3.120.000', discount: 'Diskon 32%' },
-                        { price: 'Rp 230.000', strike: 'Rp 6.677.419', total: 'Rp 4.140.000', discount: 'Diskon 38%' }
-                    ],
-                    vip: [
-                        { price: 'Rp 450.000', strike: 'Rp 3.375.000', total: 'Rp 2.700.000', discount: 'Diskon 20%' },
-                        { price: 'Rp 315.000', strike: 'Rp 5.558.824', total: 'Rp 3.780.000', discount: 'Diskon 32%' },
-                        { price: 'Rp 280.000', strike: 'Rp 8.129.032', total: 'Rp 5.040.000', discount: 'Diskon 38%' }
-                    ]
-                },
-                'kuta': {
-                    label: 'Kuta',
-                    std: [
-                        { price: 'Rp 350.000', strike: 'Rp 2.625.000', total: 'Rp 2.100.000', discount: 'Diskon 20%' },
-                        { price: 'Rp 245.000', strike: 'Rp 4.323.529', total: 'Rp 2.940.000', discount: 'Diskon 32%' },
-                        { price: 'Rp 220.000', strike: 'Rp 6.387.097', total: 'Rp 3.960.000', discount: 'Diskon 38%' }
-                    ],
-                    vip: [
-                        { price: 'Rp 430.000', strike: 'Rp 3.225.000', total: 'Rp 2.580.000', discount: 'Diskon 20%' },
-                        { price: 'Rp 300.000', strike: 'Rp 5.294.118', total: 'Rp 3.600.000', discount: 'Diskon 32%' },
-                        { price: 'Rp 270.000', strike: 'Rp 7.838.710', total: 'Rp 4.860.000', discount: 'Diskon 38%' }
-                    ]
-                }
-            };
-
+            var PRICING = <?= json_encode($dynamicPricing) ?>;
             var CITIES = { batam: ['batu-ampar', 'batu-besar', 'mtc'], bali: ['canggu', 'kuta'] };
             var currentBranch = 'batu-ampar';
-            var durIndex = { std: 1, vip: 1 };
+            var durIndex = { std: 0, vip: 0 };
 
             function updatePrice(type) {
                 var d = PRICING[currentBranch][type][durIndex[type]];

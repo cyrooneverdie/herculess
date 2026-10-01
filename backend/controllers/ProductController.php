@@ -1139,20 +1139,8 @@ class ProductController extends Controller
 
         $sql =
             "SELECT 
-                p.*,
-                c.enumtext_id as categoryname,
-                sc.enumtext_id as subcategoryname,
-                t.enumtext_id as typename,
-                b.enumtext_id as brandname,
-                s.enumtext_id as specname,
-                u.enumtext_id as unitname
+                p.*
             FROM products p
-            LEFT JOIN enum c ON c.enumid = p.categoryid AND c.enumtype = 'category'
-            LEFT JOIN enum sc ON sc.enumid = p.subcategoryid AND sc.enumtype = 'subcategory'
-            LEFT JOIN enum t ON t.enumid = p.typeid AND t.enumtype = 'type'
-            LEFT JOIN enum b ON b.enumid = p.brandid AND b.enumtype = 'brand'
-            LEFT JOIN enum s ON s.enumid = p.specid AND s.enumtype = 'spec'
-            LEFT JOIN enum u ON u.enumid = p.unitid AND u.enumtype = 'unit'
             WHERE p.productid = '$id' AND p.status <> '10'
             ";
 

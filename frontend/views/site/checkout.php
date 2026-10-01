@@ -82,28 +82,7 @@ $duration = Yii::$app->request->get('duration', '12');
                     </div>
                 </div>
 
-                <!-- Payment Method -->
-                <div class="bg-[#121316] border border-white/10 rounded-2xl p-6">
-                    <h3 class="text-white font-bold text-sm uppercase tracking-wider mb-4">Metode Pembayaran</h3>
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-                        <button onclick="selectPayment(this, 'qris')" class="pay-opt group flex flex-col items-center gap-2 py-4 rounded-xl border-2 transition-all border-brand-gold bg-brand-gold/10">
-                            <i class="fas fa-qrcode text-xl text-brand-gold"></i>
-                            <span class="text-xs font-bold text-brand-gold">QRIS</span>
-                        </button>
-                        <button onclick="selectPayment(this, 'transfer')" class="pay-opt group flex flex-col items-center gap-2 py-4 rounded-xl border-2 transition-all border-white/10 text-slate-400 hover:border-white/20">
-                            <i class="fas fa-university text-xl"></i>
-                            <span class="text-xs font-bold">Transfer</span>
-                        </button>
-                        <button onclick="selectPayment(this, 'ewallet')" class="pay-opt group flex flex-col items-center gap-2 py-4 rounded-xl border-2 transition-all border-white/10 text-slate-400 hover:border-white/20">
-                            <i class="fas fa-wallet text-xl"></i>
-                            <span class="text-xs font-bold">E-Wallet</span>
-                        </button>
-                        <button onclick="selectPayment(this, 'card')" class="pay-opt group flex flex-col items-center gap-2 py-4 rounded-xl border-2 transition-all border-white/10 text-slate-400 hover:border-white/20">
-                            <i class="fas fa-credit-card text-xl"></i>
-                            <span class="text-xs font-bold">Kartu</span>
-                        </button>
-                    </div>
-                </div>
+
 
                 <!-- Promo Code -->
                 <div class="bg-[#121316] border border-white/10 rounded-2xl p-6">
@@ -463,12 +442,21 @@ $duration = Yii::$app->request->get('duration', '12');
     };
 
     window.processPayment = function() {
-        var totalEl = document.getElementById('summary-total');
-        document.getElementById('qris-total').textContent = totalEl.textContent;
-        document.getElementById('qris-modal').classList.remove('hidden');
-        document.body.style.overflow = 'hidden';
-        drawFakeQR();
-        startTimer();
+        var totalEl = document.getElementById('summary-total').textContent;
+        var amount = totalEl.replace(/[^0-9]/g, ''); 
+        
+        // Disable button and show loading state
+        var btn = document.getElementById('btn-pay');
+        var originalContent = btn.innerHTML;
+        btn.innerHTML = '<i class="fas fa-circle-notch fa-spin mr-2"></i> Meneruskan ke Xendit...';
+        btn.disabled = true;
+
+        var months = '12';
+        if (currentDurIndex === 0) months = '6';
+        if (currentDurIndex === 2) months = '18';
+        
+        var desc = PLAN_NAMES[currentPkg].name + ' ' + months + ' Bulan - ' + PRICING[currentBranch].label;
+        window.location.href = '/pay?amount=' + amount + '&desc=' + encodeURIComponent(desc);
     };
 
     window.closeQrisModal = function() {

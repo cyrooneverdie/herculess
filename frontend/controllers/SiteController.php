@@ -212,10 +212,14 @@ class SiteController extends Controller
             $postData = $request->post();
             
             $name = $postData['name'] ?? 'Member Baru';
+            $name = $postData['name'] ?? 'Member Baru';
             $username = $postData['username'] ?? '';
             $email = $postData['email'] ?? '';
             $password = $postData['password'] ?? '';
             $whatsapp = $postData['whatsapp_no'] ?? '';
+            $address = $postData['address'] ?? 'Batam';
+            $gender = $postData['gender'] ?? '';
+            $fitness_goal = $postData['fitness_goal'] ?? '';
             $returnUrl = $postData['returnUrl'] ?? '';
             
             $user = new User();
@@ -228,6 +232,22 @@ class SiteController extends Controller
             $user->generateAuthKey();
             
             if ($user->save()) {
+                // Relasikan dengan tabel contacts (Menyimpan profil member untuk backend dan Xendit)
+                $contact = new \common\models\Contact();
+                $contact->contact_id = 'MBR-' . date('YmdHis') . rand(10,99);
+                $contact->contact_no = \common\models\Contact::nextNo('customer');
+                $contact->contact_name = $name;
+                $contact->contact_phone1 = $whatsapp;
+                $contact->contact_email1 = $email;
+                $contact->address = $address; // Alamat asli dari form
+                $contact->contact_gender = $gender; // Laki-laki / Perempuan
+                $contact->contactnote = 'Target Fitness: ' . $fitness_goal; 
+                $contact->contacttype = 'customer'; // WAJIB agar muncul di dashboard backend
+                $contact->save(false);
+                
+                $user->contact_id = $contact->contact_id;
+                $user->save(false);
+
                 Yii::$app->user->login($user, 3600 * 24 * 30);
                 
                 if (!empty($returnUrl)) {
@@ -559,5 +579,61 @@ class SiteController extends Controller
             'equipments' => $equipments,
             'otherBranches' => $otherBranches,
         ]);
+    }
+
+    public function actionPay($amount, $desc)
+    {
+        // PENTING: Ganti dengan Secret Key yang baru saja Anda buat di Dashboard Xendit!
+        $secretKey = 'xnd_development_1fu2zqX65t70dqCzvZs226i7O9tOapyT5GhqpC5ZdHxrPiSQsnBKbPkN8lz376Y';
+        
+        \Xendit\Configuration::setXenditKey($secretKey);
+
+        $apiInstance = new \Xendit\Invoice\InvoiceApi();
+        
+        // Ambil data pelanggan asli dari database
+        $user = \Yii::$app->user->identity;
+        $contact = $user ? \common\models\Contact::findOne(['contact_id' => $user->contact_id]) : null;
+        
+        $cName = $contact ? $contact->contact_name : 'Member';
+        $cPhone = $contact ? $contact->contact_phone1 : '+6280000000000';
+        $cEmail = $contact ? $contact->contact_email1 : ($user ? $user->email : 'member@hercules.com');
+        $cAddress = $contact ? $contact->address : 'Batam';
+
+        $createInvoiceRequest = new \Xendit\Invoice\CreateInvoiceRequest([
+            'external_id' => 'HRC-' . time(),
+            'amount' => (float)$amount,
+            'payer_email' => $cEmail,
+            'description' => $desc,
+            // Data Customer Dinamis dari Database
+            'customer' => [
+                'given_names' => $cName,
+                'email' => $cEmail,
+                'mobile_number' => $cPhone,
+                'addresses' => [
+                    [
+                        'city' => 'Batam',
+                        'country' => 'Indonesia',
+                        'postal_code' => '29400',
+                        'street_line1' => $cAddress
+                    ]
+                ]
+            ],
+            // Data Item (Barang) WAJIB ada untuk KREDIVO
+            'items' => [
+                [
+                    'name' => 'Membership Gym',
+                    'quantity' => 1,
+                    'price' => (float)$amount
+                ]
+            ]
+        ]);
+
+        try {
+            $result = $apiInstance->createInvoice($createInvoiceRequest);
+            return $this->redirect($result['invoice_url']);
+        } catch (\Exception $e) {
+            \Yii::$app->session->setFlash('error', 'Gagal memproses Xendit: ' . $e->getMessage());
+            return $this->redirect(Yii::$app->request->referrer ?: Yii::$app->homeUrl);
+        }
     }
 }

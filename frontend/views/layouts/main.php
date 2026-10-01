@@ -368,6 +368,12 @@ $this->registerJs("
         </div>
       </div>
 
+      <!-- Alamat Lengkap -->
+      <div class="flex flex-col gap-1.5">
+        <label class="text-xs font-bold text-slate-400 uppercase tracking-wider" for="m-address">Alamat Lengkap <span class="text-red-500">*</span></label>
+        <textarea id="m-address" name="address" required placeholder="Masukkan alamat lengkap" rows="2" class="w-full !bg-none px-4 py-2.5 rounded-xl border border-slate-700 bg-[#1c1c1c] text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-brand-gold/40 focus:border-brand-gold transition"></textarea>
+      </div>
+
       <!-- Email -->
       <div class="flex flex-col gap-1.5">
         <label class="text-xs font-bold text-slate-400 uppercase tracking-wider" for="m-email">Email <span class="text-red-500">*</span></label>
@@ -406,13 +412,13 @@ $this->registerJs("
       <!-- Agreement -->
       <div class="mt-2">
         <label class="flex items-start gap-2 text-[11px] text-slate-500 cursor-pointer">
-          <input type="checkbox" required name="m-agreement" class="mt-0.5 w-3.5 h-3.5 rounded border-slate-300 text-brand-gold focus:ring-brand-gold transition-colors accent-brand-gold">
+          <input type="checkbox" id="m-agreement-checkbox" onchange="toggleMSubmitButton()" required name="m-agreement" class="mt-0.5 w-3.5 h-3.5 rounded border-slate-300 text-brand-gold focus:ring-brand-gold transition-colors accent-brand-gold">
           <span>Saya menyetujui <a href="#" class="text-brand-gold font-semibold hover:underline">Syarat & Ketentuan</a> serta <a href="#" class="text-brand-gold font-semibold hover:underline">Kebijakan Privasi</a> dari Hercules Fitness.</span>
         </label>
       </div>
 
       <!-- Submit -->
-      <button type="submit" class="w-full mt-2 py-3.5 rounded-xl bg-brand-gold hover:bg-brand-gold-hover text-white font-bold text-sm uppercase tracking-wider shadow-lg shadow-brand-gold/30 hover:shadow-xl hover:shadow-brand-gold/40 active:scale-[0.98] transition-all duration-200 flex items-center justify-center gap-2">
+      <button type="submit" id="m-submit-btn" disabled class="w-full mt-2 py-3.5 rounded-xl bg-brand-gold hover:bg-brand-gold-hover text-white font-bold text-sm uppercase tracking-wider shadow-lg shadow-brand-gold/30 hover:shadow-xl hover:shadow-brand-gold/40 active:scale-[0.98] transition-all duration-200 flex items-center justify-center gap-2 opacity-50 cursor-not-allowed">
         Daftar Sekarang
       </button>
     </form>
@@ -437,6 +443,17 @@ $this->registerJs("
   </aside>
 
   <script>
+    function toggleMSubmitButton() {
+      const checkbox = document.getElementById('m-agreement-checkbox');
+      const btn = document.getElementById('m-submit-btn');
+      btn.disabled = !checkbox.checked;
+      if (checkbox.checked) {
+        btn.classList.remove('opacity-50', 'cursor-not-allowed');
+      } else {
+        btn.classList.add('opacity-50', 'cursor-not-allowed');
+      }
+    }
+
     function toggleMemberPanel() {
       const panel = document.getElementById('member-panel');
       const isOpen = !panel.classList.contains('translate-x-full');

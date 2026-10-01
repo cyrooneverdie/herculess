@@ -88,13 +88,13 @@ $restrictedMenus = ['extrasidebar22', 'extrasidebar23']; // menu yang dilarang u
                             <?php if ($menuUrl == "#") { ?>
                                 <span class="menu-link">
                                     <span class="menu-icon"><i class="fa fa-<?= $row['menu_icon'] ?>"></i></span>
-                                    <span class="menu-title"><?= Yii::$app->lang->t('extrasidebar', $row['menu_name']) ?></span>
+                                    <span class="menu-title"><?= strpos($row['menu_name'], 'extrasidebar') === 0 ? Yii::$app->lang->t('extrasidebar', $row['menu_name']) : $row['menu_name'] ?></span>
                                     <span class="menu-arrow"></span>
                                 </span>
                             <?php } else { ?>
                                 <a class="menu-link <?= $activeparent ?>" href="<?= Url::to([$menuUrl]) ?>">
                                     <span class="menu-icon"><i class="fa fa-<?= $row['menu_icon'] ?>"></i></span>
-                                    <span class="menu-title"><?= Yii::$app->lang->t('extrasidebar', $row['menu_name']) ?></span>
+                                    <span class="menu-title"><?= strpos($row['menu_name'], 'extrasidebar') === 0 ? Yii::$app->lang->t('extrasidebar', $row['menu_name']) : $row['menu_name'] ?></span>
                                 </a>
                             <?php }
 
@@ -153,8 +153,7 @@ $restrictedMenus = ['extrasidebar22', 'extrasidebar23']; // menu yang dilarang u
                                         <div class="menu-item">
                                             <a class="menu-link" href="<?= Url::to([$menuUrlDetail]) ?>">
                                                 <span class="menu-icon"><i class="fa fa-<?= $rowdetail['menu_icon'] ?>"></i></span>
-                                                <span
-                                                    class="menu-title"><?= Yii::$app->lang->t('extrasidebar', $rowdetail['menu_name']) ?></span>
+                                                <span class="menu-title"><?= strpos($rowdetail['menu_name'], 'extrasidebar') === 0 ? Yii::$app->lang->t('extrasidebar', $rowdetail['menu_name']) : $rowdetail['menu_name'] ?></span>
                                             </a>
                                         </div>
                                     <?php } ?>

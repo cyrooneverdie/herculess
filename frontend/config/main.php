@@ -53,6 +53,8 @@ return [
                 'location-bali' => 'site/location-bali',
                 'trainer' => 'site/trainer',
                 'settings' => 'site/settings',
+                'checkout' => 'site/checkout',
+                'pay' => 'site/pay',
             ],
         ],
     ],
