@@ -20,9 +20,9 @@ foreach($allProducts as $p) {
     
     $label = trim(str_ireplace(['paket', 'vip', 'standard', 'all-access', 'all access'], '', $p->productname));
     if ($label == '') {
-        $label = $p->duration_days ? round($p->duration_days/30) . ' Bln' : '1 Bln';
+        $label = $p->duration_days ? round($p->duration_days/30) . ' Bulan' : '1 Bulan';
     } else {
-        $label = str_ireplace(['bulan', 'tahun', 'minggu'], ['Bln', 'Thn', 'Mgg'], $label);
+        $label = ucwords(strtolower($label));
     }
     
     $basePrice = (float)$p->sellprice;
@@ -54,16 +54,26 @@ usort($vipPackages, fn($a, $b) => $a['rawPrice'] <=> $b['rawPrice']);
 
 if (empty($stdPackages)) {
     $stdPackages = [
-        ['label'=>'6 Bln', 'price'=>'Rp 225.000', 'strike'=>'Rp 3.970.588', 'total'=>'Rp 2.700.000', 'discount'=>'Diskon 32%'],
-        ['label'=>'12 Bln', 'price'=>'Rp 210.000', 'strike'=>'Rp 3.705.882', 'total'=>'Rp 2.520.000', 'discount'=>'Diskon 32%'],
-        ['label'=>'18 Bln', 'price'=>'Rp 185.000', 'strike'=>'Rp 5.370.968', 'total'=>'Rp 3.330.000', 'discount'=>'Diskon 38%']
+        ['label'=>'1 Minggu', 'price'=>'Rp 100.000', 'strike'=>'Rp 150.000', 'total'=>'Rp 100.000', 'discount'=>'Diskon 33%'],
+        ['label'=>'2 Minggu', 'price'=>'Rp 175.000', 'strike'=>'Rp 250.000', 'total'=>'Rp 175.000', 'discount'=>'Diskon 30%'],
+        ['label'=>'1 Bulan', 'price'=>'Rp 300.000', 'strike'=>'Rp 450.000', 'total'=>'Rp 300.000', 'discount'=>'Diskon 33%'],
+        ['label'=>'3 Bulan', 'price'=>'Rp 275.000', 'strike'=>'Rp 1.350.000', 'total'=>'Rp 825.000', 'discount'=>'Diskon 38%'],
+        ['label'=>'6 Bulan', 'price'=>'Rp 225.000', 'strike'=>'Rp 3.970.588', 'total'=>'Rp 2.700.000', 'discount'=>'Diskon 32%'],
+        ['label'=>'1 Tahun', 'price'=>'Rp 210.000', 'strike'=>'Rp 3.705.882', 'total'=>'Rp 2.520.000', 'discount'=>'Diskon 32%'],
+        ['label'=>'2 Tahun', 'price'=>'Rp 190.000', 'strike'=>'Rp 7.000.000', 'total'=>'Rp 4.560.000', 'discount'=>'Diskon 34%'],
+        ['label'=>'Kustom', 'price'=>'Rp 200.000', 'strike'=>'', 'total'=>'', 'discount'=>'']
     ];
 }
 if (empty($vipPackages)) {
     $vipPackages = [
-        ['label'=>'6 Bln', 'price'=>'Rp 275.000', 'strike'=>'Rp 4.852.941', 'total'=>'Rp 3.300.000', 'discount'=>'Diskon 32%'],
-        ['label'=>'12 Bln', 'price'=>'Rp 260.000', 'strike'=>'Rp 4.588.235', 'total'=>'Rp 3.120.000', 'discount'=>'Diskon 32%'],
-        ['label'=>'18 Bln', 'price'=>'Rp 235.000', 'strike'=>'Rp 6.822.581', 'total'=>'Rp 4.230.000', 'discount'=>'Diskon 38%']
+        ['label'=>'1 Minggu', 'price'=>'Rp 150.000', 'strike'=>'Rp 200.000', 'total'=>'Rp 150.000', 'discount'=>'Diskon 25%'],
+        ['label'=>'2 Minggu', 'price'=>'Rp 250.000', 'strike'=>'Rp 350.000', 'total'=>'Rp 250.000', 'discount'=>'Diskon 28%'],
+        ['label'=>'1 Bulan', 'price'=>'Rp 400.000', 'strike'=>'Rp 550.000', 'total'=>'Rp 400.000', 'discount'=>'Diskon 27%'],
+        ['label'=>'3 Bulan', 'price'=>'Rp 350.000', 'strike'=>'Rp 1.650.000', 'total'=>'Rp 1.050.000', 'discount'=>'Diskon 36%'],
+        ['label'=>'6 Bulan', 'price'=>'Rp 275.000', 'strike'=>'Rp 4.852.941', 'total'=>'Rp 3.300.000', 'discount'=>'Diskon 32%'],
+        ['label'=>'1 Tahun', 'price'=>'Rp 260.000', 'strike'=>'Rp 4.588.235', 'total'=>'Rp 3.120.000', 'discount'=>'Diskon 32%'],
+        ['label'=>'2 Tahun', 'price'=>'Rp 240.000', 'strike'=>'Rp 8.000.000', 'total'=>'Rp 5.760.000', 'discount'=>'Diskon 28%'],
+        ['label'=>'Kustom', 'price'=>'Rp 200.000', 'strike'=>'', 'total'=>'', 'discount'=>'']
     ];
 }
 
@@ -122,134 +132,240 @@ $dynamicPricing = [
             </div>
         </div>
 
-                        <!-- Pricing Cards (Side-by-side with Duration Selector) -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto mb-20">
-            
-            <!-- STANDARD CARD -->
-            <div class="bg-[#121316] border border-white/20 rounded-2xl p-8 flex flex-col shadow-xl text-white relative">
-                <div class="mb-6">
-                    <h3 class="text-xl font-bold uppercase tracking-widest text-slate-200 mb-2">Standard</h3>
-                    <p class="text-slate-400 text-sm">Akses latihan 1 cabang fokus</p>
-                </div>
+        <!-- ==================== PACKAGE SLIDER ==================== -->
+        <?php $allPackages = array_merge(
+            array_map(fn($p) => array_merge($p, ['type' => 'std']), $stdPackages),
+            array_map(fn($p) => array_merge($p, ['type' => 'vip']), $vipPackages)
+        );
+        usort($allPackages, fn($a, $b) => ($a['rawPrice'] ?? 0) <=> ($b['rawPrice'] ?? 0));
+        ?>
 
-                <!-- Duration Selection -->
-                <div class="mb-8">
-                    <p class="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-3">Pilih Durasi:</p>
-                    <div class="relative flex items-center bg-[#1a1c23] p-1 rounded-lg border border-white/10" id="std-selector-container">
-                        <div id="slider-std" class="absolute top-1 bottom-1 w-[calc(<?= 100/count($stdPackages) ?>%-2px)] bg-white rounded-md transition-transform duration-300 ease-out z-0 shadow-md" style="left: 4px; transform: translateX(0%);"></div>
-                        <?php foreach ($stdPackages as $index => $pkg): ?>
-                            <button class="dur-btn flex-1 py-2 text-xs font-bold rounded-md transition-colors duration-300 <?= $index === 0 ? 'text-slate-900 active-pill' : 'text-slate-400 hover:text-white' ?> relative z-10" data-target="std" data-index="<?= $index ?>"><?= $pkg['label'] ?></button>
-                        <?php endforeach; ?>
-                    </div>
+        <div class="max-w-6xl mx-auto mb-20 relative">
+            <!-- Standard / VIP Toggle -->
+            <div class="flex items-center gap-3 mb-6">
+                <div class="relative inline-flex items-center gap-0 border-b border-white/10">
+                    <button onclick="filterPackageType('std', 0)" id="pkg-tab-std" class="pkg-type-btn px-6 py-3 text-xs font-bold uppercase tracking-wider transition-all duration-300 text-white">Standard</button>
+                    <button onclick="filterPackageType('vip', 1)" id="pkg-tab-vip" class="pkg-type-btn px-6 py-3 text-xs font-bold uppercase tracking-wider transition-all duration-300 text-slate-500 hover:text-slate-300">VIP</button>
+                    <div id="pkg-tab-underline" class="absolute bottom-0 h-[3px] bg-brand-gold rounded-full transition-all duration-300 ease-out" style="left: 0; width: 0;"></div>
                 </div>
-
-                <!-- Price Display -->
-                <div class="mb-8 border-t border-white/10 pt-6">
-                    <div class="flex items-baseline gap-2 mb-4">
-                        <span class="text-4xl font-extrabold text-white" id="price-std" style="transition: opacity 0.2s, transform 0.2s;">Rp 225.000</span>
-                        <span class="text-slate-400 font-medium text-sm">/bulan</span>
-                    </div>
-                    <div>
-                        <p class="text-xs text-slate-500 line-through mb-1" id="strike-std">Rp 3.970.588</p>
-                        <div class="flex items-center gap-3">
-                            <span class="text-xl font-bold text-slate-200" id="total-std" style="transition: opacity 0.2s;">Rp 2.700.000</span>
-                            <span class="bg-red-500/20 text-red-400 text-[10px] font-bold px-2 py-1 rounded" id="discount-std">Diskon 32%</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Benefits -->
-                <div class="mb-10 flex-1">
-                    <p class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-4">Benefit:</p>
-                    <ul class="space-y-4">
-                        <li class="flex items-start gap-3"><span class="text-brand-gold font-black mt-0.5">•</span><span class="text-slate-300 text-sm">1 Cabang Tetap</span></li>
-                        <li class="flex items-start gap-3"><span class="text-brand-gold font-black mt-0.5">•</span><span class="text-slate-300 text-sm">Loker Reguler Harian</span></li>
-                        <li class="flex items-start gap-3"><span class="text-brand-gold font-black mt-0.5">•</span><span class="text-slate-300 text-sm">1x Sesi Orientasi Alat</span></li>
-                        <li class="flex items-start gap-3"><span class="text-brand-gold font-black mt-0.5">•</span><span class="text-slate-300 text-sm">Shower & Wi-Fi</span></li>
-                    </ul>
-                </div>
-
-                <a id="link-std" href="<?= Url::to(['site/checkout', 'package' => 'std', 'branch' => 'batu-ampar', 'duration' => '12']) ?>" class="block w-full py-4 text-center rounded-xl font-bold uppercase tracking-widest transition-colors border-2 border-white/20 text-white hover:bg-white hover:text-slate-900 text-sm">
-                    <?= Yii::$app->user->isGuest ? 'Daftar' : 'Bergabung' ?> Standard
-                </a>
             </div>
 
-            <!-- VIP CARD -->
-            <div class="bg-[#121316] border-2 border-brand-gold rounded-2xl p-8 flex flex-col shadow-[0_10px_40px_rgba(212,175,55,0.15)] relative transform md:-translate-y-2">
-                <div class="absolute -top-3 right-6 bg-brand-gold text-slate-900 text-[10px] font-black uppercase tracking-widest px-4 py-1.5 rounded-full shadow-lg">Terlaris</div>
+            <!-- Slider Navigation Arrows -->
+            <button id="slider-prev" onclick="slidePackages(-1)" class="absolute -left-4 md:-left-12 lg:-left-16 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-[#1a1c23] border border-white/10 text-white/60 hover:text-white hover:border-brand-gold/50 hover:bg-[#1a1c23] transition-all duration-300 flex items-center justify-center shadow-[0_4px_20px_rgba(0,0,0,0.5)] backdrop-blur-sm hidden md:flex">
+                <i class="fas fa-chevron-left text-sm"></i>
+            </button>
+            <button id="slider-next" onclick="slidePackages(1)" class="absolute -right-4 md:-right-12 lg:-right-16 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-[#1a1c23] border border-white/10 text-white/60 hover:text-white hover:border-brand-gold/50 hover:bg-[#1a1c23] transition-all duration-300 flex items-center justify-center shadow-[0_4px_20px_rgba(0,0,0,0.5)] backdrop-blur-sm hidden md:flex">
+                <i class="fas fa-chevron-right text-sm"></i>
+            </button>
 
-                <div class="mb-6">
-                    <h3 class="text-xl font-bold uppercase tracking-widest text-brand-gold mb-2 flex items-center gap-2"><i class="fas fa-star text-sm"></i> VIP All-Access</h3>
-                    <p class="text-slate-400 text-sm">Bebas tanpa batas 2 cabang</p>
-                </div>
+            <!-- Slider Track -->
+            <div class="overflow-hidden px-4 -mx-4 py-8 -my-8" id="pkg-slider-viewport">
+                <div class="flex transition-transform duration-500 ease-out gap-5" id="pkg-slider-track" style="touch-action: pan-y;">
+                    <?php foreach ($allPackages as $idx => $pkg):
+                        $isVip = ($pkg['type'] ?? '') === 'vip';
+                        $borderClass = $isVip ? 'border-brand-gold/60' : 'border-white/10';
+                        $accentColor = $isVip ? 'text-brand-gold' : 'text-white';
+                        $badgeBg = $isVip ? 'bg-brand-gold text-slate-900' : 'bg-white/10 text-slate-300';
+                        $btnClass = $isVip
+                            ? 'bg-brand-gold text-slate-900 hover:shadow-[0_0_24px_rgba(212,175,55,0.35)]'
+                            : 'border-2 border-white/20 text-white hover:bg-white hover:text-slate-900';
+                        $typeLabel = $isVip ? 'VIP' : 'Standard';
+                        $isKustom = strtolower($pkg['label'] ?? '') === 'kustom';
+                        $checkoutUrl = $isKustom 
+                            ? 'https://wa.me/628111234567?text=' . urlencode("Halo Admin Hercules Fitness, saya tertarik dengan paket {$typeLabel} Kustom.")
+                            : Url::to(['site/checkout', 'package' => $pkg['type'] ?? 'std', 'duration' => $pkg['label'] ?? '']);
+                        $btnText = $isKustom ? 'DISKUSIKAN PAKET ANDA' : (Yii::$app->user->isGuest ? 'Daftar' : 'Pilih Paket');
+                    ?>
+                    <div class="flex-shrink-0 w-[280px] md:w-[300px] pkg-card" data-pkg-type="<?= $isVip ? 'vip' : 'std' ?>">
+                        <div class="bg-[#15171c] border <?= $borderClass ?> rounded-2xl p-6 flex flex-col h-full relative group hover:border-brand-gold/40 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_12px_40px_-12px_rgba(212,175,55,0.15)]">
+                            
+                            <!-- Package Type Badge -->
+                            <div class="flex items-center justify-between mb-5">
+                                <span class="<?= $badgeBg ?> text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full"><?= $isKustom ? 'CUSTOM PLAN' : $typeLabel ?></span>
+                                <?php if ($isVip): ?>
+                                    <i class="fas fa-star text-brand-gold/40 text-xs"></i>
+                                <?php endif; ?>
+                            </div>
 
-                <!-- Duration Selection -->
-                <div class="mb-8">
-                    <p class="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-3">Pilih Durasi:</p>
-                    <div class="relative flex items-center bg-[#1a1c23] p-1 rounded-lg border border-white/10" id="vip-selector-container">
-                        <div id="slider-vip" class="absolute top-1 bottom-1 w-[calc(<?= 100/count($vipPackages) ?>%-2px)] bg-brand-gold rounded-md transition-transform duration-300 ease-out z-0 shadow-md" style="left: 4px; transform: translateX(0%);"></div>
-                        <?php foreach ($vipPackages as $index => $pkg): ?>
-                            <button class="dur-btn flex-1 py-2 text-xs font-bold rounded-md transition-colors duration-300 <?= $index === 0 ? 'text-slate-900 active-pill' : 'text-slate-400 hover:text-white' ?> relative z-10" data-target="vip" data-index="<?= $index ?>"><?= $pkg['label'] ?></button>
-                        <?php endforeach; ?>
-                    </div>
-                </div>
+                            <!-- Duration Label -->
+                            <h3 class="text-2xl font-black <?= $accentColor ?> uppercase tracking-tight mb-1"><?= $isKustom ? 'CUSTOM MEMBERSHIP' : htmlspecialchars($pkg['label']) ?></h3>
+                            <?php if ($isKustom): ?>
+                                <p class="text-[10px] text-slate-400 font-medium mb-3 leading-tight max-w-[200px]">Solusi Keanggotaan Sesuai Kebutuhan Anda</p>
+                            <?php endif; ?>
 
-                <!-- Price Display -->
-                <div class="mb-8 border-t border-white/10 pt-6">
-                    <div class="flex items-baseline gap-2 mb-4">
-                        <span class="text-4xl font-extrabold text-white" id="price-vip" style="transition: opacity 0.2s, transform 0.2s;">Rp 275.000</span>
-                        <span class="text-slate-400 font-medium text-sm">/bulan</span>
-                    </div>
-                    <div>
-                        <p class="text-xs text-slate-500 line-through mb-1" id="strike-vip">Rp 4.852.941</p>
-                        <div class="flex items-center gap-3">
-                            <span class="text-xl font-bold text-slate-200" id="total-vip" style="transition: opacity 0.2s;">Rp 3.300.000</span>
-                            <span class="bg-red-500/20 text-red-400 text-[10px] font-bold px-2 py-1 rounded" id="discount-vip">Diskon 32%</span>
+                            <!-- Price Per Month -->
+                            <div class="flex items-baseline gap-1.5 <?= $isKustom ? 'mb-2 mt-auto' : 'mb-5' ?>">
+                                <?php if ($isKustom): ?>
+                                    <span class="text-xs font-bold text-slate-400 tracking-wide">Mulai</span>
+                                <?php endif; ?>
+                                <span class="text-3xl font-extrabold text-white"><?= $pkg['price'] ?></span>
+                                <span class="text-slate-500 text-sm font-medium"><?= $isKustom ? '/paket' : '/bulan' ?></span>
+                            </div>
+
+                            <!-- Divider -->
+                            <div class="border-t border-white/5 mb-4"></div>
+
+                            <?php if ($isKustom): ?>
+                            <!-- Kustom Benefits -->
+                            <div class="mb-6 flex-1">
+                                <ul class="space-y-2.5">
+                                    <li class="flex items-start gap-2"><i class="fas fa-check text-brand-gold text-[10px] mt-[3px]"></i><span class="text-slate-300 text-[11px] leading-tight">Penyesuaian jadwal & hari kedatangan</span></li>
+                                    <li class="flex items-start gap-2"><i class="fas fa-check text-brand-gold text-[10px] mt-[3px]"></i><span class="text-slate-300 text-[11px] leading-tight">Pilihan personalisasi kuota sesi</span></li>
+                                    <li class="flex items-start gap-2"><i class="fas fa-check text-brand-gold text-[10px] mt-[3px]"></i><span class="text-slate-300 text-[11px] leading-tight">Konsultasi bebas biaya tersembunyi</span></li>
+                                </ul>
+                            </div>
+                            <?php else: ?>
+                            <!-- Total Price -->
+                            <div class="mb-6">
+                                <p class="text-xs text-slate-600 line-through mb-1"><?= $pkg['strike'] ?></p>
+                                <div class="flex items-center gap-2.5">
+                                    <span class="text-lg font-bold text-slate-200"><?= $pkg['total'] ?></span>
+                                    <span class="bg-red-500/15 text-red-400 text-[10px] font-bold px-2 py-0.5 rounded"><?= $pkg['discount'] ?></span>
+                                </div>
+                            </div>
+                            <?php endif; ?>
+
+                            <!-- CTA Button -->
+                            <div class="mt-auto">
+                                <a href="<?= $checkoutUrl ?>" <?= $isKustom ? 'target="_blank"' : '' ?> class="block w-full py-3.5 text-center rounded-xl font-bold uppercase tracking-widest text-sm transition-all duration-300 <?= $btnClass ?>">
+                                    <?= $btnText ?>
+                                </a>
+                            </div>
                         </div>
                     </div>
+                    <?php endforeach; ?>
                 </div>
-
-                <!-- Benefits -->
-                <div class="mb-10 flex-1">
-                    <p class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-4">Benefit:</p>
-                    <ul class="space-y-4">
-                        <li class="flex items-start gap-3"><i class="fas fa-check text-brand-gold mt-1 text-sm"></i><span class="text-slate-200 text-sm">Akses Batu Ampar & B. Besar</span></li>
-                        <li class="flex items-start gap-3"><i class="fas fa-check text-brand-gold mt-1 text-sm"></i><span class="text-slate-200 text-sm">Free Handuk Setiap Latihan</span></li>
-                        <li class="flex items-start gap-3"><i class="fas fa-check text-brand-gold mt-1 text-sm"></i><span class="text-slate-200 text-sm">4x Sesi PT Pribadi + InBody</span></li>
-                        <li class="flex items-start gap-3"><i class="fas fa-check text-brand-gold mt-1 text-sm"></i><span class="text-slate-200 text-sm">1 Free Pass Teman / Bulan</span></li>
-                        <li class="flex items-start gap-3"><i class="fas fa-check text-brand-gold mt-1 text-sm"></i><span class="text-slate-200 text-sm">Prioritas Reservasi Kelas</span></li>
-                    </ul>
-                </div>
-
-                <a id="link-vip" href="<?= Url::to(['site/checkout', 'package' => 'vip', 'branch' => 'batu-ampar', 'duration' => '12']) ?>" class="block w-full py-4 text-center rounded-xl font-bold uppercase tracking-widest transition-all bg-brand-gold text-slate-900 hover:shadow-[0_0_20px_rgba(212,175,55,0.4)] hover:-translate-y-1 text-sm">
-                    <?= Yii::$app->user->isGuest ? 'Daftar' : 'Bergabung' ?> VIP All-Access
-                </a>
             </div>
-            
+
+            <!-- Dot Indicators (Mobile) -->
+            <div class="flex items-center justify-center gap-2 mt-6 md:hidden" id="pkg-dots"></div>
         </div>
-        
+
         <script>
         (function() {
-            var PRICING = <?= json_encode($dynamicPricing) ?>;
+            var track = document.getElementById('pkg-slider-track');
+            var viewport = document.getElementById('pkg-slider-viewport');
+            var prevBtn = document.getElementById('slider-prev');
+            var nextBtn = document.getElementById('slider-next');
+            var dotsContainer = document.getElementById('pkg-dots');
+            var cards = track.children;
+            var currentIndex = 0;
+            var cardWidth = 0;
+            var gap = 20;
+            var visibleCards = 3;
+            var activeCardCount = cards.length;
+
+            function calcDimensions() {
+                if (!cards.length) return;
+                // find first visible card to get width
+                for (var i = 0; i < cards.length; i++) {
+                    if (cards[i].style.display !== 'none') {
+                        cardWidth = cards[i].offsetWidth;
+                        break;
+                    }
+                }
+                var vw = viewport.offsetWidth;
+                visibleCards = Math.max(1, Math.floor((vw + gap) / (cardWidth + gap)));
+            }
+
+            function maxIndex() {
+                return Math.max(0, activeCardCount - visibleCards);
+            }
+
+            function updateSlider() {
+                var offset = currentIndex * (cardWidth + gap);
+                track.style.transform = 'translateX(-' + offset + 'px)';
+                if (prevBtn) prevBtn.style.opacity = currentIndex <= 0 ? '0.3' : '1';
+                if (prevBtn) prevBtn.style.pointerEvents = currentIndex <= 0 ? 'none' : 'auto';
+                if (nextBtn) nextBtn.style.opacity = currentIndex >= maxIndex() ? '0.3' : '1';
+                if (nextBtn) nextBtn.style.pointerEvents = currentIndex >= maxIndex() ? 'none' : 'auto';
+                renderDots();
+            }
+
+            function renderDots() {
+                if (!dotsContainer) return;
+                dotsContainer.innerHTML = '';
+                var total = maxIndex() + 1;
+                for (var i = 0; i < total; i++) {
+                    var dot = document.createElement('button');
+                    dot.className = 'w-2 h-2 rounded-full transition-all duration-300 ' + (i === currentIndex ? 'bg-brand-gold w-6' : 'bg-white/20');
+                    dot.setAttribute('data-idx', i);
+                    dot.onclick = function() { currentIndex = parseInt(this.getAttribute('data-idx')); updateSlider(); };
+                    dotsContainer.appendChild(dot);
+                }
+            }
+
+            window.slidePackages = function(dir) {
+                currentIndex = Math.max(0, Math.min(maxIndex(), currentIndex + dir));
+                updateSlider();
+            };
+
+            // Touch/swipe support
+            var startX = 0, startY = 0, isDragging = false;
+            track.addEventListener('touchstart', function(e) { startX = e.touches[0].clientX; startY = e.touches[0].clientY; isDragging = true; }, {passive: true});
+            track.addEventListener('touchend', function(e) {
+                if (!isDragging) return;
+                isDragging = false;
+                var dx = e.changedTouches[0].clientX - startX;
+                var dy = e.changedTouches[0].clientY - startY;
+                if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 40) {
+                    slidePackages(dx < 0 ? 1 : -1);
+                }
+            }, {passive: true});
+
+            window.addEventListener('resize', function() { calcDimensions(); updateSlider(); });
+            document.addEventListener('DOMContentLoaded', function() { calcDimensions(); updateSlider(); });
+
+            // Package type filter
+            window.filterPackageType = function(type, tabIndex) {
+                var underline = document.getElementById('pkg-tab-underline');
+                document.querySelectorAll('.pkg-type-btn').forEach(function(b) {
+                    b.classList.remove('text-white');
+                    b.classList.add('text-slate-500');
+                });
+                var activeBtn = document.getElementById('pkg-tab-' + type);
+                if (activeBtn) {
+                    activeBtn.classList.add('text-white');
+                    activeBtn.classList.remove('text-slate-500');
+                    underline.style.left = activeBtn.offsetLeft + 'px';
+                    underline.style.width = activeBtn.offsetWidth + 'px';
+                }
+                var count = 0;
+                document.querySelectorAll('.pkg-card').forEach(function(card) {
+                    if (type === 'all' || card.getAttribute('data-pkg-type') === type) {
+                        card.style.display = '';
+                        count++;
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+                activeCardCount = count;
+                currentIndex = 0;
+                calcDimensions();
+                updateSlider();
+            };
+
+            // Initialize underline on first tab and filter
+            document.addEventListener('DOMContentLoaded', function() {
+                var firstTab = document.getElementById('pkg-tab-std');
+                if (firstTab) {
+                    var underline = document.getElementById('pkg-tab-underline');
+                    underline.style.left = firstTab.offsetLeft + 'px';
+                    underline.style.width = firstTab.offsetWidth + 'px';
+                }
+                filterPackageType('std', 0);
+            });
+
+            // Branch selector logic
+            var BRANCHES = {
+                'batu-ampar': 'Batu Ampar',
+                'batu-besar': 'Batu Besar',
+                'mtc': 'MTC Batam',
+                'canggu': 'Canggu',
+                'kuta': 'Kuta'
+            };
             var CITIES = { batam: ['batu-ampar', 'batu-besar', 'mtc'], bali: ['canggu', 'kuta'] };
             var currentBranch = 'batu-ampar';
-            var durIndex = { std: 0, vip: 0 };
-
-            function updatePrice(type) {
-                var d = PRICING[currentBranch][type][durIndex[type]];
-                var pEl = document.getElementById('price-' + type);
-                var sEl = document.getElementById('strike-' + type);
-                var tEl = document.getElementById('total-' + type);
-                var dEl = document.getElementById('discount-' + type);
-                pEl.style.opacity = '0'; pEl.style.transform = 'translateY(6px)';
-                tEl.style.opacity = '0';
-                setTimeout(function() {
-                    pEl.textContent = d.price; sEl.textContent = d.strike;
-                    tEl.textContent = d.total; dEl.textContent = d.discount;
-                    pEl.style.opacity = '1'; pEl.style.transform = 'translateY(0)';
-                    tEl.style.opacity = '1';
-                }, 150);
-            }
 
             function renderBranches(city) {
                 var c = document.getElementById('branch-container');
@@ -259,7 +375,7 @@ $dynamicPricing = [
                     var isActive = key === currentBranch;
                     b.className = 'branch-btn px-5 py-2 text-xs font-bold uppercase tracking-wider rounded-full transition-all duration-300 border ' +
                         (isActive ? 'bg-brand-gold text-slate-900 border-brand-gold shadow-[0_4px_15px_rgba(212,175,55,0.3)]' : 'bg-transparent text-slate-400 border-slate-700 hover:text-white hover:border-slate-500');
-                    b.textContent = PRICING[key].label;
+                    b.textContent = BRANCHES[key];
                     b.onclick = function() { selectBranch(key); };
                     c.appendChild(b);
                 });
@@ -283,61 +399,25 @@ $dynamicPricing = [
             window.selectBranch = function(key) {
                 currentBranch = key;
                 document.querySelectorAll('#branch-container .branch-btn').forEach(function(b) {
-                    if (b.textContent === PRICING[key].label) {
+                    if (b.textContent === BRANCHES[key]) {
                         b.className = 'branch-btn px-5 py-2 text-xs font-bold uppercase tracking-wider rounded-full transition-all duration-300 border bg-brand-gold text-slate-900 border-brand-gold shadow-[0_4px_15px_rgba(212,175,55,0.3)]';
                     } else {
                         b.className = 'branch-btn px-5 py-2 text-xs font-bold uppercase tracking-wider rounded-full transition-all duration-300 border bg-transparent text-slate-400 border-slate-700 hover:text-white hover:border-slate-500';
                     }
                 });
-                document.getElementById('active-branch-label').textContent = PRICING[key].label;
-                updatePrice('std');
-                updatePrice('vip');
-                updateCheckoutLinks();
+                document.getElementById('active-branch-label').textContent = BRANCHES[key];
             };
 
-            function updateCheckoutLinks() {
-                var durMonths = [6, 12, 18];
-                var base = '<?= Url::to(["site/checkout"]) ?>';
-                var stdLink = document.getElementById('link-std');
-                var vipLink = document.getElementById('link-vip');
-                
-                var stdCheckoutUrl = base + '?package=std&branch=' + currentBranch + '&duration=' + durMonths[durIndex.std];
-                var vipCheckoutUrl = base + '?package=vip&branch=' + currentBranch + '&duration=' + durMonths[durIndex.vip];
-
-                if (stdLink) stdLink.href = stdCheckoutUrl;
-                if (vipLink) vipLink.href = vipCheckoutUrl;
-            }
-
+            // Initialize branch selector on load
             document.addEventListener('DOMContentLoaded', function() {
                 var urlParams = new URLSearchParams(window.location.search);
                 var initialCity = urlParams.get('city') || 'batam';
                 var initialBranch = urlParams.get('branch') || 'batu-ampar';
-                
                 if (!CITIES[initialCity] || !CITIES[initialCity].includes(initialBranch)) {
                     initialCity = 'batam';
                     initialBranch = 'batu-ampar';
                 }
-                
                 selectCity(initialCity, initialBranch);
-
-                document.querySelectorAll('.dur-btn').forEach(function(btn) {
-                    btn.addEventListener('click', function() {
-                        var target = this.getAttribute('data-target');
-                        var index = parseInt(this.getAttribute('data-index'));
-                        var siblings = this.parentElement.querySelectorAll('.dur-btn');
-                        var slider = document.getElementById('slider-' + target);
-                        slider.style.transform = 'translateX(' + (index * 100) + '%)';
-                        siblings.forEach(function(s) {
-                            s.classList.remove('active-pill', 'text-slate-900');
-                            s.classList.add('text-slate-400', 'hover:text-white');
-                        });
-                        this.classList.add('active-pill', 'text-slate-900');
-                        this.classList.remove('text-slate-400', 'hover:text-white');
-                        durIndex[target] = index;
-                        updatePrice(target);
-                        updateCheckoutLinks();
-                    });
-                });
             });
         })();
         </script>

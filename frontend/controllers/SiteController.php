@@ -584,7 +584,7 @@ class SiteController extends Controller
     public function actionPay($amount, $desc)
     {
         // PENTING: Ganti dengan Secret Key yang baru saja Anda buat di Dashboard Xendit!
-        $secretKey = 'xnd_development_1fu2zqX65t70dqCzvZs226i7O9tOapyT5GhqpC5ZdHxrPiSQsnBKbPkN8lz376Y';
+        $secretKey = 'xnd_production_qNdkG4Z0V2Z7z8IgijVGJKpd62vYZviRK98aPZFsnvn2gkDumz3m8UmBbEU48x';
         
         \Xendit\Configuration::setXenditKey($secretKey);
 
